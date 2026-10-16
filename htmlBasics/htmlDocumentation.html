@@ -25,6 +25,7 @@
             --accent-cyan: #06b6d4;
             --accent-emerald: #10b981;
             --accent-rose: #f43f5e;
+            --accent-purple: #a855f7;
             
             --code-bg: #030712;
             --code-tag: #f43f5e;
@@ -93,7 +94,7 @@
         .subtitle {
             color: var(--text-muted);
             font-size: 1.15rem;
-            max-width: 650px;
+            max-width: 680px;
             margin: 0 auto;
         }
 
@@ -308,6 +309,34 @@
             font-size: 1rem;
         }
 
+        /* Live Preview Widget inside documentation */
+        .live-preview {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .preview-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .preview-content h1 { font-size: 1.8rem; margin-bottom: 6px; }
+        .preview-content h2 { font-size: 1.5rem; margin-bottom: 6px; }
+        .preview-content h3 { font-size: 1.25rem; margin-bottom: 6px; }
+        .preview-content h4 { font-size: 1.05rem; margin-bottom: 6px; color: #cbd5e1; }
+        .preview-content p { margin-bottom: 8px; color: #d1d5db; }
+        .preview-content ul { padding-left: 20px; color: #d1d5db; }
+        .preview-content li { margin-bottom: 4px; }
+        .preview-content strong { color: #fbbf24; font-weight: 700; }
+
         /* Reference Table */
         .table-wrapper {
             overflow-x: auto;
@@ -431,15 +460,18 @@
         <header>
             <div class="badge-pill">☕ Chai Aur Code • HTML Fundamentals</div>
             <h1 class="main-title">HTML Study Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, structural boilerplate element, and development workflow studied so far.</p>
+            <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, structural boilerplate element, containers, lists, text formatting, and development workflow studied.</p>
             
             <div class="quick-nav">
                 <a href="#boilerplate">1. Boilerplate</a>
-                <a href="#headings">2. Headings</a>
-                <a href="#media">3. Media & Images</a>
-                <a href="#links">4. Links & Anchors</a>
-                <a href="#table">5. Quick Reference</a>
-                <a href="#workflow">6. Live Server & Emmet</a>
+                <a href="#headings">2. Headings (h1–h6)</a>
+                <a href="#containers">3. Containers (div)</a>
+                <a href="#text">4. Paragraphs &amp; Text (p, strong)</a>
+                <a href="#lists">5. Lists (ul, li)</a>
+                <a href="#media">6. Media &amp; Images</a>
+                <a href="#links">7. Links &amp; Anchors</a>
+                <a href="#table">8. Quick Reference</a>
+                <a href="#workflow">9. Live Server &amp; Emmet</a>
             </div>
         </header>
 
@@ -456,10 +488,10 @@
                     <span class="tag-name">&lt;!DOCTYPE html&gt;</span>
                     <span class="tag-badge badge-void">Declaration</span>
                 </div>
-                <p class="desc-text">An instruction to the web browser about what version of HTML the page is written in. It is not an HTML tag, but a mandatory document declaration.</p>
+                <p class="desc-text">An instruction to the web browser declaring that the page is written in modern HTML5. It is not an HTML tag, but a mandatory document declaration placed at the very top of the file.</p>
                 <div class="use-case">
                     <span class="use-case-icon">💡</span>
-                    <div><strong>Why it matters:</strong> Ensures the browser renders in standard modern HTML5 mode instead of bug-prone "quirks mode". Always line 1 of any HTML file.</div>
+                    <div><strong>Why it matters:</strong> Ensures the browser renders in standard modern HTML5 mode instead of bug-prone "quirks mode".</div>
                 </div>
                 <div class="code-snippet">
                     <span class="c-tag">&lt;!DOCTYPE html&gt;</span>
@@ -477,7 +509,7 @@
                 <div class="attr-box">
                     <div class="attr-title">Key Attributes</div>
                     <div class="attr-item">
-                        <span class="attr-name">lang="en"</span> — Specifies the human language of the document (English). Crucial for search engine indexing (SEO), browser translators, and screen reader text-to-speech pronunciation.
+                        <span class="attr-name">lang="en"</span> — Specifies the human language of the document (e.g., English). Crucial for search engine indexing (SEO), browser translators, and screen reader text-to-speech pronunciation.
                     </div>
                 </div>
 
@@ -559,30 +591,174 @@
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">&lt;h1&gt;, &lt;h2&gt;, &lt;h3&gt;</span>
+                    <span class="tag-name">&lt;h1&gt; through &lt;h6&gt;</span>
                     <span class="tag-badge badge-block">Block Level</span>
                 </div>
                 <p class="desc-text">Headings establish semantic hierarchy and an outline for content structure. They are <strong>block-level elements</strong>, meaning each begins on a new line and spans the full available width.</p>
                 
                 <div class="attr-box">
-                    <div class="attr-title">Hierarchy & SEO Rules</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h1&gt;</span>: Primary heading. <strong>Only 1 per page</strong> for good SEO and clear topic definition.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h2&gt;</span>: Major section titles.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h3&gt;</span>: Sub-topics inside an &lt;h2&gt; section.</div>
+                    <div class="attr-title">Hierarchy &amp; Best Practices</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h1&gt;</span>: Main page title. <strong>Only ONE &lt;h1&gt; per page</strong> for SEO and topic clarity.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h2&gt;</span>: Major section headings.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h3&gt;</span>: Sub-sections inside an &lt;h2&gt;.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h4&gt;</span>: Sub-topics inside an &lt;h3&gt;.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h5&gt;, &lt;h6&gt;</span>: Deep granular subsection titles.</div>
                 </div>
 
                 <div class="code-snippet">
                     <span class="c-tag">&lt;h1&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/h1&gt;</span><br>
-                    <span class="c-tag">&lt;h2&gt;</span><span class="c-text">Major section heading</span><span class="c-tag">&lt;/h2&gt;</span><br>
-                    <span class="c-tag">&lt;h3&gt;</span><span class="c-text">Detailed sub-topic point</span><span class="c-tag">&lt;/h3&gt;</span>
+                    <span class="c-tag">&lt;h2&gt;</span><span class="c-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, voluptatem?</span><span class="c-tag">&lt;/h2&gt;</span><br>
+                    <span class="c-tag">&lt;h3&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/h3&gt;</span><br>
+                    <span class="c-tag">&lt;h4&gt;</span><span class="c-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. In, veritatis?</span><span class="c-tag">&lt;/h4&gt;</span>
+                </div>
+
+                <div class="live-preview">
+                    <span class="preview-label">Visual Hierarchy Preview:</span>
+                    <div class="preview-content">
+                        <h1>H1: Main Topic Heading</h1>
+                        <h2>H2: Major Section Heading</h2>
+                        <h3>H3: Sub-section Heading</h3>
+                        <h4>H4: Detailed Topic Heading</h4>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. Media -->
-        <section id="media">
+        <!-- 3. Containers -->
+        <section id="containers">
             <div class="section-header">
                 <div class="section-number">3</div>
+                <h2 class="section-title">Structural Containers (&lt;div&gt;)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;div&gt; ... &lt;/div&gt;</span>
+                    <span class="tag-badge badge-block">Block Level Container</span>
+                </div>
+                <p class="desc-text"><code>&lt;div&gt;</code> stands for <strong>division</strong>. It is a generic container used to group multiple elements together. By itself, it has no visual appearance or semantic meaning, but it is one of the most widely used tags in web development.</p>
+                
+                <div class="use-case">
+                    <span class="use-case-icon">💡</span>
+                    <div>
+                        <strong>Why we use &lt;div&gt;:</strong>
+                        <ul style="margin: 6px 0 0 20px;">
+                            <li><strong>Grouping:</strong> Bundling headings, paragraphs, and lists into a single logical section.</li>
+                            <li><strong>CSS Styling:</strong> Applying backgrounds, borders, padding, cards, and grid/flexbox layouts.</li>
+                            <li><strong>JavaScript Manipulation:</strong> Selecting a group of related elements together.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="c-tag">&lt;div&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;h3&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/h3&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;h4&gt;</span><span class="c-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span><span class="c-tag">&lt;/h4&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum </span><span class="c-tag">&lt;strong&gt;</span><span class="c-text">Bruh </span><span class="c-tag">&lt;/strong&gt;</span><span class="c-text">dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span><br>
+                    <span class="c-tag">&lt;/div&gt;</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Text & Formatting -->
+        <section id="text">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Paragraphs &amp; Text Formatting (&lt;p&gt;, &lt;strong&gt;)</h2>
+            </div>
+
+            <!-- p tag -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;p&gt; ... &lt;/p&gt;</span>
+                    <span class="tag-badge badge-block">Block Level</span>
+                </div>
+                <p class="desc-text">Represents a paragraph of text. Browsers automatically add vertical margin (empty space) before and after each paragraph to keep text clean and readable.</p>
+                
+                <div class="code-snippet">
+                    <span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span>
+                </div>
+            </div>
+
+            <!-- strong tag -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;strong&gt; ... &lt;/strong&gt;</span>
+                    <span class="tag-badge badge-inline">Inline Element</span>
+                </div>
+                <p class="desc-text">Indicates that its contents have <strong>strong importance, seriousness, or urgency</strong>. Browsers render the enclosed text in bold font weight by default.</p>
+                
+                <div class="attr-box">
+                    <div class="attr-title">Semantic Importance: &lt;strong&gt; vs &lt;b&gt;</div>
+                    <div class="attr-item"><span class="attr-name">&lt;strong&gt;</span>: Semantic element. Indicates that the text is important. Screen readers may announce it with emphasis or different tone.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;b&gt;</span>: Presentational element. Merely makes text look bold visually with no special importance attached.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum </span><span class="c-tag">&lt;strong&gt;</span><span class="c-text">Bruh </span><span class="c-tag">&lt;/strong&gt;</span><span class="c-text">dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span>
+                </div>
+
+                <div class="live-preview">
+                    <span class="preview-label">Live Rendered Output:</span>
+                    <div class="preview-content">
+                        <p>Lorem ipsum <strong>Bruh </strong>dolor sit amet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Lists -->
+        <section id="lists">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Lists (&lt;ul&gt;, &lt;li&gt;)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;ul&gt; and &lt;li&gt;</span>
+                    <span class="tag-badge badge-block">Block Level</span>
+                </div>
+                <p class="desc-text">HTML provides list elements to display bulleted or numbered items neatly:</p>
+                
+                <div class="attr-box">
+                    <div class="attr-title">List Elements Breakdown</div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;ul&gt;</span> (Unordered List) — Container for a collection of items with no numerical order. Rendered with circular bullet points by default.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;li&gt;</span> (List Item) — Represents an individual item within a list. <strong>Must always be placed inside a parent list</strong> (<code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>).
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;ol&gt;</span> (Ordered List - Related) — Container for sequentially numbered items (1, 2, 3...).
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="c-tag">&lt;ul&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 1</span><span class="c-tag">&lt;/li&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 2</span><span class="c-tag">&lt;/li&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 3</span><span class="c-tag">&lt;/li&gt;</span><br>
+                    <span class="c-tag">&lt;/ul&gt;</span>
+                </div>
+
+                <div class="live-preview">
+                    <span class="preview-label">Live Rendered List:</span>
+                    <div class="preview-content">
+                        <ul>
+                            <li>Topic 1</li>
+                            <li>Topic 2</li>
+                            <li>Topic 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Media -->
+        <section id="media">
+            <div class="section-header">
+                <div class="section-number">6</div>
                 <h2 class="section-title">Media Elements (&lt;img&gt;)</h2>
             </div>
 
@@ -618,11 +794,11 @@
             </div>
         </section>
 
-        <!-- 4. Links -->
+        <!-- 7. Links -->
         <section id="links">
             <div class="section-header">
-                <div class="section-number">4</div>
-                <h2 class="section-title">Hyperlinks & Anchors (&lt;a&gt;)</h2>
+                <div class="section-number">7</div>
+                <h2 class="section-title">Hyperlinks &amp; Anchors (&lt;a&gt;)</h2>
             </div>
 
             <div class="card">
@@ -633,7 +809,7 @@
                 <p class="desc-text">Creates hyperlinks that allow users to navigate between pages, download files, open email clients, or jump to specific page sections.</p>
                 
                 <div class="attr-box">
-                    <div class="attr-title">Attributes & Link Types</div>
+                    <div class="attr-title">Attributes &amp; Link Types</div>
                     <div class="attr-item">
                         <span class="attr-name">href</span> (Hypertext Reference) — Destination URL.
                     </div>
@@ -654,10 +830,10 @@
             </div>
         </section>
 
-        <!-- 5. Quick Reference Table -->
+        <!-- 8. Quick Reference Table -->
         <section id="table">
             <div class="section-header">
-                <div class="section-number">5</div>
+                <div class="section-number">8</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -680,13 +856,13 @@
                         </tr>
                         <tr>
                             <td><code>&lt;html&gt;</code></td>
-                            <td>Container</td>
+                            <td>Root Container</td>
                             <td><code>lang="en"</code></td>
                             <td><code>&lt;html lang="en"&gt;...&lt;/html&gt;</code></td>
                         </tr>
                         <tr>
                             <td><code>&lt;head&gt;</code></td>
-                            <td>Container</td>
+                            <td>Metadata Container</td>
                             <td>None</td>
                             <td><code>&lt;head&gt;...&lt;/head&gt;</code></td>
                         </tr>
@@ -721,6 +897,36 @@
                             <td><code>&lt;h1&gt;Main Heading&lt;/h1&gt;</code></td>
                         </tr>
                         <tr>
+                            <td><code>&lt;div&gt;</code></td>
+                            <td>Block Container</td>
+                            <td>Global (<code>class</code>, <code>id</code>)</td>
+                            <td><code>&lt;div&gt;...&lt;/div&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;p&gt;</code></td>
+                            <td>Block Level</td>
+                            <td>Global</td>
+                            <td><code>&lt;p&gt;Paragraph text&lt;/p&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;strong&gt;</code></td>
+                            <td>Inline Element</td>
+                            <td>Global</td>
+                            <td><code>&lt;strong&gt;Important bold&lt;/strong&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;ul&gt;</code></td>
+                            <td>Block Container</td>
+                            <td>Global</td>
+                            <td><code>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;li&gt;</code></td>
+                            <td>Block Level</td>
+                            <td>Global</td>
+                            <td><code>&lt;li&gt;List item&lt;/li&gt;</code></td>
+                        </tr>
+                        <tr>
                             <td><code>&lt;img&gt;</code></td>
                             <td>Void / Inline</td>
                             <td><code>src</code>, <code>alt</code></td>
@@ -737,11 +943,11 @@
             </div>
         </section>
 
-        <!-- 6. Workflow & Emmet -->
+        <!-- 9. Workflow & Emmet -->
         <section id="workflow">
             <div class="section-header">
-                <div class="section-number">6</div>
-                <h2 class="section-title">Developer Tooling & Emmet Shortcuts</h2>
+                <div class="section-number">9</div>
+                <h2 class="section-title">Developer Tooling, Git &amp; Emmet</h2>
             </div>
 
             <div class="grid-2">
@@ -754,6 +960,18 @@
                         <code>!</code>
                     </div>
                     <div class="shortcut-item">
+                        <span>List with 3 items</span>
+                        <code>ul>li*3{Topic $}</code>
+                    </div>
+                    <div class="shortcut-item">
+                        <span>Div with P and Strong</span>
+                        <code>div>p>strong</code>
+                    </div>
+                    <div class="shortcut-item">
+                        <span>Headings</span>
+                        <code>h1{Title}+h2{Subtitle}</code>
+                    </div>
+                    <div class="shortcut-item">
                         <span>Link with URL</span>
                         <code>a[href="url"]{text}</code>
                     </div>
@@ -761,35 +979,27 @@
                         <span>Image with Alt</span>
                         <code>img[src="" alt=""]</code>
                     </div>
-                    <div class="shortcut-item">
-                        <span>Headings</span>
-                        <code>h1{Title}</code>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Multiplication</span>
-                        <code>ul>li*3</code>
-                    </div>
                 </div>
 
                 <div class="tip-card">
-                    <div class="tip-title">🔄 Live Server & Auto Save</div>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">Ensure real-time browser preview without manual refresh:</p>
+                    <div class="tip-title">🚀 Git Push Workflow</div>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">Standard commands to push updates to GitHub:</p>
                     
                     <div class="shortcut-item">
-                        <span>Turn on Auto Save</span>
-                        <span><strong>File &gt; Auto Save</strong></span>
+                        <span>1. Stage changes</span>
+                        <code>git add .</code>
                     </div>
                     <div class="shortcut-item">
-                        <span>Open Live Server</span>
-                        <span>Click <strong>"Go Live"</strong> bottom bar</span>
+                        <span>2. Commit changes</span>
+                        <code>git commit -m "msg"</code>
                     </div>
                     <div class="shortcut-item">
-                        <span>Server Port</span>
-                        <code>http://127.0.0.1:5500</code>
+                        <span>3. Push to remote</span>
+                        <code>git push</code>
                     </div>
                     <div class="shortcut-item">
-                        <span>Manual Save</span>
-                        <kbd>Ctrl + S</kbd>
+                        <span>Check status</span>
+                        <code>git status</code>
                     </div>
                 </div>
             </div>
@@ -797,7 +1007,7 @@
 
         <!-- Footer -->
         <footer>
-            <p>Created for HTML Basics • Open with Live Server anytime to preview your study notes!</p>
+            <p>Created for Chai Aur Code HTML Basics • Keep Live Server open to view real-time updates!</p>
         </footer>
 
     </div>

@@ -86,90 +86,148 @@ Element: <body> ... </body>
 
 
 ================================================================================
-3. CONTENT ELEMENTS COVERED
+3. CONTENT & STRUCTURAL ELEMENTS
 ================================================================================
 
 --------------------------------------------------------------------------------
-A. HEADING TAGS: <h1>, <h2>, <h3> (Up to <h6>)
+A. HEADING TAGS: <h1> to <h6>
 --------------------------------------------------------------------------------
 - Description: Defines semantic headings and subheadings for content organization.
+  Headings are block-level elements.
 - Levels:
-  * <h1>: Top-level / most important heading. By best practice, use only ONE <h1>
-    per page for SEO and accessibility.
-  * <h2>: Major section headings under <h1>.
+  * <h1>: Top-level / most important heading. Best practice: Only ONE <h1> per page.
+  * <h2>: Major section headings.
   * <h3>: Sub-section headings under <h2>.
-  (HTML supports headings from <h1> down to <h6> in decreasing order of importance).
+  * <h4>: Sub-topics inside <h3>.
+  * <h5> & <h6>: Deep granular headings.
 - Purpose / Use Case: Establishes a hierarchical document outline. Helps screen readers
-  navigate sections and helps search engine crawlers understand key topics.
-- Examples:
+  navigate sections and search engine crawlers index key topics.
+- Example:
   <h1>Lorem ipsum dolor sit amet.</h1>
-  <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
-  <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+  <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, voluptatem?</h2>
+  <h3>Lorem ipsum dolor sit amet.</h3>
+  <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, veritatis?</h4>
 
 --------------------------------------------------------------------------------
-B. IMAGE TAG: <img>
+B. STRUCTURAL DIVISION: <div> ... </div>
+--------------------------------------------------------------------------------
+- Description: Generic block-level container. Stands for "division".
+- Purpose / Use Case:
+  * Groups multiple elements together (headings, paragraphs, lists).
+  * Serves as a target for CSS layout styling (cards, wrappers, flexbox/grid containers).
+  * Has no inherent semantic meaning by itself, making it completely flexible.
+- Example:
+  <div>
+      <h3>Lorem ipsum dolor sit amet.</h3>
+      <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h4>
+      <p>Lorem ipsum <strong>Bruh </strong>dolor sit amet.</p>
+  </div>
+
+--------------------------------------------------------------------------------
+C. PARAGRAPHS: <p> ... </p>
+--------------------------------------------------------------------------------
+- Description: Block-level element representing a paragraph of text.
+- Purpose / Use Case: Displays regular blocks of body text. Browsers automatically add
+  vertical margins (spacing) above and below each <p> element.
+- Example:
+  <p>Lorem ipsum dolor sit amet.</p>
+
+--------------------------------------------------------------------------------
+D. SEMANTIC IMPORTANCE: <strong> ... </strong>
+--------------------------------------------------------------------------------
+- Description: Inline element indicating strong importance, seriousness, or urgency.
+- Visual Appearance: Renders as bold by default in web browsers.
+- Semantic Difference:
+  * <strong>: Indicates important meaning. Screen readers may emphasize it vocally.
+  * <b>: Purely visual bolding without any semantic importance attached.
+- Example:
+  <p>Lorem ipsum <strong>Bruh </strong>dolor sit amet.</p>
+
+--------------------------------------------------------------------------------
+E. LISTS: <ul> and <li>
+--------------------------------------------------------------------------------
+- Description:
+  * <ul> (Unordered List): Container for a bulleted list of items with no numerical sequence.
+  * <li> (List Item): Individual item inside a list. Must always be inside a parent <ul> or <ol>.
+  * <ol> (Ordered List - Related): Sequential numbered list (1, 2, 3...).
+- Purpose / Use Case: Navigation menus, feature lists, bullet points, topic outlines.
+- Example:
+  <ul>
+      <li>Topic 1</li>
+      <li>Topic 2</li>
+      <li>Topic 3</li>
+  </ul>
+
+--------------------------------------------------------------------------------
+F. IMAGE TAG: <img>
 --------------------------------------------------------------------------------
 - Description: Self-closing (void) element used to embed images on the page.
 - Key Attributes:
-  * src (Source): Path or URL pointing to the image file. Can be relative
-    (e.g., "./images/Passport Photo.jpg") or absolute (e.g., "https://example.com/pic.png").
+  * src (Source): Path or URL pointing to the image file.
+    - Relative: "./images/Passport Photo.jpg"
+    - Absolute: "https://example.com/photo.jpg"
   * alt (Alternative Text): Text description of the image.
     - Accessibility: Read aloud by screen readers for visually impaired users.
-    - Fallback: Displayed on the page if the image fails to load (broken link/slow connection).
-    - SEO: Helps search engines index and understand the image content.
+    - Fallback: Displayed if the image fails to load.
+    - SEO: Helps search engines index and rank the image.
 - Purpose / Use Case: Displaying product images, user profile photos, logos, banners, etc.
 - Example:
   <img src="./images/Passport Photo.jpg" alt="Passport Photo">
 
 --------------------------------------------------------------------------------
-C. ANCHOR / HYPERLINK TAG: <a> ... </a>
+G. ANCHOR / HYPERLINK TAG: <a> ... </a>
 --------------------------------------------------------------------------------
-- Description: Inline element that creates hyperlinks to other web pages, files,
-  email addresses, or locations on the same page.
+- Description: Inline element that creates hyperlinks to other web pages or files.
 - Key Attributes:
-  * href (Hypertext Reference): The destination address/URL where the user is
-    redirected when clicking the link.
+  * href (Hypertext Reference): The destination address/URL.
+    - External Link: href="https://www.chaicode.com"
+    - Internal / Relative Link: href="./01_intro.html"
 - Purpose / Use Case: Navigation menus, external site links, downloadable files, and
-  internal section jumping.
+  internal page routing.
 - Example:
   <a href="https://www.chaicode.com">Go to Chai Aur Code</a>
+  <a href="./01_intro.html">Go to intro.HTML</a>
 
 
 ================================================================================
 4. ONE-LINER QUICK REFERENCE TABLE
 ================================================================================
 
-Tag / Element   | Type         | Key Attributes              | One-Liner Implementation
+Tag / Element   | Display Type | Key Attributes              | One-Liner Implementation
 ----------------+--------------+-----------------------------+-------------------------------------------------------------
 <!DOCTYPE html> | Declaration  | None                        | <!DOCTYPE html>
-<html lang>     | Container    | lang="en"                   | <html lang="en"> ... </html>
-<head>          | Container    | None                        | <head> ... </head>
+<html lang>     | Root Cont.   | lang="en"                   | <html lang="en"> ... </html>
+<head>          | Meta Cont.   | None                        | <head> ... </head>
 <meta charset>  | Void         | charset="UTF-8"             | <meta charset="UTF-8">
 <meta viewport> | Void         | name="viewport" content="..."| <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>         | Container    | None                        | <title>Document</title>
-<body>          | Container    | None                        | <body> ... </body>
+<body>          | Canvas Cont. | None                        | <body> ... </body>
 <h1> to <h6>    | Block        | None (global attrs apply)   | <h1>Main Heading</h1>
+<div>           | Block Cont.  | Global (class, id)          | <div>...</div>
+<p>             | Block        | Global                      | <p>Paragraph text</p>
+<strong>        | Inline       | Global                      | <strong>Important bold</strong>
+<ul>            | Block Cont.  | Global                      | <ul><li>Item</li></ul>
+<li>            | Block        | Global                      | <li>Topic 1</li>
 <img>           | Void/Inline  | src="...", alt="..."        | <img src="./images/photo.jpg" alt="My Photo">
 <a>             | Inline       | href="..."                  | <a href="https://chaicode.com">Visit ChaiCode</a>
 
 
 ================================================================================
-5. TOOLING & WORKFLOW HIGHLIGHTS COVERED
+5. TOOLING & EMMET SHORTCUTS
 ================================================================================
 
-- Live Server ("Go Live"):
-  * A local development server that reloads the browser when files change.
-  * Requires files to be saved to disk. Turning on "File > Auto Save" enables
-    automatic live updates without clicking refresh.
+- Emmet Abbreviations (Type and press Tab / Enter):
+  * !                       -> Generates full HTML5 boilerplate
+  * ul>li*3{Topic $}        -> <ul> with 3 numbered <li> items
+  * div>h3+h4+p>strong      -> <div> containing <h3>, <h4>, and <p> with <strong>
+  * h1{Title}+h2{Subtitle}  -> Consecutive headings
+  * a[href="url"]{text}     -> <a href="url">text</a>
+  * img[src="" alt=""]      -> <img src="" alt="">
 
-- Emmet Abbreviations:
-  * Built-in syntax for generating HTML quickly by typing shorthand and pressing Tab.
-  * Examples:
-    - !               -> Generates entire HTML5 boilerplate
-    - h1{My Title}    -> <h1>My Title</h1>
-    - a[href="#"]     -> <a href="#"></a>
-    - img[src="" alt=""] -> <img src="" alt="">
-    - ul>li*3         -> Creates an unordered list with 3 list items
+- Git Workflow Reminder:
+  * git add .
+  * git commit -m "commit message"
+  * git push
 
 ================================================================================
                               End of Notes
