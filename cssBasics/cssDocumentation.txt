@@ -1,0 +1,192 @@
+================================================================================
+                           CSS BASICS - COMPREHENSIVE STUDY NOTES
+================================================================================
+
+1. WHAT IS CSS?
+--------------------------------------------------------------------------------
+CSS stands for Cascading Style Sheets. It controls the visual presentation, styling,
+colors, typography, spacing, dimensions, and layout of HTML elements. While HTML
+provides the skeleton/structure, CSS provides the skin/design.
+
+
+================================================================================
+2. THE 3 WAYS TO APPLY CSS & SPECIFICITY
+================================================================================
+
+1. INLINE CSS:
+   - Written directly within the HTML element's "style" attribute.
+   - Example: <h1 style="color: orangered;">Title</h1>
+   - Highest specificity priority (overrides internal and external stylesheets).
+   - Best for quick testing; avoid in large projects due to poor maintainability.
+
+2. INTERNAL CSS (EMBEDDED):
+   - Written inside a <style> ... </style> block inside the HTML document's <head>.
+   - Example:
+     <head>
+         <style>
+             .browntext { color: brown; }
+         </style>
+     </head>
+   - Scoped strictly to that single HTML file.
+
+3. EXTERNAL CSS (INDUSTRY STANDARD):
+   - Written in a dedicated .css file (e.g. style.css) and linked in <head> via:
+     <link rel="stylesheet" href="style.css" />
+   - Cleanest separation of concerns, reusable across many pages, and cached by
+     browsers for superior loading speed.
+
+SPECIFICITY CASCADE ORDER:
+Inline Style > Internal/External Stylesheet > Browser Default Styles
+
+
+================================================================================
+3. CSS SELECTORS
+================================================================================
+
+A selector determines which HTML element(s) to apply styles to:
+
+1. ELEMENT (TYPE) SELECTOR:
+   - Targets all elements matching the HTML tag name.
+   - Syntax:
+     p {
+         color: cornflowerblue;
+         font-size: 25px;
+     }
+
+2. CLASS SELECTOR (.):
+   - Targets any element with a matching class="name" attribute.
+   - Prefixed with a period (.). Can be reused across multiple elements.
+   - Syntax:
+     .card {
+         background-color: #d5d4d4;
+         border-radius: 8px;
+     }
+
+3. PSEUDO-CLASS SELECTOR (:):
+   - Targets an element based on its dynamic interaction state.
+   - Example: :hover (triggers when the mouse cursor points at the element).
+   - Syntax:
+     button:hover {
+         background-color: #0741ac;
+     }
+
+
+================================================================================
+4. THE CSS BOX MODEL
+================================================================================
+
+Every HTML element is treated as a rectangular box composed of 4 concentric layers:
+
+ [----------------------- MARGIN -----------------------]
+ |   [------------------ BORDER -------------------]    |
+ |   |   [------------- PADDING --------------]    |    |
+ |   |   |                                    |    |    |
+ |   |   |             CONTENT                |    |    |
+ |   |   |         (Text, Images)             |    |    |
+ |   |   |                                    |    |    |
+ |   |   [------------------------------------]    |    |
+ |   [---------------------------------------------]    |
+ [------------------------------------------------------]
+
+1. CONTENT: The raw text, image, or child element itself.
+2. PADDING: The transparent spacing *inside* the border, around the content.
+   - padding: 30px; (gives breathing room inside a card or button)
+   - padding: 10px;
+3. BORDER: The edge/frame wrapped around the padding and content.
+   - border: 1px solid black; (width, line-style, color)
+   - border-radius: 8px; (rounds corners)
+4. MARGIN: The transparent spacing *outside* the border, pushing adjacent elements away.
+   - margin: 0; (resets default browser body margin)
+   - margin-bottom: 15px; (pushes the next input or button downwards)
+
+
+================================================================================
+5. MODERN FLEXBOX LAYOUT & VIEWPORT CENTERING
+================================================================================
+
+Flexbox (Flexible Box Layout) is a 1-dimensional CSS layout model designed to
+distribute space and align items along horizontal and vertical axes effortlessly.
+
+--------------------------------------------------------------------------------
+A. THE CLASSIC SCREEN-CENTERING RECIPE:
+--------------------------------------------------------------------------------
+To center a card or login form perfectly in the middle of the browser screen:
+
+body {
+    margin: 0;
+    height: 100vh;             /* Occupies 100% of the visible viewport height */
+    display: flex;             /* Activates Flexbox container */
+    justify-content: center;   /* Centers horizontally along the main axis */
+    align-items: center;       /* Centers vertically along the cross axis */
+    background-color: #1a1a1a;
+}
+
+--------------------------------------------------------------------------------
+B. VERTICAL COLUMN STACKING (flex-direction: column):
+--------------------------------------------------------------------------------
+By default, flex items sit side-by-side in a row. To stack inputs vertically in a form:
+
+form {
+    display: flex;
+    flex-direction: column;    /* Stacks child inputs top-to-bottom */
+}
+
+
+================================================================================
+6. COLORS & TYPOGRAPHY
+================================================================================
+
+- color:
+  * Defines font color (e.g., color: #1a50a0;, color: brown;, color: #fff;).
+- background-color:
+  * Defines the background fill color of an element.
+- font-family:
+  * Fallback font stack.
+  * Example: font-family: Arial, Helvetica, sans-serif;
+    (Tries Arial, then Helvetica, then any system sans-serif).
+- font-size:
+  * Controls font size with units (e.g. font-size: 25px;).
+- text-align:
+  * Horizontal text alignment inside its container (e.g. text-align: center;).
+
+
+================================================================================
+7. CSS UNITS (px vs vh)
+================================================================================
+
+- px (Pixels):
+  * Absolute unit representing screen pixels.
+  * Great for borders (1px), border-radius (8px), padding (10px, 30px), and card
+    widths (width: 300px;).
+
+- vh (Viewport Height):
+  * Relative unit representing 1% of the browser window's visible height.
+  * 100vh = 100% full screen height, regardless of screen resolution or device.
+
+
+================================================================================
+8. ONE-LINER QUICK REFERENCE TABLE
+================================================================================
+
+Property / Concept | Category    | Common Values            | Example One-Liner
+-------------------+-------------+--------------------------+-------------------------------------------
+color              | Typography  | names, hex (#fff), rgb   | color: #1a50a0;
+background-color   | Background  | hex (#1a1a1a), names     | background-color: #d5d4d4;
+font-family        | Typography  | font fallback stacks     | font-family: Arial, sans-serif;
+font-size          | Typography  | px, rem, em              | font-size: 25px;
+text-align         | Typography  | center, left, right      | text-align: center;
+padding            | Box Model   | px (inside spacing)      | padding: 30px;
+margin             | Box Model   | px (outside spacing)     | margin-bottom: 15px;
+border             | Box Model   | width style color        | border: 1px solid black;
+border-radius      | Box Model   | px (rounded corners)     | border-radius: 8px;
+width              | Dimensions  | px, %                    | width: 300px;
+height             | Dimensions  | px, vh, %                | height: 100vh;
+display            | Layout      | flex, block, inline      | display: flex;
+justify-content    | Flexbox     | center, space-between    | justify-content: center;
+align-items        | Flexbox     | center, flex-start       | align-items: center;
+flex-direction     | Flexbox     | column, row              | flex-direction: column;
+:hover             | Pseudo-class| interaction state        | button:hover { background-color: #0741ac; }
+
+================================================================================
+                              End of Notes
+================================================================================
