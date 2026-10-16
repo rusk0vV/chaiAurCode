@@ -53,7 +53,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1020px;
             margin: 0 auto;
         }
 
@@ -94,7 +94,7 @@
         .subtitle {
             color: var(--text-muted);
             font-size: 1.15rem;
-            max-width: 680px;
+            max-width: 720px;
             margin: 0 auto;
         }
 
@@ -112,9 +112,9 @@
             text-decoration: none;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            padding: 6px 14px;
+            padding: 6px 13px;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             font-weight: 500;
             transition: all 0.2s ease;
         }
@@ -131,7 +131,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin: 45px 0 20px 0;
+            margin: 50px 0 20px 0;
         }
 
         .section-number {
@@ -161,7 +161,7 @@
             border: 1px solid var(--border-color);
             border-radius: 14px;
             padding: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             transition: all 0.25s ease;
         }
 
@@ -182,7 +182,7 @@
 
         .tag-name {
             font-family: 'Fira Code', monospace;
-            font-size: 1.25rem;
+            font-size: 1.22rem;
             font-weight: 600;
             color: var(--accent-cyan);
             background: rgba(6, 182, 212, 0.1);
@@ -309,13 +309,13 @@
             font-size: 1rem;
         }
 
-        /* Live Preview Widget inside documentation */
+        /* Live Preview Widget */
         .live-preview {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 16px;
-            margin-top: 12px;
+            padding: 18px;
+            margin-top: 14px;
         }
 
         .preview-label {
@@ -324,7 +324,7 @@
             font-weight: 700;
             color: var(--accent-emerald);
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: block;
         }
 
@@ -336,6 +336,96 @@
         .preview-content ul { padding-left: 20px; color: #d1d5db; }
         .preview-content li { margin-bottom: 4px; }
         .preview-content strong { color: #fbbf24; font-weight: 700; }
+
+        /* Live Table Preview styling */
+        .rendered-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        .rendered-table th, .rendered-table td {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        .rendered-table th {
+            background: rgba(99, 102, 241, 0.15);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .rendered-table td {
+            color: #d1d5db;
+        }
+
+        /* Live Form Preview styling */
+        .rendered-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+        }
+
+        .rendered-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+        .rendered-form input[type="text"],
+        .rendered-form input[type="password"],
+        .rendered-form select {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #ffffff;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .rendered-form input:focus,
+        .rendered-form select:focus {
+            border-color: var(--accent-indigo);
+        }
+
+        .rendered-form .inline-label {
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .rendered-form .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .rendered-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+        }
+
+        .btn-submit {
+            background: var(--accent-indigo);
+            color: #ffffff;
+        }
+
+        .btn-reset {
+            background: #374151;
+            color: #d1d5db;
+        }
 
         /* Reference Table */
         .table-wrapper {
@@ -396,7 +486,7 @@
         /* Tips Grid */
         .grid-2 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
@@ -460,18 +550,20 @@
         <header>
             <div class="badge-pill">☕ Chai Aur Code • HTML Fundamentals</div>
             <h1 class="main-title">HTML Study Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, structural boilerplate element, containers, lists, text formatting, and development workflow studied.</p>
+            <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, layout container, table structure, form element, and developer shortcut studied.</p>
             
             <div class="quick-nav">
                 <a href="#boilerplate">1. Boilerplate</a>
                 <a href="#headings">2. Headings (h1–h6)</a>
                 <a href="#containers">3. Containers (div)</a>
-                <a href="#text">4. Paragraphs &amp; Text (p, strong)</a>
+                <a href="#text">4. Text (p, strong)</a>
                 <a href="#lists">5. Lists (ul, li)</a>
-                <a href="#media">6. Media &amp; Images</a>
-                <a href="#links">7. Links &amp; Anchors</a>
-                <a href="#table">8. Quick Reference</a>
-                <a href="#workflow">9. Live Server &amp; Emmet</a>
+                <a href="#tables">6. Tables (table, tr, th, td)</a>
+                <a href="#forms">7. Forms &amp; Inputs</a>
+                <a href="#media">8. Media (img)</a>
+                <a href="#links">9. Links (a)</a>
+                <a href="#table-ref">10. Quick Reference</a>
+                <a href="#workflow">11. Shortcuts &amp; Git</a>
             </div>
         </header>
 
@@ -509,7 +601,7 @@
                 <div class="attr-box">
                     <div class="attr-title">Key Attributes</div>
                     <div class="attr-item">
-                        <span class="attr-name">lang="en"</span> — Specifies the human language of the document (e.g., English). Crucial for search engine indexing (SEO), browser translators, and screen reader text-to-speech pronunciation.
+                        <span class="attr-name">lang="en"</span> — Specifies the human language of the document (English). Crucial for search engine indexing (SEO), browser translators, and screen reader text-to-speech pronunciation.
                     </div>
                 </div>
 
@@ -573,7 +665,7 @@
                     <span class="tag-name">&lt;body&gt; ... &lt;/body&gt;</span>
                     <span class="tag-badge badge-container">Document Canvas</span>
                 </div>
-                <p class="desc-text">Wraps all visible content rendered on screen: headings, paragraphs, images, links, buttons, lists, and forms.</p>
+                <p class="desc-text">Wraps all visible content rendered on screen: headings, paragraphs, images, tables, forms, and links.</p>
                 <div class="code-snippet">
                     <span class="c-tag">&lt;body&gt;</span><br>
                     &nbsp;&nbsp;<span class="c-tag">&lt;h1&gt;</span><span class="c-text">Hello from Ali</span><span class="c-tag">&lt;/h1&gt;</span><br>
@@ -697,13 +789,6 @@
                 <div class="code-snippet">
                     <span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum </span><span class="c-tag">&lt;strong&gt;</span><span class="c-text">Bruh </span><span class="c-tag">&lt;/strong&gt;</span><span class="c-text">dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span>
                 </div>
-
-                <div class="live-preview">
-                    <span class="preview-label">Live Rendered Output:</span>
-                    <div class="preview-content">
-                        <p>Lorem ipsum <strong>Bruh </strong>dolor sit amet.</p>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -729,9 +814,6 @@
                     <div class="attr-item">
                         <span class="attr-name">&lt;li&gt;</span> (List Item) — Represents an individual item within a list. <strong>Must always be placed inside a parent list</strong> (<code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>).
                     </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;ol&gt;</span> (Ordered List - Related) — Container for sequentially numbered items (1, 2, 3...).
-                    </div>
                 </div>
 
                 <div class="code-snippet">
@@ -741,24 +823,213 @@
                     &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 3</span><span class="c-tag">&lt;/li&gt;</span><br>
                     <span class="c-tag">&lt;/ul&gt;</span>
                 </div>
+            </div>
+        </section>
+
+        <!-- 6. Tables -->
+        <section id="tables">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Tables (&lt;table&gt;, &lt;tr&gt;, &lt;th&gt;, &lt;td&gt;)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;table&gt;</span>
+                    <span class="tag-badge badge-block">Block Level Table Container</span>
+                </div>
+                <p class="desc-text">Used to present structured, tabular data in grid rows and columns. Never used for general page layout—strictly for tabular data.</p>
+                
+                <div class="attr-box">
+                    <div class="attr-title">Table Elements Breakdown</div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;table&gt;</span> — The root wrapper element for the entire table.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;tr&gt;</span> (Table Row) — Represents a horizontal row of cells.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;th&gt;</span> (Table Header) — Represents a header cell. Rendered as <strong>bold and centered</strong> by default. Crucial for screen reader accessibility.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;td&gt;</span> (Table Data) — Represents a standard data cell holding values, text, or numbers.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="c-tag">&lt;table&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;tr&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;th&gt;</span><span class="c-text">Name</span><span class="c-tag">&lt;/th&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;th&gt;</span><span class="c-text">Age</span><span class="c-tag">&lt;/th&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;th&gt;</span><span class="c-text">City</span><span class="c-tag">&lt;/th&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;/tr&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;tr&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;td&gt;</span><span class="c-text">John</span><span class="c-tag">&lt;/td&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;td&gt;</span><span class="c-text">25</span><span class="c-tag">&lt;/td&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;td&gt;</span><span class="c-text">New York</span><span class="c-tag">&lt;/td&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;/tr&gt;</span><br>
+                    <span class="c-tag">&lt;/table&gt;</span>
+                </div>
 
                 <div class="live-preview">
-                    <span class="preview-label">Live Rendered List:</span>
-                    <div class="preview-content">
-                        <ul>
-                            <li>Topic 1</li>
-                            <li>Topic 2</li>
-                            <li>Topic 3</li>
-                        </ul>
-                    </div>
+                    <span class="preview-label">Live Rendered Table:</span>
+                    <table class="rendered-table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>City</th>
+                        </tr>
+                        <tr>
+                            <td>John</td>
+                            <td>25</td>
+                            <td>New York</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </section>
 
-        <!-- 6. Media -->
+        <!-- 7. Forms -->
+        <section id="forms">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Forms &amp; User Inputs (&lt;form&gt;, &lt;label&gt;, &lt;input&gt;, &lt;select&gt;, &lt;button&gt;)</h2>
+            </div>
+
+            <!-- Form Container -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;form&gt;</span>
+                    <span class="tag-badge badge-block">Block Level Container</span>
+                </div>
+                <p class="desc-text">Collects interactive user inputs (text, passwords, selections, buttons) and prepares them to be sent to a web server.</p>
+            </div>
+
+            <!-- Label & Input -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;label&gt; and &lt;input&gt;</span>
+                    <span class="tag-badge badge-inline">Inline Elements</span>
+                </div>
+                <p class="desc-text">The primary building blocks of all interactive web forms:</p>
+                
+                <div class="attr-box">
+                    <div class="attr-title">Key Elements &amp; Attributes</div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;label for="id"&gt;</span> — Accessible caption for an input. Clicking the label focuses the corresponding input (linked via matching <code>for</code> and <code>id</code>).
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;input&gt;</span> (Void / Self-closing) — Flexible input field determined by its <code>type</code> attribute.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">type="text"</span> — Standard single-line plain text box.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">type="password"</span> — Masks user input with dots/asterisks for security.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">type="checkbox"</span> — Square toggle box for true/false or multi-option choices.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">type="color"</span> — Native browser color wheel/palette selector.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">placeholder="..."</span> — Temporary light gray hint text shown inside empty input fields.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">name="..."</span> — The key/variable name submitted with the form data (e.g. <code>email=test@mail.com</code>).
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="c-comment">&lt;!-- Text Input with Label &amp; Placeholder --&gt;</span><br>
+                    <span class="c-tag">&lt;label</span> <span class="c-attr">for</span>=<span class="c-val">"email"</span><span class="c-tag">&gt;</span><br>
+                    &nbsp;&nbsp;Email:<br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"text"</span> <span class="c-attr">name</span>=<span class="c-val">"email"</span> <span class="c-attr">id</span>=<span class="c-val">"email"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"test@example.com"</span><span class="c-tag">&gt;</span><br>
+                    <span class="c-tag">&lt;/label&gt;</span><br><br>
+
+                    <span class="c-comment">&lt;!-- Password Input --&gt;</span><br>
+                    <span class="c-tag">&lt;label</span> <span class="c-attr">for</span>=<span class="c-val">"password"</span><span class="c-tag">&gt;</span><br>
+                    &nbsp;&nbsp;Password:<br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"password"</span> <span class="c-attr">name</span>=<span class="c-val">"password"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"enter your password"</span><span class="c-tag">&gt;</span><br>
+                    <span class="c-tag">&lt;/label&gt;</span>
+                </div>
+            </div>
+
+            <!-- Select, Option & Button -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;select&gt;, &lt;option&gt;, &lt;button&gt;</span>
+                    <span class="tag-badge badge-inline">Form Controls</span>
+                </div>
+                <p class="desc-text">Dropdown menus and action trigger buttons:</p>
+                
+                <div class="attr-box">
+                    <div class="attr-title">Dropdowns &amp; Action Buttons</div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;select&gt;</span> — Creates a collapsible dropdown menu list.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;option value="..."&gt;</span> — Individual selectable item. The <code>value</code> is sent to the server.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;button type="submit"&gt;</span> — Submits the form data.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;button type="reset"&gt;</span> — Clears all inputs in the form back to their default values.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="c-comment">&lt;!-- Dropdown Selection --&gt;</span><br>
+                    <span class="c-tag">&lt;select</span> <span class="c-attr">name</span>=<span class="c-val">"Games"</span><span class="c-tag">&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;option</span> <span class="c-attr">value</span>=<span class="c-val">"Cricket"</span><span class="c-tag">&gt;</span><span class="c-text">Cricket</span><span class="c-tag">&lt;/option&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;option</span> <span class="c-attr">value</span>=<span class="c-val">"Baseball"</span><span class="c-tag">&gt;</span><span class="c-text">Baseball</span><span class="c-tag">&lt;/option&gt;</span><br>
+                    <span class="c-tag">&lt;/select&gt;</span><br><br>
+
+                    <span class="c-comment">&lt;!-- Form Buttons --&gt;</span><br>
+                    <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-val">"submit"</span><span class="c-tag">&gt;</span><span class="c-text">Submit</span><span class="c-tag">&lt;/button&gt;</span><br>
+                    <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-val">"reset"</span><span class="c-tag">&gt;</span><span class="c-text">Reset</span><span class="c-tag">&lt;/button&gt;</span>
+                </div>
+
+                <div class="live-preview">
+                    <span class="preview-label">Live Rendered Interactive Form Preview:</span>
+                    <form class="rendered-form" onsubmit="event.preventDefault();">
+                        <label>
+                            Email:
+                            <input type="text" placeholder="test@example.com">
+                        </label>
+                        <label>
+                            Password:
+                            <input type="password" placeholder="enter your password">
+                        </label>
+                        <label class="inline-label">
+                            <input type="checkbox" checked> Basketball
+                        </label>
+                        <label>
+                            Choose Game:
+                            <select>
+                                <option>Cricket</option>
+                                <option>Baseball</option>
+                            </select>
+                        </label>
+                        <label class="inline-label">
+                            Pick Color:
+                            <input type="color" value="#6366f1">
+                        </label>
+                        <div class="btn-group">
+                            <button type="submit" class="rendered-btn btn-submit">Submit</button>
+                            <button type="reset" class="rendered-btn btn-reset">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Media -->
         <section id="media">
             <div class="section-header">
-                <div class="section-number">6</div>
+                <div class="section-number">8</div>
                 <h2 class="section-title">Media Elements (&lt;img&gt;)</h2>
             </div>
 
@@ -772,19 +1043,10 @@
                 <div class="attr-box">
                     <div class="attr-title">Required Attributes</div>
                     <div class="attr-item">
-                        <span class="attr-name">src</span> (Source) — Path to the image file. Can be:
-                        <ul style="margin: 6px 0 0 20px;">
-                            <li><strong>Relative path:</strong> <code>./images/Passport Photo.jpg</code> (Local to project folder)</li>
-                            <li><strong>Absolute URL:</strong> <code>https://example.com/logo.png</code> (Web hosted)</li>
-                        </ul>
+                        <span class="attr-name">src</span> (Source) — Path to the image file (relative: <code>./images/pic.jpg</code> or absolute: <code>https://example.com/pic.png</code>).
                     </div>
                     <div class="attr-item">
-                        <span class="attr-name">alt</span> (Alternative Text) — Written fallback text describing the image:
-                        <ul style="margin: 6px 0 0 20px;">
-                            <li><strong>Accessibility:</strong> Spoken aloud by screen readers for visually impaired users.</li>
-                            <li><strong>Fallback:</strong> Rendered on screen if the image fails to load or link is broken.</li>
-                            <li><strong>SEO:</strong> Helps search engines understand what is in the picture.</li>
-                        </ul>
+                        <span class="attr-name">alt</span> (Alternative Text) — Written fallback text describing the image for accessibility (screen readers), image fallback, and SEO.
                     </div>
                 </div>
 
@@ -794,10 +1056,10 @@
             </div>
         </section>
 
-        <!-- 7. Links -->
+        <!-- 9. Links -->
         <section id="links">
             <div class="section-header">
-                <div class="section-number">7</div>
+                <div class="section-number">9</div>
                 <h2 class="section-title">Hyperlinks &amp; Anchors (&lt;a&gt;)</h2>
             </div>
 
@@ -806,7 +1068,7 @@
                     <span class="tag-name">&lt;a&gt; ... &lt;/a&gt;</span>
                     <span class="tag-badge badge-inline">Inline Element</span>
                 </div>
-                <p class="desc-text">Creates hyperlinks that allow users to navigate between pages, download files, open email clients, or jump to specific page sections.</p>
+                <p class="desc-text">Creates hyperlinks to navigate between web pages, files, or specific page sections.</p>
                 
                 <div class="attr-box">
                     <div class="attr-title">Attributes &amp; Link Types</div>
@@ -814,26 +1076,24 @@
                         <span class="attr-name">href</span> (Hypertext Reference) — Destination URL.
                     </div>
                     <div class="attr-item">
-                        <strong>External Link:</strong> <code>href="https://www.chaicode.com"</code> (Navigates to another website).
+                        <strong>External Link:</strong> <code>href="https://www.chaicode.com"</code>
                     </div>
                     <div class="attr-item">
-                        <strong>Internal / Local Link:</strong> <code>href="./01_intro.html"</code> (Navigates to another file in your project).
+                        <strong>Internal / Local Link:</strong> <code>href="./01_intro.html"</code>
                     </div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="c-comment">&lt;!-- External Web Link --&gt;</span><br>
-                    <span class="c-tag">&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"https://www.chaicode.com"</span><span class="c-tag">&gt;</span><span class="c-text">Go to Chai Aur Code</span><span class="c-tag">&lt;/a&gt;</span><br><br>
-                    <span class="c-comment">&lt;!-- Internal Local File Link --&gt;</span><br>
+                    <span class="c-tag">&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"https://www.chaicode.com"</span><span class="c-tag">&gt;</span><span class="c-text">Go to Chai Aur Code</span><span class="c-tag">&lt;/a&gt;</span><br>
                     <span class="c-tag">&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"./01_intro.html"</span><span class="c-tag">&gt;</span><span class="c-text">Go to intro.HTML</span><span class="c-tag">&lt;/a&gt;</span>
                 </div>
             </div>
         </section>
 
-        <!-- 8. Quick Reference Table -->
-        <section id="table">
+        <!-- 10. Quick Reference Table -->
+        <section id="table-ref">
             <div class="section-header">
-                <div class="section-number">8</div>
+                <div class="section-number">10</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -927,6 +1187,66 @@
                             <td><code>&lt;li&gt;List item&lt;/li&gt;</code></td>
                         </tr>
                         <tr>
+                            <td><code>&lt;table&gt;</code></td>
+                            <td>Block / Table</td>
+                            <td>Global</td>
+                            <td><code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;tr&gt;</code></td>
+                            <td>Table Row</td>
+                            <td>Global</td>
+                            <td><code>&lt;tr&gt;&lt;td&gt;Cell&lt;/td&gt;&lt;/tr&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;th&gt;</code></td>
+                            <td>Table Header</td>
+                            <td><code>scope</code>, <code>colspan</code></td>
+                            <td><code>&lt;th&gt;Header Title&lt;/th&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;td&gt;</code></td>
+                            <td>Table Data Cell</td>
+                            <td><code>colspan</code>, <code>rowspan</code></td>
+                            <td><code>&lt;td&gt;Data Value&lt;/td&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;form&gt;</code></td>
+                            <td>Block Container</td>
+                            <td><code>action</code>, <code>method</code></td>
+                            <td><code>&lt;form&gt;...&lt;/form&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;label&gt;</code></td>
+                            <td>Inline</td>
+                            <td><code>for</code></td>
+                            <td><code>&lt;label for="email"&gt;Email&lt;/label&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;input&gt;</code></td>
+                            <td>Void / Inline</td>
+                            <td><code>type</code>, <code>placeholder</code>, <code>name</code></td>
+                            <td><code>&lt;input type="text" placeholder="name"&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;select&gt;</code></td>
+                            <td>Inline / Control</td>
+                            <td><code>name</code></td>
+                            <td><code>&lt;select&gt;&lt;option&gt;A&lt;/option&gt;&lt;/select&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;option&gt;</code></td>
+                            <td>Select Item</td>
+                            <td><code>value</code></td>
+                            <td><code>&lt;option value="1"&gt;One&lt;/option&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;button&gt;</code></td>
+                            <td>Inline Button</td>
+                            <td><code>type="submit|reset|button"</code></td>
+                            <td><code>&lt;button type="submit"&gt;Send&lt;/button&gt;</code></td>
+                        </tr>
+                        <tr>
                             <td><code>&lt;img&gt;</code></td>
                             <td>Void / Inline</td>
                             <td><code>src</code>, <code>alt</code></td>
@@ -943,41 +1263,37 @@
             </div>
         </section>
 
-        <!-- 9. Workflow & Emmet -->
+        <!-- 11. Workflow & Emmet -->
         <section id="workflow">
             <div class="section-header">
-                <div class="section-number">9</div>
-                <h2 class="section-title">Developer Tooling, Git &amp; Emmet</h2>
+                <div class="section-number">11</div>
+                <h2 class="section-title">Developer Tooling, Shortcuts &amp; Git</h2>
             </div>
 
             <div class="grid-2">
                 <div class="tip-card">
-                    <div class="tip-title">⚡ Emmet Abbreviations</div>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">Type shorthand in VS Code and press <kbd>Tab</kbd> or <kbd>Enter</kbd>:</p>
+                    <div class="tip-title">⚡ VS Code Editor Shortcuts (Windows)</div>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">Boost your coding speed with essential keybindings:</p>
                     
                     <div class="shortcut-item">
-                        <span>HTML5 Boilerplate</span>
-                        <code>!</code>
+                        <span>Duplicate Row / Block Down</span>
+                        <kbd>Shift + Alt + ↓</kbd>
                     </div>
                     <div class="shortcut-item">
-                        <span>List with 3 items</span>
-                        <code>ul>li*3{Topic $}</code>
+                        <span>Duplicate Row / Block Up</span>
+                        <kbd>Shift + Alt + ↑</kbd>
                     </div>
                     <div class="shortcut-item">
-                        <span>Div with P and Strong</span>
-                        <code>div>p>strong</code>
+                        <span>Move Line Up / Down</span>
+                        <kbd>Alt + ↑ / ↓</kbd>
                     </div>
                     <div class="shortcut-item">
-                        <span>Headings</span>
-                        <code>h1{Title}+h2{Subtitle}</code>
+                        <span>Select Entire Line</span>
+                        <kbd>Ctrl + L</kbd>
                     </div>
                     <div class="shortcut-item">
-                        <span>Link with URL</span>
-                        <code>a[href="url"]{text}</code>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Image with Alt</span>
-                        <code>img[src="" alt=""]</code>
+                        <span>Save File</span>
+                        <kbd>Ctrl + S</kbd>
                     </div>
                 </div>
 
