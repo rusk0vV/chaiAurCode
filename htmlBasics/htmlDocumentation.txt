@@ -6,7 +6,8 @@
 --------------------------------------------------------------------------------
 HTML stands for HyperText Markup Language. It provides the skeleton and structural
 foundation of all web pages. It uses "tags" enclosed in angle brackets (< >) to
-tell web browsers how to structure and display text, images, links, tables, and forms.
+tell web browsers how to structure and display text, images, links, tables, forms,
+media, and semantic layout sections.
 
 Tags usually come in pairs: an opening tag (e.g., <p>) and a closing tag (e.g., </p>).
 Some tags do not require a closing tag; these are called "void" or "self-closing" tags
@@ -46,7 +47,7 @@ Element: <head> ... </head>
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
+      <title>Gym workout</title>
   </head>
 
 --------------------------------------------------------------------------------
@@ -58,229 +59,226 @@ Element: <body> ... </body>
 
 
 ================================================================================
-3. CONTENT & STRUCTURAL ELEMENTS
+3. SEMANTIC HTML5 LAYOUT & MEANING
+================================================================================
+Semantic tags convey meaning and purpose to search engines and accessibility tools
+(unlike generic <div> containers).
+
+--------------------------------------------------------------------------------
+A. <header> ... </header>
+--------------------------------------------------------------------------------
+- Description: Introductory container for a page or article.
+- Purpose: Typically houses site logos, primary headings, author branding, and top menus.
+
+--------------------------------------------------------------------------------
+B. <hgroup> ... </hgroup>
+--------------------------------------------------------------------------------
+- Description: Groups multi-level headings together (e.g., an <h1> title and its <h2>
+  subtitle or tagline) to indicate they form a single heading unit.
+- Example:
+  <hgroup>
+      <h1>Learn to create websites</h1>
+      <h2>You can learn with hitesh and build your own websites</h2>
+  </hgroup>
+
+--------------------------------------------------------------------------------
+C. <nav> ... </nav>
+--------------------------------------------------------------------------------
+- Description: Semantic container dedicated exclusively to primary navigation links.
+- Purpose: Screen readers recognize this section and allow users to jump straight
+  to page menus.
+- Example:
+  <nav>
+      <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact Us</a></li>
+      </ul>
+  </nav>
+
+--------------------------------------------------------------------------------
+D. <article> ... </article>
+--------------------------------------------------------------------------------
+- Description: Self-contained, independently distributable composition (e.g. blog post,
+  forum thread, newspaper article, product card). Could stand alone outside the page.
+
+--------------------------------------------------------------------------------
+E. <section> ... </section>
+--------------------------------------------------------------------------------
+- Description: Thematic standalone section of a document, typically with its own heading.
+
+--------------------------------------------------------------------------------
+F. <time> ... </time>
+--------------------------------------------------------------------------------
+- Description: Semantic representation of a date, time, or duration.
+- Key Attribute:
+  * datetime="YYYY-MM-DD": Machine-readable ISO format for search engines and calendars.
+- Example:
+  <time datetime="2024-08-02">August 2nd</time>
+
+--------------------------------------------------------------------------------
+G. <code> ... </code>
+--------------------------------------------------------------------------------
+- Description: Inline element representing a short fragment of computer code.
+  Rendered in a monospace font by default.
+- Example:
+  <code>console.log("hitesh")</code>
+
+--------------------------------------------------------------------------------
+H. <footer> ... </footer>
+--------------------------------------------------------------------------------
+- Description: The closing container for a document or section.
+- Purpose: Holds copyright notices, author info, site maps, and legal disclaimers.
+
+--------------------------------------------------------------------------------
+I. <address> ... </address>
+--------------------------------------------------------------------------------
+- Description: Contact information for the author or owner of the page/article.
+  Renders in italics by default.
+- Example:
+  <address>Add Your Address Here</address>
+
+--------------------------------------------------------------------------------
+J. &copy; (Character Entity)
+--------------------------------------------------------------------------------
+- Description: HTML entity used to output the copyright symbol © without encoding errors.
+- Example:
+  <p>&copy; Chaicode 2024</p>
+
+
+================================================================================
+4. MEDIA ELEMENTS: <img>, <figure>, <figcaption>, <video>
+================================================================================
+
+--------------------------------------------------------------------------------
+A. IMAGE: <img>
+--------------------------------------------------------------------------------
+- Description: Void/self-closing element embedding an image.
+- Attributes:
+  * src="...": Path to image file (relative or absolute).
+  * alt="...": Description for screen readers and SEO.
+  * title="...": Tooltip text displayed when hovering the cursor over the image.
+  * width="...": Explicit display width in pixels (e.g., width="200" or width="200px").
+- Example:
+  <img src="./images/hc.png" title="Hitesh" width="200px" alt="profile photo">
+
+--------------------------------------------------------------------------------
+B. FIGURE & CAPTION: <figure> and <figcaption>
+--------------------------------------------------------------------------------
+- Description:
+  * <figure>: Self-contained content container (image, diagram, code listing).
+  * <figcaption>: Caption or description for the <figure>. Placed as the first or
+    last child element inside <figure>.
+- Example:
+  <figure>
+      <img src="images/hc.png" alt="Dinosaur skeleton" width="200">
+      <figcaption>A T-Rex on display in the Manchester University Museum.</figcaption>
+  </figure>
+
+--------------------------------------------------------------------------------
+C. VIDEO: <video> ... </video>
+--------------------------------------------------------------------------------
+- Description: Embeds a native HTML5 video player without external plugins.
+- Key Attributes:
+  * src="...": Path to the video file (.mp4, .webm).
+  * width="...": Display width of the video player.
+  * controls: Boolean attribute enabling browser's native playback controls
+    (play, pause, scrubber, volume, fullscreen).
+  * controlslist="...": Fine-tunes control buttons (e.g., "noremoteplayback", "nodownload").
+- Example:
+  <video src="./images/chai_pe_charcha-1080.mp4" width="400px" controls controlslist="noremoteplayback"></video>
+
+
+================================================================================
+5. CONTENT & STRUCTURAL ELEMENTS
 ================================================================================
 
 --------------------------------------------------------------------------------
 A. HEADING TAGS: <h1> to <h6>
 --------------------------------------------------------------------------------
 - Description: Block-level semantic headings.
-- Hierarchy:
-  * <h1>: Main page title (Only ONE per page for SEO).
-  * <h2>: Major section headings.
-  * <h3>: Sub-section headings under <h2>.
-  * <h4> to <h6>: Further granular subsection headings.
-- Example:
-  <h1>Lorem ipsum dolor sit amet.</h1>
-  <h2>Lorem ipsum dolor sit amet consectetur.</h2>
-  <h3>Subheading level 3</h3>
-  <h4>Subheading level 4</h4>
+- Levels: <h1> (single main page title) down to <h6> (deep subheadings).
 
 --------------------------------------------------------------------------------
 B. STRUCTURAL DIVISION: <div> ... </div>
 --------------------------------------------------------------------------------
-- Description: Generic block-level container ("division").
-- Purpose / Use Case:
-  * Groups multiple elements into logical sections.
-  * Essential target for CSS styling (cards, grids, flexbox wrappers).
-  * JavaScript target for manipulating grouped content.
-- Example:
-  <div>
-      <h3>Lorem ipsum dolor sit amet.</h3>
-      <h4>Lorem ipsum dolor sit amet.</h4>
-      <p>Lorem ipsum <strong>Bruh </strong>dolor sit amet.</p>
-  </div>
+- Description: Generic block container used for CSS layout styling and script grouping
+  when no semantic tag applies.
 
 --------------------------------------------------------------------------------
-C. PARAGRAPHS: <p> ... </p>
+C. PARAGRAPHS & FORMATTING: <p> and <strong>
 --------------------------------------------------------------------------------
-- Description: Block-level paragraph of text with automatic top/bottom spacing.
-- Example:
-  <p>Lorem ipsum dolor sit amet.</p>
+- <p>: Block-level paragraph text with vertical spacing.
+- <strong>: Inline element signifying strong semantic importance (rendered bold).
 
 --------------------------------------------------------------------------------
-D. SEMANTIC IMPORTANCE: <strong> ... </strong>
+D. LISTS: <ul> and <li>
 --------------------------------------------------------------------------------
-- Description: Inline element indicating strong importance or urgency.
-- Visual: Rendered bold by default.
-- Semantic Difference:
-  * <strong>: Indicates important meaning (screen readers emphasize).
-  * <b>: Purely visual bold font with no semantic meaning.
-- Example:
-  <p>Lorem ipsum <strong>Bruh </strong>dolor sit amet.</p>
-
---------------------------------------------------------------------------------
-E. LISTS: <ul> and <li>
---------------------------------------------------------------------------------
-- Description:
-  * <ul> (Unordered List): Container for bulleted items.
-  * <li> (List Item): Individual item placed inside <ul> or <ol>.
-- Example:
-  <ul>
-      <li>Topic 1</li>
-      <li>Topic 2</li>
-      <li>Topic 3</li>
-  </ul>
+- <ul>: Unordered bulleted list container.
+- <li>: Individual list item inside <ul> or <ol>.
 
 
 ================================================================================
-4. TABLES: <table>, <tr>, <th>, <td>
+6. TABLES: <table>, <tr>, <th>, <td>
 ================================================================================
-- Description: Renders two-dimensional tabular data arranged in rows and columns.
-- Elements Breakdown:
-  * <table>: Outer container wrapper for the entire table.
-  * <tr> (Table Row): Horizontal row of cells.
-  * <th> (Table Header): Header cell (bold and centered by default).
-  * <td> (Table Data): Standard data cell for numbers, text, or values.
-- Example:
-  <table>
-      <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>City</th>
-      </tr>
-      <tr>
-          <td>John</td>
-          <td>25</td>
-          <td>New York</td>
-      </tr>
-  </table>
+- <table>: Outer container wrapper for tabular grid data.
+- <tr>: Table row.
+- <th>: Table header cell (bold and centered by default).
+- <td>: Standard table data cell.
 
 
 ================================================================================
-5. FORMS & INPUTS: <form>, <label>, <input>, <select>, <option>, <button>
+7. FORMS & USER INPUTS: <form>, <label>, <input>, <select>, <button>
 ================================================================================
-- Description: Collects interactive user inputs and submits them to a server.
 
---------------------------------------------------------------------------------
-A. <form> ... </form>
---------------------------------------------------------------------------------
-- Container for all interactive form controls.
+- Crucial Concept: "name" vs "id"
+  * id: Client-side unique identity. Used by <label for="id">, CSS (#id), and JavaScript.
+    Never sent to the server.
+  * name: Server-side key sent with the submitted form data (key=value). Inputs without
+    a name attribute are NOT submitted to the server!
 
---------------------------------------------------------------------------------
-B. <label> ... </label>
---------------------------------------------------------------------------------
-- Caption for an input field.
-- Attribute:
-  * for="id": Matches the input's "id" attribute. Clicking the label focuses the input.
-
---------------------------------------------------------------------------------
-C. <input> (Void / Self-closing)
---------------------------------------------------------------------------------
-- Multi-purpose input control determined by the "type" attribute:
-  * type="text": Single-line text field.
-  * type="password": Text field masking entered characters.
-  * type="checkbox": Toggle square for selection.
-  * type="color": Color picker dialogue.
-- Common Attributes:
-  * placeholder="...": Temporary light-gray hint text.
-  * name="...": Field identifier sent to the server.
-  * id="...": Unique identifier on the page (links with label for="...").
-
---------------------------------------------------------------------------------
-D. <select> and <option>
---------------------------------------------------------------------------------
-- Creates a dropdown selection menu.
-- Attributes:
-  * name="..." on <select>.
-  * value="..." on <option> (the submitted value).
-
---------------------------------------------------------------------------------
-E. <button> ... </button>
---------------------------------------------------------------------------------
-- Clickable button.
-- Attributes:
-  * type="submit": Submits the form data.
-  * type="reset": Clears all inputs back to original defaults.
-  * type="button": Generic clickable button for JavaScript.
-
-- Form Example:
-  <form>
-      <label for="email">
-          Email:
-          <input type="text" name="email" id="email" placeholder="test">
-      </label>
-      <label for="password">
-          Password:
-          <input type="password" name="password" id="password" placeholder="enter your password">
-      </label>
-      <label for="Games">
-          Basketball: <input type="checkbox" name="game" id="Games">
-      </label>
-      <label>
-          <select name="Games">
-              <option value="Cricket">Cricket</option>
-              <option value="Baseball">Baseball</option>
-          </select>
-      </label>
-      <label>
-          <input type="color" name="color">
-      </label>
-      <button type="submit">Submit</button>
-      <button type="reset">Reset</button>
-  </form>
+- Common Input Types:
+  * type="text" with placeholder="..."
+  * type="password" (masked)
+  * type="checkbox"
+  * type="color"
+  * <select> and <option value="..."> for dropdowns
+  * <button type="submit"> and <button type="reset">
 
 
 ================================================================================
-6. MEDIA & LINKS
-================================================================================
-
---------------------------------------------------------------------------------
-A. IMAGE: <img>
---------------------------------------------------------------------------------
-- Self-closing element.
-- Attributes:
-  * src: Relative or absolute path to image file.
-  * alt: Text description for accessibility, fallbacks, and SEO.
-- Example:
-  <img src="./images/Passport Photo.jpg" alt="Passport Photo">
-
---------------------------------------------------------------------------------
-B. ANCHOR / HYPERLINK: <a> ... </a>
---------------------------------------------------------------------------------
-- Inline element creating hyperlinks.
-- Attributes:
-  * href: Destination URL (external site or local file).
-- Example:
-  <a href="https://www.chaicode.com">Go to Chai Aur Code</a>
-  <a href="./01_intro.html">Go to intro.HTML</a>
-
-
-================================================================================
-7. ONE-LINER QUICK REFERENCE TABLE
+8. ONE-LINER QUICK REFERENCE TABLE
 ================================================================================
 
 Tag / Element   | Display Type | Key Attributes              | One-Liner Implementation
 ----------------+--------------+-----------------------------+-------------------------------------------------------------
 <!DOCTYPE html> | Declaration  | None                        | <!DOCTYPE html>
 <html lang>     | Root Cont.   | lang="en"                   | <html lang="en"> ... </html>
-<head>          | Meta Cont.   | None                        | <head> ... </head>
-<meta charset>  | Void         | charset="UTF-8"             | <meta charset="UTF-8">
-<meta viewport> | Void         | name, content               | <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>         | Container    | None                        | <title>Title</title>
-<body>          | Canvas Cont. | None                        | <body> ... </body>
-<h1> to <h6>    | Block        | Global                      | <h1>Main Heading</h1>
-<div>           | Block Cont.  | Global (class, id)          | <div>...</div>
-<p>             | Block        | Global                      | <p>Paragraph text</p>
-<strong>        | Inline       | Global                      | <strong>Important bold</strong>
-<ul>            | Block Cont.  | Global                      | <ul><li>Item</li></ul>
-<li>            | Block        | Global                      | <li>List item</li>
-<table>         | Block / Table| Global                      | <table><tr><td>Cell</td></tr></table>
-<tr>            | Table Row    | Global                      | <tr><td>Data</td></tr>
-<th>            | Table Header | scope, colspan              | <th>Column Name</th>
-<td>            | Table Data   | colspan, rowspan            | <td>John</td>
+<header>        | Semantic     | Global                      | <header>...</header>
+<hgroup>        | Semantic     | Global                      | <hgroup><h1>Title</h1><h2>Sub</h2></hgroup>
+<nav>           | Semantic     | Global                      | <nav><ul><li><a href="#">Link</a></li></ul></nav>
+<article>       | Semantic     | Global                      | <article>...</article>
+<section>       | Semantic     | Global                      | <section>...</section>
+<time>          | Inline       | datetime="YYYY-MM-DD"       | <time datetime="2024-08-02">Aug 2</time>
+<code>          | Inline Code  | Global                      | <code>console.log()</code>
+<footer>        | Semantic     | Global                      | <footer>...</footer>
+<address>       | Block        | Global                      | <address>Author Contact</address>
+&copy;          | Entity       | None                        | &copy; 2024 (Renders ©)
+<figure>        | Block Media  | Global                      | <figure><img><figcaption>Text</figcaption></figure>
+<figcaption>    | Caption      | Global                      | <figcaption>Caption</figcaption>
+<video>         | Media Player | src, controls, controlslist | <video src="v.mp4" controls></video>
+<img>           | Void / Inline| src, alt, title, width      | <img src="p.jpg" title="Hi" width="200" alt="">
+<table>         | Block / Table| Global                      | <table><tr><th>H</th></tr><tr><td>D</td></tr></table>
 <form>          | Block Cont.  | action, method              | <form>...</form>
-<label>         | Inline       | for                         | <label for="email">Email</label>
-<input>         | Void / Inline| type, placeholder, name, id | <input type="text" placeholder="name">
-<select>        | Inline / Cont| name                        | <select><option>Opt</option></select>
-<option>        | Control Item | value                       | <option value="cricket">Cricket</option>
-<button>        | Inline Button| type="submit|reset"         | <button type="submit">Submit</button>
-<img>           | Void / Inline| src, alt                    | <img src="./pic.jpg" alt="Photo">
-<a>             | Inline       | href, target                | <a href="url">Link Text</a>
+<label>         | Inline       | for                         | <label for="id">Label</label>
+<input>         | Void / Inline| type, name, id, placeholder | <input type="text" name="u" id="u">
+<select>        | Control Cont.| name                        | <select name="s"><option value="1">1</option></select>
+<button>        | Inline Button| type="submit|reset"         | <button type="submit">Send</button>
+<a>             | Inline       | href, target                | <a href="url">Link</a>
 
 
 ================================================================================
-8. WORKFLOW & SHORTCUTS CHEAT SHEET
+9. WORKFLOW & SHORTCUTS CHEAT SHEET
 ================================================================================
 
 - VS Code Windows Keyboard Shortcuts:
@@ -290,7 +288,7 @@ Tag / Element   | Display Type | Key Attributes              | One-Liner Impleme
   * Ctrl + L                 -> Select entire line
   * Ctrl + S                 -> Save file
 
-- Git Push Commands:
+- Git Commands:
   * git add .
   * git commit -m "commit message"
   * git push

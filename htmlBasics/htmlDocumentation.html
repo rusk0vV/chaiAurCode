@@ -53,12 +53,12 @@
         }
 
         .container {
-            max-width: 1020px;
+            max-width: 1040px;
             margin: 0 auto;
         }
 
         /* Header */
-        header {
+        header.doc-header {
             text-align: center;
             margin-bottom: 50px;
             padding-bottom: 30px;
@@ -94,7 +94,7 @@
         .subtitle {
             color: var(--text-muted);
             font-size: 1.15rem;
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
         }
 
@@ -103,7 +103,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 25px;
         }
 
@@ -112,9 +112,9 @@
             text-decoration: none;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            padding: 6px 13px;
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             font-weight: 500;
             transition: all 0.2s ease;
         }
@@ -148,7 +148,7 @@
         }
 
         h2.section-title {
-            font-size: 1.6rem;
+            font-size: 1.55rem;
             font-weight: 700;
             letter-spacing: -0.02em;
             color: #ffffff;
@@ -182,7 +182,7 @@
 
         .tag-name {
             font-family: 'Fira Code', monospace;
-            font-size: 1.22rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: var(--accent-cyan);
             background: rgba(6, 182, 212, 0.1);
@@ -222,6 +222,12 @@
             background: rgba(245, 158, 11, 0.15);
             color: var(--accent-chai);
             border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-semantic {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(168, 85, 247, 0.3);
         }
 
         .desc-text {
@@ -276,7 +282,7 @@
             border-radius: 8px;
             padding: 14px 18px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             overflow-x: auto;
             margin-top: 12px;
             position: relative;
@@ -328,14 +334,30 @@
             display: block;
         }
 
-        .preview-content h1 { font-size: 1.8rem; margin-bottom: 6px; }
-        .preview-content h2 { font-size: 1.5rem; margin-bottom: 6px; }
-        .preview-content h3 { font-size: 1.25rem; margin-bottom: 6px; }
-        .preview-content h4 { font-size: 1.05rem; margin-bottom: 6px; color: #cbd5e1; }
-        .preview-content p { margin-bottom: 8px; color: #d1d5db; }
-        .preview-content ul { padding-left: 20px; color: #d1d5db; }
-        .preview-content li { margin-bottom: 4px; }
-        .preview-content strong { color: #fbbf24; font-weight: 700; }
+        /* Live Semantic Layout Demo */
+        .semantic-demo {
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .demo-box {
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .demo-box-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-indigo);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
 
         /* Live Table Preview styling */
         .rendered-table {
@@ -386,7 +408,6 @@
             color: #ffffff;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .rendered-form input:focus,
@@ -414,7 +435,6 @@
             font-size: 0.85rem;
             cursor: pointer;
             border: none;
-            transition: opacity 0.2s;
         }
 
         .btn-submit {
@@ -425,6 +445,23 @@
         .btn-reset {
             background: #374151;
             color: #d1d5db;
+        }
+
+        /* Figure Demo */
+        figure.doc-figure {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 14px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        figure.doc-figure figcaption {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-style: italic;
         }
 
         /* Reference Table */
@@ -473,7 +510,7 @@
             color: var(--text-main);
         }
 
-        td code {
+        td code, .inline-code {
             font-family: 'Fira Code', monospace;
             background: var(--code-bg);
             padding: 3px 7px;
@@ -532,7 +569,7 @@
             box-shadow: 0 2px 0 #111827;
         }
 
-        footer {
+        footer.doc-footer {
             text-align: center;
             margin-top: 60px;
             padding-top: 30px;
@@ -547,23 +584,24 @@
     <div class="container">
         
         <!-- Header -->
-        <header>
+        <header class="doc-header">
             <div class="badge-pill">☕ Chai Aur Code • HTML Fundamentals</div>
             <h1 class="main-title">HTML Study Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, layout container, table structure, form element, and developer shortcut studied.</p>
+            <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, semantic layout element, media, forms, and developer shortcut studied.</p>
             
             <div class="quick-nav">
                 <a href="#boilerplate">1. Boilerplate</a>
                 <a href="#headings">2. Headings (h1–h6)</a>
-                <a href="#containers">3. Containers (div)</a>
-                <a href="#text">4. Text (p, strong)</a>
-                <a href="#lists">5. Lists (ul, li)</a>
-                <a href="#tables">6. Tables (table, tr, th, td)</a>
-                <a href="#forms">7. Forms &amp; Inputs</a>
-                <a href="#media">8. Media (img)</a>
-                <a href="#links">9. Links (a)</a>
-                <a href="#table-ref">10. Quick Reference</a>
-                <a href="#workflow">11. Shortcuts &amp; Git</a>
+                <a href="#semantics">3. Semantic HTML5</a>
+                <a href="#containers">4. Containers (div)</a>
+                <a href="#text">5. Text &amp; Formatting</a>
+                <a href="#lists">6. Lists (ul, li)</a>
+                <a href="#tables">7. Tables</a>
+                <a href="#forms">8. Forms &amp; Inputs</a>
+                <a href="#media">9. Media &amp; Video</a>
+                <a href="#links">10. Links &amp; Anchors</a>
+                <a href="#table-ref">11. Quick Reference</a>
+                <a href="#workflow">12. Shortcuts &amp; Git</a>
             </div>
         </header>
 
@@ -597,14 +635,12 @@
                     <span class="tag-badge badge-container">Root Container</span>
                 </div>
                 <p class="desc-text">The top-level root element that encloses every other element on the entire web page.</p>
-                
                 <div class="attr-box">
                     <div class="attr-title">Key Attributes</div>
                     <div class="attr-item">
-                        <span class="attr-name">lang="en"</span> — Specifies the human language of the document (English). Crucial for search engine indexing (SEO), browser translators, and screen reader text-to-speech pronunciation.
+                        <span class="attr-name">lang="en"</span> — Specifies document language. Essential for SEO, translation tools, and screen reader pronunciation.
                     </div>
                 </div>
-
                 <div class="code-snippet">
                     <span class="c-tag">&lt;html</span> <span class="c-attr">lang</span>=<span class="c-val">"en"</span><span class="c-tag">&gt;</span><br>
                     &nbsp;&nbsp;<span class="c-comment">&lt;!-- head and body go inside here --&gt;</span><br>
@@ -618,44 +654,13 @@
                     <span class="tag-name">&lt;head&gt; ... &lt;/head&gt;</span>
                     <span class="tag-badge badge-container">Metadata Container</span>
                 </div>
-                <p class="desc-text">Holds invisible configuration data and metadata about the document for browsers and search engines. Content inside <code>&lt;head&gt;</code> is <strong>never</strong> displayed as body text on the page.</p>
+                <p class="desc-text">Holds invisible configuration data and metadata about the document for browsers and search engines. Never displayed as body text.</p>
                 <div class="code-snippet">
                     <span class="c-tag">&lt;head&gt;</span><br>
                     &nbsp;&nbsp;<span class="c-tag">&lt;meta</span> <span class="c-attr">charset</span>=<span class="c-val">"UTF-8"</span><span class="c-tag">&gt;</span><br>
                     &nbsp;&nbsp;<span class="c-tag">&lt;meta</span> <span class="c-attr">name</span>=<span class="c-val">"viewport"</span> <span class="c-attr">content</span>=<span class="c-val">"width=device-width, initial-scale=1.0"</span><span class="c-tag">&gt;</span><br>
                     &nbsp;&nbsp;<span class="c-tag">&lt;title&gt;</span><span class="c-text">Document Title</span><span class="c-tag">&lt;/title&gt;</span><br>
                     <span class="c-tag">&lt;/head&gt;</span>
-                </div>
-            </div>
-
-            <!-- meta tags -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">&lt;meta&gt;</span>
-                    <span class="tag-badge badge-void">Void / Self-closing</span>
-                </div>
-                <p class="desc-text">Provides technical specifications regarding character encoding, viewport display, authors, and keywords.</p>
-                
-                <div class="attr-box">
-                    <div class="attr-title">Essential Meta Attributes</div>
-                    <div class="attr-item">
-                        <span class="attr-name">charset="UTF-8"</span> — Encodes text using Unicode (UTF-8). Prevents garbled symbols and supports all international languages, special characters, and emojis.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">name="viewport"</span> + <span class="attr-name">content="width=device-width, initial-scale=1.0"</span> — Controls responsive mobile scaling. Prevents mobile devices from showing tiny zoomed-out desktop layouts.
-                    </div>
-                </div>
-            </div>
-
-            <!-- title -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">&lt;title&gt; ... &lt;/title&gt;</span>
-                    <span class="tag-badge badge-container">Metadata Text</span>
-                </div>
-                <p class="desc-text">Sets the title shown on the browser tab, in history, bookmarks, and as the clickable headline on Google search results.</p>
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;title&gt;</span><span class="c-text">First HTML - Chai Aur Code</span><span class="c-tag">&lt;/title&gt;</span>
                 </div>
             </div>
 
@@ -666,11 +671,6 @@
                     <span class="tag-badge badge-container">Document Canvas</span>
                 </div>
                 <p class="desc-text">Wraps all visible content rendered on screen: headings, paragraphs, images, tables, forms, and links.</p>
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;body&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;h1&gt;</span><span class="c-text">Hello from Ali</span><span class="c-tag">&lt;/h1&gt;</span><br>
-                    <span class="c-tag">&lt;/body&gt;</span>
-                </div>
             </div>
         </section>
 
@@ -686,40 +686,120 @@
                     <span class="tag-name">&lt;h1&gt; through &lt;h6&gt;</span>
                     <span class="tag-badge badge-block">Block Level</span>
                 </div>
-                <p class="desc-text">Headings establish semantic hierarchy and an outline for content structure. They are <strong>block-level elements</strong>, meaning each begins on a new line and spans the full available width.</p>
-                
+                <p class="desc-text">Headings establish semantic hierarchy. They are block-level elements starting on a new line and spanning full width.</p>
                 <div class="attr-box">
                     <div class="attr-title">Hierarchy &amp; Best Practices</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h1&gt;</span>: Main page title. <strong>Only ONE &lt;h1&gt; per page</strong> for SEO and topic clarity.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h2&gt;</span>: Major section headings.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h3&gt;</span>: Sub-sections inside an &lt;h2&gt;.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h4&gt;</span>: Sub-topics inside an &lt;h3&gt;.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;h5&gt;, &lt;h6&gt;</span>: Deep granular subsection titles.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h1&gt;</span>: Main page title. <strong>Only ONE &lt;h1&gt; per page</strong> for SEO.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;h2&gt;</span> to <span class="attr-name">&lt;h6&gt;</span>: Progressively smaller subheadings.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Semantic HTML5 -->
+        <section id="semantics">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Semantic HTML5 Layout &amp; Meaning</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;header&gt;, &lt;nav&gt;, &lt;article&gt;, &lt;section&gt;, &lt;footer&gt;</span>
+                    <span class="tag-badge badge-semantic">Semantic Layout</span>
+                </div>
+                <p class="desc-text"><strong>Semantic tags</strong> clearly describe their meaning to both the browser and the developer, unlike a generic <code>&lt;div&gt;</code>.</p>
+                
+                <div class="attr-box">
+                    <div class="attr-title">Semantic Structure Elements</div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;header&gt;</span> — Container for introductory content, site logo, and top navigation.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;hgroup&gt;</span> — Groups a set of headings (e.g. an <code>&lt;h1&gt;</code> title together with an <code>&lt;h2&gt;</code> subtitle or tagline).
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;nav&gt;</span> — Dedicated section containing major navigation links. Screen readers use this to let users jump straight to site menus.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;article&gt;</span> — Self-contained, independent piece of content that could be distributed or reused on its own (e.g. a blog post, news story, or review).
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;section&gt;</span> — Thematic grouping of content, typically with its own heading.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;time datetime="YYYY-MM-DD"&gt;</span> — Represents a human date and provides machine-readable ISO format in the <code>datetime</code> attribute.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;code&gt;</span> — Inline tag representing a computer code snippet.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;footer&gt;</span> — The footer of a document or section containing copyright, author details, and legal links.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&lt;address&gt;</span> — Provides contact information for the author/owner. Renders in italics by default.
+                    </div>
+                    <div class="attr-item">
+                        <span class="attr-name">&amp;copy;</span> — HTML character entity for the copyright symbol (©).
+                    </div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="c-tag">&lt;h1&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/h1&gt;</span><br>
-                    <span class="c-tag">&lt;h2&gt;</span><span class="c-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga, voluptatem?</span><span class="c-tag">&lt;/h2&gt;</span><br>
-                    <span class="c-tag">&lt;h3&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/h3&gt;</span><br>
-                    <span class="c-tag">&lt;h4&gt;</span><span class="c-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. In, veritatis?</span><span class="c-tag">&lt;/h4&gt;</span>
+                    <span class="c-tag">&lt;header&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;hgroup&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;h1&gt;</span><span class="c-text">Learn to create websites</span><span class="c-tag">&lt;/h1&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;h2&gt;</span><span class="c-text">You can learn with hitesh</span><span class="c-tag">&lt;/h2&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;/hgroup&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;nav&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;ul&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;li&gt;&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"#"</span><span class="c-tag">&gt;</span><span class="c-text">Home</span><span class="c-tag">&lt;/a&gt;&lt;/li&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;/ul&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;/nav&gt;</span><br>
+                    <span class="c-tag">&lt;/header&gt;</span><br><br>
+
+                    <span class="c-tag">&lt;article&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;hgroup&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;h1&gt;</span><span class="c-text">Article Title</span><span class="c-tag">&lt;/h1&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;h3&gt;&lt;time</span> <span class="c-attr">datetime</span>=<span class="c-val">"2024-08-02"</span><span class="c-tag">&gt;</span><span class="c-text">August 2nd</span><span class="c-tag">&lt;/time&gt;&lt;/h3&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;/hgroup&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;section&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;p&gt;</span><span class="c-text">Article text content...</span><span class="c-tag">&lt;/p&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;code&gt;</span><span class="c-text">console.log("hitesh")</span><span class="c-tag">&lt;/code&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;/section&gt;</span><br>
+                    <span class="c-tag">&lt;/article&gt;</span><br><br>
+
+                    <span class="c-tag">&lt;footer&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;address&gt;</span><span class="c-text">Add Your Address Here</span><span class="c-tag">&lt;/address&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;p&gt;</span><span class="c-text">&amp;copy; Chaicode 2024</span><span class="c-tag">&lt;/p&gt;</span><br>
+                    <span class="c-tag">&lt;/footer&gt;</span>
                 </div>
 
                 <div class="live-preview">
-                    <span class="preview-label">Visual Hierarchy Preview:</span>
-                    <div class="preview-content">
-                        <h1>H1: Main Topic Heading</h1>
-                        <h2>H2: Major Section Heading</h2>
-                        <h3>H3: Sub-section Heading</h3>
-                        <h4>H4: Detailed Topic Heading</h4>
+                    <span class="preview-label">Live Semantic Architecture Preview:</span>
+                    <div class="semantic-demo">
+                        <div class="demo-box">
+                            <div class="demo-box-label">&lt;header&gt; with &lt;hgroup&gt; &amp; &lt;nav&gt;</div>
+                            <strong style="color: #ffffff;">Learn to create websites</strong>
+                            <div style="font-size: 0.85rem; color: #9ca3af;">Navigation: Home • About Us • Contact Us</div>
+                        </div>
+                        <div class="demo-box" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.06);">
+                            <div class="demo-box-label" style="color: var(--accent-purple);">&lt;article&gt; with &lt;section&gt;</div>
+                            <div style="font-size: 0.9rem; margin-bottom: 4px;">Published on <span class="inline-code">August 2nd, 2024</span></div>
+                            <div style="font-size: 0.85rem; color: #cbd5e1;">Code example: <span class="inline-code">console.log("hitesh")</span></div>
+                        </div>
+                        <div class="demo-box" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.06);">
+                            <div class="demo-box-label" style="color: var(--accent-chai);">&lt;footer&gt; with &lt;address&gt;</div>
+                            <div style="font-style: italic; font-size: 0.85rem;">Contact: Add Your Address Here</div>
+                            <div style="font-size: 0.85rem; color: #9ca3af;">&copy; Chaicode 2024</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. Containers -->
+        <!-- 4. Containers -->
         <section id="containers">
             <div class="section-header">
-                <div class="section-number">3</div>
+                <div class="section-number">4</div>
                 <h2 class="section-title">Structural Containers (&lt;div&gt;)</h2>
             </div>
 
@@ -728,74 +808,37 @@
                     <span class="tag-name">&lt;div&gt; ... &lt;/div&gt;</span>
                     <span class="tag-badge badge-block">Block Level Container</span>
                 </div>
-                <p class="desc-text"><code>&lt;div&gt;</code> stands for <strong>division</strong>. It is a generic container used to group multiple elements together. By itself, it has no visual appearance or semantic meaning, but it is one of the most widely used tags in web development.</p>
-                
-                <div class="use-case">
-                    <span class="use-case-icon">💡</span>
-                    <div>
-                        <strong>Why we use &lt;div&gt;:</strong>
-                        <ul style="margin: 6px 0 0 20px;">
-                            <li><strong>Grouping:</strong> Bundling headings, paragraphs, and lists into a single logical section.</li>
-                            <li><strong>CSS Styling:</strong> Applying backgrounds, borders, padding, cards, and grid/flexbox layouts.</li>
-                            <li><strong>JavaScript Manipulation:</strong> Selecting a group of related elements together.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;div&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;h3&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/h3&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;h4&gt;</span><span class="c-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span><span class="c-tag">&lt;/h4&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum </span><span class="c-tag">&lt;strong&gt;</span><span class="c-text">Bruh </span><span class="c-tag">&lt;/strong&gt;</span><span class="c-text">dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span><br>
-                    <span class="c-tag">&lt;/div&gt;</span>
-                </div>
+                <p class="desc-text"><code>&lt;div&gt;</code> stands for <strong>division</strong>. It is a non-semantic container used for styling, layout grids/flexbox, and JavaScript grouping when no semantic element applies.</p>
             </div>
         </section>
 
-        <!-- 4. Text & Formatting -->
+        <!-- 5. Text & Formatting -->
         <section id="text">
             <div class="section-header">
-                <div class="section-number">4</div>
-                <h2 class="section-title">Paragraphs &amp; Text Formatting (&lt;p&gt;, &lt;strong&gt;)</h2>
+                <div class="section-number">5</div>
+                <h2 class="section-title">Paragraphs &amp; Text Formatting (&lt;p&gt;, &lt;strong&gt;, &lt;code&gt;)</h2>
             </div>
 
-            <!-- p tag -->
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">&lt;p&gt; ... &lt;/p&gt;</span>
-                    <span class="tag-badge badge-block">Block Level</span>
+                    <span class="tag-name">&lt;p&gt;, &lt;strong&gt;, &lt;code&gt;</span>
+                    <span class="tag-badge badge-block">Text Elements</span>
                 </div>
-                <p class="desc-text">Represents a paragraph of text. Browsers automatically add vertical margin (empty space) before and after each paragraph to keep text clean and readable.</p>
-                
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span>
-                </div>
-            </div>
-
-            <!-- strong tag -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">&lt;strong&gt; ... &lt;/strong&gt;</span>
-                    <span class="tag-badge badge-inline">Inline Element</span>
-                </div>
-                <p class="desc-text">Indicates that its contents have <strong>strong importance, seriousness, or urgency</strong>. Browsers render the enclosed text in bold font weight by default.</p>
-                
                 <div class="attr-box">
-                    <div class="attr-title">Semantic Importance: &lt;strong&gt; vs &lt;b&gt;</div>
-                    <div class="attr-item"><span class="attr-name">&lt;strong&gt;</span>: Semantic element. Indicates that the text is important. Screen readers may announce it with emphasis or different tone.</div>
-                    <div class="attr-item"><span class="attr-name">&lt;b&gt;</span>: Presentational element. Merely makes text look bold visually with no special importance attached.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;p&gt;</span>: Block-level paragraph text with default vertical margins.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;strong&gt;</span>: Inline semantic importance, rendered in bold.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;code&gt;</span>: Inline monospace code fragment for programming snippets.</div>
                 </div>
-
                 <div class="code-snippet">
-                    <span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum </span><span class="c-tag">&lt;strong&gt;</span><span class="c-text">Bruh </span><span class="c-tag">&lt;/strong&gt;</span><span class="c-text">dolor sit amet.</span><span class="c-tag">&lt;/p&gt;</span>
+                    <span class="c-tag">&lt;p&gt;</span><span class="c-text">Lorem ipsum </span><span class="c-tag">&lt;strong&gt;</span><span class="c-text">Bruh </span><span class="c-tag">&lt;/strong&gt;</span><span class="c-text">with </span><span class="c-tag">&lt;code&gt;</span><span class="c-text">console.log()</span><span class="c-tag">&lt;/code&gt;</span><span class="c-tag">&lt;/p&gt;</span>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Lists -->
+        <!-- 6. Lists -->
         <section id="lists">
             <div class="section-header">
-                <div class="section-number">5</div>
+                <div class="section-number">6</div>
                 <h2 class="section-title">Lists (&lt;ul&gt;, &lt;li&gt;)</h2>
             </div>
 
@@ -804,262 +847,137 @@
                     <span class="tag-name">&lt;ul&gt; and &lt;li&gt;</span>
                     <span class="tag-badge badge-block">Block Level</span>
                 </div>
-                <p class="desc-text">HTML provides list elements to display bulleted or numbered items neatly:</p>
-                
-                <div class="attr-box">
-                    <div class="attr-title">List Elements Breakdown</div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;ul&gt;</span> (Unordered List) — Container for a collection of items with no numerical order. Rendered with circular bullet points by default.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;li&gt;</span> (List Item) — Represents an individual item within a list. <strong>Must always be placed inside a parent list</strong> (<code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>).
-                    </div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;ul&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 1</span><span class="c-tag">&lt;/li&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 2</span><span class="c-tag">&lt;/li&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;li&gt;</span><span class="c-text">Topic 3</span><span class="c-tag">&lt;/li&gt;</span><br>
-                    <span class="c-tag">&lt;/ul&gt;</span>
-                </div>
+                <p class="desc-text"><code>&lt;ul&gt;</code> defines an unordered bullet list, and <code>&lt;li&gt;</code> represents each individual item inside the list.</p>
             </div>
         </section>
 
-        <!-- 6. Tables -->
+        <!-- 7. Tables -->
         <section id="tables">
             <div class="section-header">
-                <div class="section-number">6</div>
+                <div class="section-number">7</div>
                 <h2 class="section-title">Tables (&lt;table&gt;, &lt;tr&gt;, &lt;th&gt;, &lt;td&gt;)</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
                     <span class="tag-name">&lt;table&gt;</span>
-                    <span class="tag-badge badge-block">Block Level Table Container</span>
+                    <span class="tag-badge badge-block">Tabular Data Container</span>
                 </div>
-                <p class="desc-text">Used to present structured, tabular data in grid rows and columns. Never used for general page layout—strictly for tabular data.</p>
-                
-                <div class="attr-box">
-                    <div class="attr-title">Table Elements Breakdown</div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;table&gt;</span> — The root wrapper element for the entire table.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;tr&gt;</span> (Table Row) — Represents a horizontal row of cells.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;th&gt;</span> (Table Header) — Represents a header cell. Rendered as <strong>bold and centered</strong> by default. Crucial for screen reader accessibility.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;td&gt;</span> (Table Data) — Represents a standard data cell holding values, text, or numbers.
-                    </div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;table&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;tr&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;th&gt;</span><span class="c-text">Name</span><span class="c-tag">&lt;/th&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;th&gt;</span><span class="c-text">Age</span><span class="c-tag">&lt;/th&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;th&gt;</span><span class="c-text">City</span><span class="c-tag">&lt;/th&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;/tr&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;tr&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;td&gt;</span><span class="c-text">John</span><span class="c-tag">&lt;/td&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;td&gt;</span><span class="c-text">25</span><span class="c-tag">&lt;/td&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-tag">&lt;td&gt;</span><span class="c-text">New York</span><span class="c-tag">&lt;/td&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;/tr&gt;</span><br>
-                    <span class="c-tag">&lt;/table&gt;</span>
-                </div>
-
+                <p class="desc-text">Renders data arranged in rows (<code>&lt;tr&gt;</code>), bold header cells (<code>&lt;th&gt;</code>), and data cells (<code>&lt;td&gt;</code>).</p>
                 <div class="live-preview">
-                    <span class="preview-label">Live Rendered Table:</span>
+                    <span class="preview-label">Rendered Table:</span>
                     <table class="rendered-table">
-                        <tr>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>City</th>
-                        </tr>
-                        <tr>
-                            <td>John</td>
-                            <td>25</td>
-                            <td>New York</td>
-                        </tr>
+                        <tr><th>Name</th><th>Age</th><th>City</th></tr>
+                        <tr><td>John</td><td>25</td><td>New York</td></tr>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- 7. Forms -->
+        <!-- 8. Forms & Inputs -->
         <section id="forms">
             <div class="section-header">
-                <div class="section-number">7</div>
+                <div class="section-number">8</div>
                 <h2 class="section-title">Forms &amp; User Inputs (&lt;form&gt;, &lt;label&gt;, &lt;input&gt;, &lt;select&gt;, &lt;button&gt;)</h2>
             </div>
 
-            <!-- Form Container -->
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">&lt;form&gt;</span>
-                    <span class="tag-badge badge-block">Block Level Container</span>
+                    <span class="tag-name">&lt;form&gt; Controls &amp; Attributes</span>
+                    <span class="tag-badge badge-block">Interactive Input</span>
                 </div>
-                <p class="desc-text">Collects interactive user inputs (text, passwords, selections, buttons) and prepares them to be sent to a web server.</p>
-            </div>
-
-            <!-- Label & Input -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">&lt;label&gt; and &lt;input&gt;</span>
-                    <span class="tag-badge badge-inline">Inline Elements</span>
-                </div>
-                <p class="desc-text">The primary building blocks of all interactive web forms:</p>
                 
                 <div class="attr-box">
-                    <div class="attr-title">Key Elements &amp; Attributes</div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;label for="id"&gt;</span> — Accessible caption for an input. Clicking the label focuses the corresponding input (linked via matching <code>for</code> and <code>id</code>).
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;input&gt;</span> (Void / Self-closing) — Flexible input field determined by its <code>type</code> attribute.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">type="text"</span> — Standard single-line plain text box.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">type="password"</span> — Masks user input with dots/asterisks for security.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">type="checkbox"</span> — Square toggle box for true/false or multi-option choices.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">type="color"</span> — Native browser color wheel/palette selector.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">placeholder="..."</span> — Temporary light gray hint text shown inside empty input fields.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">name="..."</span> — The key/variable name submitted with the form data (e.g. <code>email=test@mail.com</code>).
-                    </div>
+                    <div class="attr-title">Crucial Difference: name vs id</div>
+                    <div class="attr-item"><span class="attr-name">id="..."</span> — <strong>Client-side identity</strong>. Must be unique on the page. Links with <code>&lt;label for="id"&gt;</code> and is used by CSS and JS. Never sent to the server.</div>
+                    <div class="attr-item"><span class="attr-name">name="..."</span> — <strong>Server-side key</strong>. Sent to backend database as <code>key=value</code> upon form submission. Inputs without a <code>name</code> are ignored during submit!</div>
                 </div>
 
-                <div class="code-snippet">
-                    <span class="c-comment">&lt;!-- Text Input with Label &amp; Placeholder --&gt;</span><br>
-                    <span class="c-tag">&lt;label</span> <span class="c-attr">for</span>=<span class="c-val">"email"</span><span class="c-tag">&gt;</span><br>
-                    &nbsp;&nbsp;Email:<br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"text"</span> <span class="c-attr">name</span>=<span class="c-val">"email"</span> <span class="c-attr">id</span>=<span class="c-val">"email"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"test@example.com"</span><span class="c-tag">&gt;</span><br>
-                    <span class="c-tag">&lt;/label&gt;</span><br><br>
-
-                    <span class="c-comment">&lt;!-- Password Input --&gt;</span><br>
-                    <span class="c-tag">&lt;label</span> <span class="c-attr">for</span>=<span class="c-val">"password"</span><span class="c-tag">&gt;</span><br>
-                    &nbsp;&nbsp;Password:<br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-val">"password"</span> <span class="c-attr">name</span>=<span class="c-val">"password"</span> <span class="c-attr">placeholder</span>=<span class="c-val">"enter your password"</span><span class="c-tag">&gt;</span><br>
-                    <span class="c-tag">&lt;/label&gt;</span>
-                </div>
-            </div>
-
-            <!-- Select, Option & Button -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">&lt;select&gt;, &lt;option&gt;, &lt;button&gt;</span>
-                    <span class="tag-badge badge-inline">Form Controls</span>
-                </div>
-                <p class="desc-text">Dropdown menus and action trigger buttons:</p>
-                
                 <div class="attr-box">
-                    <div class="attr-title">Dropdowns &amp; Action Buttons</div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;select&gt;</span> — Creates a collapsible dropdown menu list.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;option value="..."&gt;</span> — Individual selectable item. The <code>value</code> is sent to the server.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;button type="submit"&gt;</span> — Submits the form data.
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">&lt;button type="reset"&gt;</span> — Clears all inputs in the form back to their default values.
-                    </div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="c-comment">&lt;!-- Dropdown Selection --&gt;</span><br>
-                    <span class="c-tag">&lt;select</span> <span class="c-attr">name</span>=<span class="c-val">"Games"</span><span class="c-tag">&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;option</span> <span class="c-attr">value</span>=<span class="c-val">"Cricket"</span><span class="c-tag">&gt;</span><span class="c-text">Cricket</span><span class="c-tag">&lt;/option&gt;</span><br>
-                    &nbsp;&nbsp;<span class="c-tag">&lt;option</span> <span class="c-attr">value</span>=<span class="c-val">"Baseball"</span><span class="c-tag">&gt;</span><span class="c-text">Baseball</span><span class="c-tag">&lt;/option&gt;</span><br>
-                    <span class="c-tag">&lt;/select&gt;</span><br><br>
-
-                    <span class="c-comment">&lt;!-- Form Buttons --&gt;</span><br>
-                    <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-val">"submit"</span><span class="c-tag">&gt;</span><span class="c-text">Submit</span><span class="c-tag">&lt;/button&gt;</span><br>
-                    <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-val">"reset"</span><span class="c-tag">&gt;</span><span class="c-text">Reset</span><span class="c-tag">&lt;/button&gt;</span>
-                </div>
-
-                <div class="live-preview">
-                    <span class="preview-label">Live Rendered Interactive Form Preview:</span>
-                    <form class="rendered-form" onsubmit="event.preventDefault();">
-                        <label>
-                            Email:
-                            <input type="text" placeholder="test@example.com">
-                        </label>
-                        <label>
-                            Password:
-                            <input type="password" placeholder="enter your password">
-                        </label>
-                        <label class="inline-label">
-                            <input type="checkbox" checked> Basketball
-                        </label>
-                        <label>
-                            Choose Game:
-                            <select>
-                                <option>Cricket</option>
-                                <option>Baseball</option>
-                            </select>
-                        </label>
-                        <label class="inline-label">
-                            Pick Color:
-                            <input type="color" value="#6366f1">
-                        </label>
-                        <div class="btn-group">
-                            <button type="submit" class="rendered-btn btn-submit">Submit</button>
-                            <button type="reset" class="rendered-btn btn-reset">Reset</button>
-                        </div>
-                    </form>
+                    <div class="attr-title">Form Controls &amp; Types</div>
+                    <div class="attr-item"><span class="attr-name">&lt;input type="text"&gt;</span> — Single-line text input with <code>placeholder="..."</code>.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;input type="password"&gt;</span> — Masked input for sensitive passwords.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;input type="checkbox"&gt;</span> — Toggle checkbox.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;input type="color"&gt;</span> — Color palette picker.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;select&gt; + &lt;option value="..."&gt;</span> — Dropdown list selector.</div>
+                    <div class="attr-item"><span class="attr-name">&lt;button type="submit|reset"&gt;</span> — Submits or resets the form.</div>
                 </div>
             </div>
         </section>
 
-        <!-- 8. Media -->
+        <!-- 9. Media & Video -->
         <section id="media">
             <div class="section-header">
-                <div class="section-number">8</div>
-                <h2 class="section-title">Media Elements (&lt;img&gt;)</h2>
+                <div class="section-number">9</div>
+                <h2 class="section-title">Media Elements (&lt;img&gt;, &lt;figure&gt;, &lt;figcaption&gt;, &lt;video&gt;)</h2>
             </div>
 
+            <!-- img card -->
             <div class="card">
                 <div class="card-header">
                     <span class="tag-name">&lt;img&gt;</span>
                     <span class="tag-badge badge-void">Void / Self-closing</span>
                 </div>
-                <p class="desc-text">Embeds an image into the document. It does not have a closing <code>&lt;/img&gt;</code> tag because it does not wrap text content.</p>
+                <p class="desc-text">Embeds an image into the document with enhanced attributes:</p>
+                <div class="attr-box">
+                    <div class="attr-title">Image Attributes</div>
+                    <div class="attr-item"><span class="attr-name">src="..."</span> — Relative or absolute file path to the image.</div>
+                    <div class="attr-item"><span class="attr-name">alt="..."</span> — Descriptive alternative text for screen readers and SEO.</div>
+                    <div class="attr-item"><span class="attr-name">title="..."</span> — Hover tooltip text shown when hovering cursor over the image.</div>
+                    <div class="attr-item"><span class="attr-name">width="..."</span> — Explicit image width in pixels (e.g. <code>width="200"</code> or <code>width="200px"</code>).</div>
+                </div>
+            </div>
+
+            <!-- figure and figcaption -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;figure&gt; and &lt;figcaption&gt;</span>
+                    <span class="tag-badge badge-block">Semantic Media Container</span>
+                </div>
+                <p class="desc-text"><code>&lt;figure&gt;</code> wraps self-contained media (like an image, chart, or code snippet), while <code>&lt;figcaption&gt;</code> provides an official semantic caption.</p>
+                
+                <div class="code-snippet">
+                    <span class="c-tag">&lt;figure&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;img</span> <span class="c-attr">src</span>=<span class="c-val">"images/hc.png"</span> <span class="c-attr">alt</span>=<span class="c-val">"Dinosaur skeleton"</span> <span class="c-attr">width</span>=<span class="c-val">"200"</span><span class="c-tag">&gt;</span><br>
+                    &nbsp;&nbsp;<span class="c-tag">&lt;figcaption&gt;</span><span class="c-text">A T-Rex on display in the Manchester University Museum.</span><span class="c-tag">&lt;/figcaption&gt;</span><br>
+                    <span class="c-tag">&lt;/figure&gt;</span>
+                </div>
+
+                <div class="live-preview">
+                    <span class="preview-label">Rendered Figure &amp; Caption:</span>
+                    <figure class="doc-figure">
+                        <div style="width: 140px; height: 100px; background: rgba(99, 102, 241, 0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--accent-indigo); font-weight: 700;">🖼️ Image</div>
+                        <figcaption>A T-Rex on display in the museum.</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <!-- video tag -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">&lt;video&gt; ... &lt;/video&gt;</span>
+                    <span class="tag-badge badge-block">Native Video Player</span>
+                </div>
+                <p class="desc-text">Embeds a native HTML5 media player directly in the browser without requiring third-party plugins.</p>
                 
                 <div class="attr-box">
-                    <div class="attr-title">Required Attributes</div>
-                    <div class="attr-item">
-                        <span class="attr-name">src</span> (Source) — Path to the image file (relative: <code>./images/pic.jpg</code> or absolute: <code>https://example.com/pic.png</code>).
-                    </div>
-                    <div class="attr-item">
-                        <span class="attr-name">alt</span> (Alternative Text) — Written fallback text describing the image for accessibility (screen readers), image fallback, and SEO.
-                    </div>
+                    <div class="attr-title">Video Attributes</div>
+                    <div class="attr-item"><span class="attr-name">src="..."</span> — Video file path (e.g. <code>.mp4</code>, <code>.webm</code>).</div>
+                    <div class="attr-item"><span class="attr-name">controls</span> — Boolean attribute displaying the browser's built-in playback bar (play/pause, volume, time scrubber, fullscreen).</div>
+                    <div class="attr-item"><span class="attr-name">width="..."</span> — Dimensions of the video player.</div>
+                    <div class="attr-item"><span class="attr-name">controlslist="noremoteplayback nodownload"</span> — Customizes browser control options, such as disabling remote cast or download buttons.</div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="c-tag">&lt;img</span> <span class="c-attr">src</span>=<span class="c-val">"./images/Passport Photo.jpg"</span> <span class="c-attr">alt</span>=<span class="c-val">"Passport Photo"</span><span class="c-tag">&gt;</span>
+                    <span class="c-tag">&lt;video</span> <span class="c-attr">src</span>=<span class="c-val">"./images/chai_pe_charcha-1080.mp4"</span> <span class="c-attr">width</span>=<span class="c-val">"400px"</span> <span class="c-attr">controls</span> <span class="c-attr">controlslist</span>=<span class="c-val">"noremoteplayback"</span><span class="c-tag">&gt;&lt;/video&gt;</span>
                 </div>
             </div>
         </section>
 
-        <!-- 9. Links -->
+        <!-- 10. Links -->
         <section id="links">
             <div class="section-header">
-                <div class="section-number">9</div>
+                <div class="section-number">10</div>
                 <h2 class="section-title">Hyperlinks &amp; Anchors (&lt;a&gt;)</h2>
             </div>
 
@@ -1068,32 +986,14 @@
                     <span class="tag-name">&lt;a&gt; ... &lt;/a&gt;</span>
                     <span class="tag-badge badge-inline">Inline Element</span>
                 </div>
-                <p class="desc-text">Creates hyperlinks to navigate between web pages, files, or specific page sections.</p>
-                
-                <div class="attr-box">
-                    <div class="attr-title">Attributes &amp; Link Types</div>
-                    <div class="attr-item">
-                        <span class="attr-name">href</span> (Hypertext Reference) — Destination URL.
-                    </div>
-                    <div class="attr-item">
-                        <strong>External Link:</strong> <code>href="https://www.chaicode.com"</code>
-                    </div>
-                    <div class="attr-item">
-                        <strong>Internal / Local Link:</strong> <code>href="./01_intro.html"</code>
-                    </div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="c-tag">&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"https://www.chaicode.com"</span><span class="c-tag">&gt;</span><span class="c-text">Go to Chai Aur Code</span><span class="c-tag">&lt;/a&gt;</span><br>
-                    <span class="c-tag">&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"./01_intro.html"</span><span class="c-tag">&gt;</span><span class="c-text">Go to intro.HTML</span><span class="c-tag">&lt;/a&gt;</span>
-                </div>
+                <p class="desc-text">Creates hyperlinks using the <code>href</code> attribute for internal project pages (<code>./01_intro.html</code>) or external URLs (<code>https://...</code>).</p>
             </div>
         </section>
 
-        <!-- 10. Quick Reference Table -->
+        <!-- 11. Quick Reference Table -->
         <section id="table-ref">
             <div class="section-header">
-                <div class="section-number">10</div>
+                <div class="section-number">11</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -1108,222 +1008,60 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><code>&lt;!DOCTYPE html&gt;</code></td>
-                            <td>Declaration</td>
-                            <td>None</td>
-                            <td><code>&lt;!DOCTYPE html&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;html&gt;</code></td>
-                            <td>Root Container</td>
-                            <td><code>lang="en"</code></td>
-                            <td><code>&lt;html lang="en"&gt;...&lt;/html&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;head&gt;</code></td>
-                            <td>Metadata Container</td>
-                            <td>None</td>
-                            <td><code>&lt;head&gt;...&lt;/head&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;meta charset&gt;</code></td>
-                            <td>Void (Self-closing)</td>
-                            <td><code>charset="UTF-8"</code></td>
-                            <td><code>&lt;meta charset="UTF-8"&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;meta viewport&gt;</code></td>
-                            <td>Void (Self-closing)</td>
-                            <td><code>name</code>, <code>content</code></td>
-                            <td><code>&lt;meta name="viewport" content="..."&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;title&gt;</code></td>
-                            <td>Container</td>
-                            <td>None</td>
-                            <td><code>&lt;title&gt;My Page&lt;/title&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;body&gt;</code></td>
-                            <td>Container</td>
-                            <td>None</td>
-                            <td><code>&lt;body&gt;...&lt;/body&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code></td>
-                            <td>Block Level</td>
-                            <td>Global</td>
-                            <td><code>&lt;h1&gt;Main Heading&lt;/h1&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;div&gt;</code></td>
-                            <td>Block Container</td>
-                            <td>Global (<code>class</code>, <code>id</code>)</td>
-                            <td><code>&lt;div&gt;...&lt;/div&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;p&gt;</code></td>
-                            <td>Block Level</td>
-                            <td>Global</td>
-                            <td><code>&lt;p&gt;Paragraph text&lt;/p&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;strong&gt;</code></td>
-                            <td>Inline Element</td>
-                            <td>Global</td>
-                            <td><code>&lt;strong&gt;Important bold&lt;/strong&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;ul&gt;</code></td>
-                            <td>Block Container</td>
-                            <td>Global</td>
-                            <td><code>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;li&gt;</code></td>
-                            <td>Block Level</td>
-                            <td>Global</td>
-                            <td><code>&lt;li&gt;List item&lt;/li&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;table&gt;</code></td>
-                            <td>Block / Table</td>
-                            <td>Global</td>
-                            <td><code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;tr&gt;</code></td>
-                            <td>Table Row</td>
-                            <td>Global</td>
-                            <td><code>&lt;tr&gt;&lt;td&gt;Cell&lt;/td&gt;&lt;/tr&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;th&gt;</code></td>
-                            <td>Table Header</td>
-                            <td><code>scope</code>, <code>colspan</code></td>
-                            <td><code>&lt;th&gt;Header Title&lt;/th&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;td&gt;</code></td>
-                            <td>Table Data Cell</td>
-                            <td><code>colspan</code>, <code>rowspan</code></td>
-                            <td><code>&lt;td&gt;Data Value&lt;/td&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;form&gt;</code></td>
-                            <td>Block Container</td>
-                            <td><code>action</code>, <code>method</code></td>
-                            <td><code>&lt;form&gt;...&lt;/form&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;label&gt;</code></td>
-                            <td>Inline</td>
-                            <td><code>for</code></td>
-                            <td><code>&lt;label for="email"&gt;Email&lt;/label&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;input&gt;</code></td>
-                            <td>Void / Inline</td>
-                            <td><code>type</code>, <code>placeholder</code>, <code>name</code></td>
-                            <td><code>&lt;input type="text" placeholder="name"&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;select&gt;</code></td>
-                            <td>Inline / Control</td>
-                            <td><code>name</code></td>
-                            <td><code>&lt;select&gt;&lt;option&gt;A&lt;/option&gt;&lt;/select&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;option&gt;</code></td>
-                            <td>Select Item</td>
-                            <td><code>value</code></td>
-                            <td><code>&lt;option value="1"&gt;One&lt;/option&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;button&gt;</code></td>
-                            <td>Inline Button</td>
-                            <td><code>type="submit|reset|button"</code></td>
-                            <td><code>&lt;button type="submit"&gt;Send&lt;/button&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;img&gt;</code></td>
-                            <td>Void / Inline</td>
-                            <td><code>src</code>, <code>alt</code></td>
-                            <td><code>&lt;img src="./pic.jpg" alt="Pic"&gt;</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>&lt;a&gt;</code></td>
-                            <td>Inline</td>
-                            <td><code>href</code>, <code>target</code></td>
-                            <td><code>&lt;a href="url"&gt;Link Text&lt;/a&gt;</code></td>
-                        </tr>
+                        <tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>Declaration</td><td>None</td><td><code>&lt;!DOCTYPE html&gt;</code></td></tr>
+                        <tr><td><code>&lt;html&gt;</code></td><td>Root Container</td><td><code>lang="en"</code></td><td><code>&lt;html lang="en"&gt;...&lt;/html&gt;</code></td></tr>
+                        <tr><td><code>&lt;header&gt;</code></td><td>Semantic Block</td><td>Global</td><td><code>&lt;header&gt;...&lt;/header&gt;</code></td></tr>
+                        <tr><td><code>&lt;hgroup&gt;</code></td><td>Semantic Block</td><td>Global</td><td><code>&lt;hgroup&gt;&lt;h1&gt;...&lt;/h1&gt;&lt;/hgroup&gt;</code></td></tr>
+                        <tr><td><code>&lt;nav&gt;</code></td><td>Semantic Block</td><td>Global</td><td><code>&lt;nav&gt;&lt;ul&gt;...&lt;/ul&gt;&lt;/nav&gt;</code></td></tr>
+                        <tr><td><code>&lt;article&gt;</code></td><td>Semantic Block</td><td>Global</td><td><code>&lt;article&gt;...&lt;/article&gt;</code></td></tr>
+                        <tr><td><code>&lt;section&gt;</code></td><td>Semantic Block</td><td>Global</td><td><code>&lt;section&gt;...&lt;/section&gt;</code></td></tr>
+                        <tr><td><code>&lt;time&gt;</code></td><td>Inline Semantic</td><td><code>datetime="YYYY-MM-DD"</code></td><td><code>&lt;time datetime="2024-08-02"&gt;Date&lt;/time&gt;</code></td></tr>
+                        <tr><td><code>&lt;code&gt;</code></td><td>Inline Code</td><td>Global</td><td><code>&lt;code&gt;console.log()&lt;/code&gt;</code></td></tr>
+                        <tr><td><code>&lt;footer&gt;</code></td><td>Semantic Block</td><td>Global</td><td><code>&lt;footer&gt;...&lt;/footer&gt;</code></td></tr>
+                        <tr><td><code>&lt;address&gt;</code></td><td>Block / Italic</td><td>Global</td><td><code>&lt;address&gt;Contact&lt;/address&gt;</code></td></tr>
+                        <tr><td><code>&amp;copy;</code></td><td>Character Entity</td><td>None</td><td><code>&amp;copy; 2024</code> (renders ©)</td></tr>
+                        <tr><td><code>&lt;figure&gt;</code></td><td>Block Media</td><td>Global</td><td><code>&lt;figure&gt;...&lt;/figure&gt;</code></td></tr>
+                        <tr><td><code>&lt;figcaption&gt;</code></td><td>Caption</td><td>Global</td><td><code>&lt;figcaption&gt;Caption&lt;/figcaption&gt;</code></td></tr>
+                        <tr><td><code>&lt;video&gt;</code></td><td>Media Player</td><td><code>src</code>, <code>controls</code>, <code>controlslist</code></td><td><code>&lt;video src="v.mp4" controls&gt;&lt;/video&gt;</code></td></tr>
+                        <tr><td><code>&lt;img&gt;</code></td><td>Void / Inline</td><td><code>src</code>, <code>alt</code>, <code>title</code>, <code>width</code></td><td><code>&lt;img src="pic.jpg" alt="" width="200"&gt;</code></td></tr>
+                        <tr><td><code>&lt;table&gt;</code></td><td>Block / Table</td><td>Global</td><td><code>&lt;table&gt;&lt;tr&gt;...&lt;/tr&gt;&lt;/table&gt;</code></td></tr>
+                        <tr><td><code>&lt;form&gt;</code></td><td>Block Container</td><td>Global</td><td><code>&lt;form&gt;...&lt;/form&gt;</code></td></tr>
+                        <tr><td><code>&lt;input&gt;</code></td><td>Void / Inline</td><td><code>type</code>, <code>name</code>, <code>id</code>, <code>placeholder</code></td><td><code>&lt;input type="text" name="mail"&gt;</code></td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- 11. Workflow & Emmet -->
+        <!-- 12. Workflow & Shortcuts -->
         <section id="workflow">
             <div class="section-header">
-                <div class="section-number">11</div>
+                <div class="section-number">12</div>
                 <h2 class="section-title">Developer Tooling, Shortcuts &amp; Git</h2>
             </div>
 
             <div class="grid-2">
                 <div class="tip-card">
                     <div class="tip-title">⚡ VS Code Editor Shortcuts (Windows)</div>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">Boost your coding speed with essential keybindings:</p>
-                    
-                    <div class="shortcut-item">
-                        <span>Duplicate Row / Block Down</span>
-                        <kbd>Shift + Alt + ↓</kbd>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Duplicate Row / Block Up</span>
-                        <kbd>Shift + Alt + ↑</kbd>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Move Line Up / Down</span>
-                        <kbd>Alt + ↑ / ↓</kbd>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Select Entire Line</span>
-                        <kbd>Ctrl + L</kbd>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Save File</span>
-                        <kbd>Ctrl + S</kbd>
-                    </div>
+                    <div class="shortcut-item"><span>Duplicate Row Down</span><kbd>Shift + Alt + ↓</kbd></div>
+                    <div class="shortcut-item"><span>Duplicate Row Up</span><kbd>Shift + Alt + ↑</kbd></div>
+                    <div class="shortcut-item"><span>Move Line Up / Down</span><kbd>Alt + ↑ / ↓</kbd></div>
+                    <div class="shortcut-item"><span>Select Entire Line</span><kbd>Ctrl + L</kbd></div>
+                    <div class="shortcut-item"><span>Save File</span><kbd>Ctrl + S</kbd></div>
                 </div>
 
                 <div class="tip-card">
-                    <div class="tip-title">🚀 Git Push Workflow</div>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">Standard commands to push updates to GitHub:</p>
-                    
-                    <div class="shortcut-item">
-                        <span>1. Stage changes</span>
-                        <code>git add .</code>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>2. Commit changes</span>
-                        <code>git commit -m "msg"</code>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>3. Push to remote</span>
-                        <code>git push</code>
-                    </div>
-                    <div class="shortcut-item">
-                        <span>Check status</span>
-                        <code>git status</code>
-                    </div>
+                    <div class="tip-title">🚀 Git Push Commands</div>
+                    <div class="shortcut-item"><span>1. Stage changes</span><code>git add .</code></div>
+                    <div class="shortcut-item"><span>2. Commit changes</span><code>git commit -m "msg"</code></div>
+                    <div class="shortcut-item"><span>3. Push to remote</span><code>git push</code></div>
+                    <div class="shortcut-item"><span>Check status</span><code>git status</code></div>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer>
-            <p>Created for Chai Aur Code HTML Basics • Keep Live Server open to view real-time updates!</p>
+        <footer class="doc-footer">
+            <p>Created for Chai Aur Code HTML Basics • Open with Live Server anytime to preview your study notes!</p>
         </footer>
 
     </div>
