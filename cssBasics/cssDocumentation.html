@@ -367,6 +367,72 @@
             font-weight: 600;
         }
 
+        /* Box Model Sizing Comparison Preview */
+        .box-compare-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .box-compare-card {
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 0.9rem;
+            color: #111827;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .box-compare-card.cb-demo {
+            background-color: #ffe4e6;
+            border: 5px solid #e11d48;
+        }
+
+        .box-compare-card.bb-demo {
+            background-color: #dcfce7;
+            border: 5px solid #16a34a;
+        }
+
+        /* Display Types Demo */
+        .display-demo-box {
+            background: #090e17;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            color: #e2e8f0;
+            font-size: 0.92rem;
+            margin-top: 15px;
+            line-height: 1.8;
+        }
+
+        .demo-inline-tag {
+            background-color: #38bdf8;
+            color: #030712;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .demo-block-tag {
+            background-color: #c084fc;
+            color: #030712;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-weight: 600;
+            max-width: 240px;
+        }
+
+        .demo-inline-block-tag {
+            background-color: #facc15;
+            color: #030712;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin: 0 4px;
+        }
+
         /* Flexbox Viewport Centering Preview */
         .flex-center-demo {
             height: 240px;
@@ -639,7 +705,187 @@
             font-size: 0.9rem;
         }
 
-        .shortcut-item:last-child { border-bottom: none; }
+        /* Navigation Bar Demos */
+        .demo-nav-wrapper {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .demo-nav-block {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .demo-nav-block h4 {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .demo-nav1 {
+            background-color: #f1f5f9;
+            padding: 10px 16px;
+            border-radius: 8px;
+        }
+
+        .demo-nav1 ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .demo-nav1 a {
+            text-decoration: none;
+            color: #0f172a;
+            padding: 6px 14px;
+            position: relative;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .demo-nav1 a::after {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            background-color: #0284c7;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .demo-nav1 a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .demo-nav1 .nav-login-btn {
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .demo-nav1 .nav-login-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .demo-nav2 {
+            background-color: #064e3b;
+            width: 200px;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .demo-nav2 ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .demo-nav2 li {
+            margin-bottom: 8px;
+        }
+
+        .demo-nav2 a {
+            text-decoration: none;
+            color: #ecfdf5;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .demo-nav2 a:hover {
+            background-color: #047857;
+        }
+
+        .demo-nav2 .nav-login-btn {
+            background-color: #059669;
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .demo-nav3 {
+            background-color: #0891b2;
+            padding: 10px 16px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .demo-nav3 ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .demo-nav3 a {
+            text-decoration: none;
+            color: #fff;
+            padding: 8px 12px;
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .demo-nav3 .dropdown {
+            position: relative;
+        }
+
+        .demo-nav3 .dropdown-content {
+            display: none;
+        }
+
+        .demo-nav3 .dropdown:hover .dropdown-content {
+            display: block;
+            position: absolute;
+            background-color: #1e293b;
+            min-width: 150px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            top: 100%;
+            left: 0;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-nav3 .dropdown-content a {
+            color: #e2e8f0;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .demo-nav3 .dropdown-content a:hover {
+            background-color: #334155;
+            color: #38bdf8;
+        }
 
         footer.doc-footer {
             text-align: center;
@@ -659,17 +905,18 @@
         <header class="doc-header">
             <div class="badge-pill">🎨 Chai Aur Code • CSS Fundamentals</div>
             <h1 class="main-title">CSS Basics Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, the Box Model, modern Flexbox layouts, colors, and typography.</p>
+            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, navigation bar patterns, modern Flexbox layouts, colors, and typography.</p>
             
             <div class="quick-nav">
                 <a href="#methods">1. 3 Ways to Apply CSS</a>
                 <a href="#selectors">2. Selectors &amp; Combinators</a>
-                <a href="#box-model">3. The CSS Box Model</a>
+                <a href="#box-model">3. Box Model &amp; Display</a>
                 <a href="#flexbox">4. Flexbox Layout</a>
                 <a href="#typography">5. Colors &amp; Typography</a>
                 <a href="#pseudo">6. Interactive States &amp; Pseudo</a>
                 <a href="#units">7. CSS Units (px, vh)</a>
-                <a href="#table-ref">8. Quick Reference Table</a>
+                <a href="#navbars">8. Navigation Bar Patterns</a>
+                <a href="#table-ref">9. Quick Reference Table</a>
             </div>
         </header>
 
@@ -983,13 +1230,14 @@
             </div>
         </section>
 
-        <!-- 3. Box Model -->
+        <!-- 3. Box Model & Display Types -->
         <section id="box-model">
             <div class="section-header">
                 <div class="section-number">3</div>
-                <h2 class="section-title">The CSS Box Model</h2>
+                <h2 class="section-title">The CSS Box Model &amp; Display Behaviors</h2>
             </div>
 
+            <!-- Card 3A: The 4 Concentric Layers -->
             <div class="card">
                 <div class="card-header">
                     <span class="tag-name">Margin • Border • Padding • Content</span>
@@ -1013,21 +1261,154 @@
                 </div>
 
                 <div class="prop-box">
-                    <div class="prop-title">Box Model Properties</div>
-                    <div class="prop-item"><span class="p-name">padding: 30px;</span> — Adds 30px of breathing room <strong>inside</strong> the card between border and text.</div>
-                    <div class="prop-item"><span class="p-name">border: 1px solid black;</span> — Draws a solid black border line of 1px width.</div>
-                    <div class="prop-item"><span class="p-name">border-radius: 8px;</span> — Rounds the corners of the border by 8 pixels.</div>
-                    <div class="prop-item"><span class="p-name">margin-bottom: 15px;</span> — Pushes the next adjacent element down by 15px.</div>
-                    <div class="prop-item"><span class="p-name">width: 300px;</span> — Fixes the horizontal dimension of the element's content area.</div>
+                    <div class="prop-title">The 4 Box Model Components</div>
+                    <div class="prop-item"><span class="p-name">1. Content:</span> The actual payload where text, images, and child elements appear.</div>
+                    <div class="prop-item"><span class="p-name">2. Padding:</span> Transparent breathing room <strong>inside</strong> the border surrounding the content (e.g. <code>padding: 20px;</code>).</div>
+                    <div class="prop-item"><span class="p-name">3. Border:</span> The physical frame wrapped around padding and content (e.g. <code>border: 5px solid #333;</code>).</div>
+                    <div class="prop-item"><span class="p-name">4. Margin:</span> Transparent space <strong>outside</strong> the border, pushing sibling elements away (e.g. <code>margin: 30px;</code>).</div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="cs-sel">.card</span> <span class="cs-punct">{</span><br>
+                    <span class="cs-sel">.box-model-demo</span> <span class="cs-punct">{</span><br>
                     &nbsp;&nbsp;<span class="cs-prop">width</span><span class="cs-punct">:</span> <span class="cs-val">300</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">30</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">border-radius</span><span class="cs-punct">:</span> <span class="cs-val">8</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#d5d4d4</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">200</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">20</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">border</span><span class="cs-punct">:</span> <span class="cs-val">5</span><span class="cs-unit">px</span> <span class="cs-val">solid</span> <span class="cs-val">#333</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">30</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#f0f0f0</span><span class="cs-punct">;</span><br>
                     <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 3B: Box Sizing (content-box vs border-box) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">box-sizing: content-box vs border-box</span>
+                    <span class="tag-badge badge-layout">Sizing Math</span>
+                </div>
+                <p class="desc-text">The <code>box-sizing</code> property determines whether padding and borders expand the element beyond its declared dimensions or are absorbed inside:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">1. content-box (Browser Default)</div>
+                    <div class="prop-item">
+                        Declared <code>width</code> and <code>height</code> apply <strong>only to the content</strong>. Padding and borders are added on top!<br>
+                        <strong>Formula:</strong> <code>Total Width = width + padding(L+R) + border(L+R)</code><br>
+                        <strong>Calculation:</strong> <code>300px + 40px (padding) + 10px (border) = 350px total!</code><br>
+                        <em style="color: #f87171;">⚠️ Risk: Adding padding increases the element's outer footprint and can cause unexpected layout breakage.</em>
+                    </div>
+                </div>
+
+                <div class="prop-box" style="border-left-color: var(--accent-emerald);">
+                    <div class="prop-title" style="color: var(--accent-emerald);">2. border-box (Standard Best Practice)</div>
+                    <div class="prop-item">
+                        Declared <code>width</code> and <code>height</code> are the <strong>final outer dimensions</strong>, including padding and border!<br>
+                        <strong>Calculation:</strong> <code>Total Width = exactly 300px!</code> (Inner content area automatically compresses to <code>250px</code>).<br>
+                        <em style="color: #34d399;">✅ Benefit: Completely predictable layouts and sizing. Used in the universal reset <code>* { box-sizing: border-box; }</code>.</em>
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Content-box: Expands to 350px width x 250px height */</span><br>
+                    <span class="cs-sel">.content-box</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">box-sizing</span><span class="cs-punct">:</span> <span class="cs-val">content-box</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#ffcccc</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Border-box: Locks strictly at 300px width x 200px height */</span><br>
+                    <span class="cs-sel">.border-box</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">box-sizing</span><span class="cs-punct">:</span> <span class="cs-val">border-box</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#ccffcc</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+
+                <!-- Live Side-by-Side Sizing Demo -->
+                <div class="live-preview" style="margin-top: 20px;">
+                    <span class="preview-label">Live Comparison Demo (from 04_box_model):</span>
+                    <div class="box-compare-grid">
+                        <div class="box-compare-card cb-demo">
+                            <strong style="color: #9f1239; font-size: 1rem; display: block; margin-bottom: 6px;">.content-box (Grows to 350px)</strong>
+                            <p style="margin: 4px 0;">Width: 300px + 40px (pad) + 10px (border) = <strong>350px</strong></p>
+                            <p style="margin: 4px 0;">Height: 200px + 40px (pad) + 10px (border) = <strong>250px</strong></p>
+                        </div>
+                        <div class="box-compare-card bb-demo">
+                            <strong style="color: #14532d; font-size: 1rem; display: block; margin-bottom: 6px;">.border-box (Strictly 300px)</strong>
+                            <p style="margin: 4px 0;">Width: <strong>300px</strong> (padding &amp; border included)</p>
+                            <p style="margin: 4px 0;">Height: <strong>200px</strong> (padding &amp; border included)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3C: Display Types (Inline vs Block vs Inline-Block) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">display: inline • block • inline-block</span>
+                    <span class="tag-badge badge-pseudo">Display Modes</span>
+                </div>
+                <p class="desc-text">The <code>display</code> property dictates an element's formatting context and how it coexists with neighboring elements:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Display Behavior Breakdown</div>
+                    <div class="prop-item">
+                        <span class="p-name">1. Inline (display: inline; e.g. &lt;span&gt;, &lt;a&gt;):</span><br>
+                        Flows continuously with surrounding text on the same line. Takes only as much width as its content. <strong>Crucial Rule:</strong> Inline elements <span style="color: #f87171; font-weight: 700;">completely ignore width and height properties</span>! Vertical margins do not push lines apart.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">2. Block (display: block; e.g. &lt;div&gt;, &lt;p&gt;, &lt;h1&gt;):</span><br>
+                        Always starts on a fresh new line (line break before and after). Expands to occupy 100% of parent width. Fully respects <code>width</code>, <code>height</code>, <code>padding</code>, and <code>margin</code> in all directions.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">3. Inline-Block (display: inline-block; e.g. .highlight):</span><br>
+                        The ultimate hybrid: Flows horizontally on the same line alongside inline text, but behaves like a block element by honoring custom <code>width</code>, <code>height</code>, padding, and margins!
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Inline: ignores width and height */</span><br>
+                    <span class="cs-sel">.inline-example</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#cce6ff</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">10</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">10</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">width</span><span class="cs-punct">:</span> <span class="cs-val">200</span><span class="cs-unit">px</span><span class="cs-punct">;</span>  <span class="cs-comm">/* IGNORED by browser! */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">100</span><span class="cs-unit">px</span><span class="cs-punct">;</span> <span class="cs-comm">/* IGNORED by browser! */</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Block: breaks to new line, respects dimensions */</span><br>
+                    <span class="cs-sel">.block-example</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#ffccff</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">10</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">10</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">width</span><span class="cs-punct">:</span> <span class="cs-val">200</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">100</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Inline-block: flows inline, respects dimensions */</span><br>
+                    <span class="cs-sel">.highlight</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">inline-block</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">yellow</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+
+                <!-- Live Display Modes Demo -->
+                <div class="live-preview" style="margin-top: 20px;">
+                    <span class="preview-label">Live Display Modes Preview (from 04_box_model):</span>
+                    <div class="display-demo-box">
+                        <p style="margin-bottom: 12px;">
+                            This is a paragraph with an 
+                            <span class="demo-inline-tag">inline element</span>
+                            inside. Notice it stays in line and only takes up content width, completely ignoring width: 200px.
+                        </p>
+                        
+                        <div class="demo-block-tag">
+                            Block element: Breaks onto a new line and honors width: 200px!
+                        </div>
+
+                        <p style="margin-top: 12px;">
+                            Here is text with an 
+                            <span class="demo-inline-block-tag">inline-block tag</span> 
+                            which sits seamlessly inline while allowing custom padding and styling!
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1170,10 +1551,125 @@
             </div>
         </section>
 
-        <!-- 8. Quick Reference Table -->
-        <section id="table-ref">
+        <!-- 8. Navigation Bar Variations & UI Patterns -->
+        <section id="navbars">
             <div class="section-header">
                 <div class="section-number">8</div>
+                <h2 class="section-title">Navigation Bar Patterns &amp; UI Hover Effects</h2>
+            </div>
+
+            <!-- Card 8A: Horizontal Navbar with Animated Underline -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Variation 1: Sliding Underline (Flexbox + ::after)</span>
+                    <span class="tag-badge badge-layout">Modern UI</span>
+                </div>
+                <p class="desc-text">A modern horizontal navigation bar built with Flexbox and a sliding animated underline on hover powered by the <code>::after</code> pseudo-element, <code>transform: scaleX()</code>, and <code>transition</code>:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">How the Underline Animation Works</div>
+                    <div class="prop-item"><span class="p-name">1. Anchor:</span> <code>position: relative;</code> anchors the absolute underline to each specific link.</div>
+                    <div class="prop-item"><span class="p-name">2. Pseudo-element:</span> <code>a::after</code> sets <code>height: 2px; width: 100%; bottom: 0; left: 0; transform: scaleX(0);</code> (invisible width 0 at rest).</div>
+                    <div class="prop-item"><span class="p-name">3. Hover state:</span> <code>a:hover::after { transform: scaleX(1); }</code> smoothly animates the bar to full width across <code>0.3s</code>.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Base Nav Reset */</span><br>
+                    <span class="cs-sel">ul</span> <span class="cs-punct">{</span> <span class="cs-prop">list-style-type</span><span class="cs-punct">:</span> <span class="cs-val">none</span><span class="cs-punct">;</span> <span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">0</span><span class="cs-punct">;</span> <span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">0</span><span class="cs-punct">;</span> <span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">flex</span><span class="cs-punct">;</span> <span class="cs-punct">}</span><br><br>
+                    <span class="cs-comm">/* Link with animated underline */</span><br>
+                    <span class="cs-sel">.nav1 a</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">position</span><span class="cs-punct">:</span> <span class="cs-val">relative</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">text-decoration</span><span class="cs-punct">:</span> <span class="cs-val">none</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">5</span><span class="cs-unit">px</span> <span class="cs-val">15</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+                    <span class="cs-sel">.nav1 a::after</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">content</span><span class="cs-punct">:</span> <span class="cs-val">""</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">position</span><span class="cs-punct">:</span> <span class="cs-val">absolute</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">2</span><span class="cs-unit">px</span><span class="cs-punct">;</span> <span class="cs-prop">width</span><span class="cs-punct">:</span> <span class="cs-val">100</span><span class="cs-unit">%</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">bottom</span><span class="cs-punct">:</span> <span class="cs-val">0</span><span class="cs-punct">;</span> <span class="cs-prop">left</span><span class="cs-punct">:</span> <span class="cs-val">0</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#0a65c7</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">transform</span><span class="cs-punct">:</span> <span class="cs-val">scaleX(0)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">transition</span><span class="cs-punct">:</span> <span class="cs-val">transform 0.3s ease-in-out</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+                    <span class="cs-sel">.nav1 a:hover::after</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">transform</span><span class="cs-punct">:</span> <span class="cs-val">scaleX(1)</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 8B: Vertical Sidebar & Dropdown -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Variations 2 &amp; 3: Sidebar &amp; Dropdown Menu</span>
+                    <span class="tag-badge badge-pseudo">Layout &amp; State</span>
+                </div>
+
+                <div class="prop-box">
+                    <div class="prop-title">Sidebar &amp; Dropdown Rules</div>
+                    <div class="prop-item"><span class="p-name">Vertical Sidebar:</span> Set fixed container width (e.g. <code>width: 200px;</code>) and convert links to <code>display: block; width: 100%;</code> to make entire rows clickable on hover.</div>
+                    <div class="prop-item"><span class="p-name">Hover Dropdown:</span> Hide menu initially with <code>display: none;</code>, then reveal via <code>.dropdown:hover .dropdown-content { display: block; position: absolute; }</code>.</div>
+                </div>
+
+                <!-- Live Navbars Preview -->
+                <div class="live-preview" style="margin-top: 20px;">
+                    <span class="preview-label">Live Interactive Navigation Variations (from 04_navbar):</span>
+                    <div class="demo-nav-wrapper">
+                        
+                        <!-- Variation 1 Demo -->
+                        <div class="demo-nav-block">
+                            <h4>Variation 1: Horizontal with Underline Hover</h4>
+                            <nav class="demo-nav1">
+                                <ul>
+                                    <li><a href="javascript:void(0)">Home</a></li>
+                                    <li><a href="javascript:void(0)">About</a></li>
+                                    <li><a href="javascript:void(0)">Products</a></li>
+                                    <li><button type="button" class="nav-login-btn">Login</button></li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <!-- Variation 2 Demo -->
+                        <div class="demo-nav-block">
+                            <h4>Variation 2: Vertical Sidebar with Row Hover</h4>
+                            <nav class="demo-nav2">
+                                <ul>
+                                    <li><a href="javascript:void(0)">Home</a></li>
+                                    <li><a href="javascript:void(0)">About</a></li>
+                                    <li><a href="javascript:void(0)">Products</a></li>
+                                </ul>
+                                <button type="button" class="nav-login-btn">Login</button>
+                            </nav>
+                        </div>
+
+                        <!-- Variation 3 Demo -->
+                        <div class="demo-nav-block">
+                            <h4>Variation 3: Horizontal with Hover Dropdown</h4>
+                            <nav class="demo-nav3">
+                                <ul>
+                                    <li><a href="javascript:void(0)">Home</a></li>
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0)">About ▾</a>
+                                        <div class="dropdown-content">
+                                            <a href="javascript:void(0)">Our Story</a>
+                                            <a href="javascript:void(0)">Team</a>
+                                            <a href="javascript:void(0)">Contact</a>
+                                        </div>
+                                    </li>
+                                    <li><a href="javascript:void(0)">Products</a></li>
+                                    <li><button type="button" class="nav-login-btn" style="background-color: #0e7490; color: #fff; border:none; padding: 6px 14px; border-radius: 5px; cursor: pointer;">Login</button></li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Quick Reference Table -->
+        <section id="table-ref">
+            <div class="section-header">
+                <div class="section-number">9</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -1201,18 +1697,21 @@
                         <tr><td><code>::first-letter</code></td><td>Pseudo-elem</td><td>Sub-element targeting</td><td><code>p::first-letter { font-size: 30px; }</code></td></tr>
                         <tr><td><code>h1, h2, h3</code></td><td>Grouping</td><td>comma-separated list</td><td><code>h1, h2, h3 { color: orange; }</code></td></tr>
                         <tr><td><code>box-sizing</code></td><td>Box Model</td><td><code>content-box</code>, <code>border-box</code></td><td><code>box-sizing: border-box;</code></td></tr>
+                        <tr><td><code>display: block</code></td><td>Display</td><td><code>block</code></td><td><code>display: block;</code> (new line, 100% width)</td></tr>
+                        <tr><td><code>display: inline</code></td><td>Display</td><td><code>inline</code></td><td><code>display: inline;</code> (inline flow, ignores w/h)</td></tr>
+                        <tr><td><code>display: inline-block</code></td><td>Display</td><td><code>inline-block</code></td><td><code>display: inline-block;</code> (inline flow + w/h)</td></tr>
                         <tr><td><code>color</code></td><td>Typography</td><td>names, hex (<code>#fff</code>), rgb</td><td><code>color: #1a50a0;</code></td></tr>
                         <tr><td><code>background-color</code></td><td>Background</td><td>hex (<code>#1a1a1a</code>), rgba</td><td><code>background-color: #d5d4d4;</code></td></tr>
                         <tr><td><code>font-family</code></td><td>Typography</td><td>Font fallback stacks</td><td><code>font-family: Arial, sans-serif;</code></td></tr>
                         <tr><td><code>font-size</code></td><td>Typography</td><td><code>px</code>, <code>rem</code>, <code>em</code></td><td><code>font-size: 25px;</code></td></tr>
                         <tr><td><code>text-align</code></td><td>Typography</td><td><code>center</code>, <code>left</code>, <code>right</code></td><td><code>text-align: center;</code></td></tr>
-                        <tr><td><code>padding</code></td><td>Box Model</td><td><code>px</code> (inside spacing)</td><td><code>padding: 30px;</code></td></tr>
-                        <tr><td><code>margin</code></td><td>Box Model</td><td><code>px</code>, <code>auto</code> (outside spacing)</td><td><code>margin-bottom: 15px;</code></td></tr>
-                        <tr><td><code>border</code></td><td>Box Model</td><td>width style color</td><td><code>border: 1px solid black;</code></td></tr>
+                        <tr><td><code>padding</code></td><td>Box Model</td><td><code>px</code> (inside spacing)</td><td><code>padding: 20px;</code></td></tr>
+                        <tr><td><code>margin</code></td><td>Box Model</td><td><code>px</code>, <code>auto</code> (outside spacing)</td><td><code>margin: 30px;</code></td></tr>
+                        <tr><td><code>border</code></td><td>Box Model</td><td>width style color</td><td><code>border: 5px solid #333;</code></td></tr>
                         <tr><td><code>border-radius</code></td><td>Box Model</td><td><code>px</code>, <code>%</code> (rounded corners)</td><td><code>border-radius: 8px;</code></td></tr>
                         <tr><td><code>width</code></td><td>Dimensions</td><td><code>px</code>, <code>%</code></td><td><code>width: 300px;</code></td></tr>
-                        <tr><td><code>height</code></td><td>Dimensions</td><td><code>px</code>, <code>vh</code>, <code>%</code></td><td><code>height: 100vh;</code></td></tr>
-                        <tr><td><code>display</code></td><td>Layout</td><td><code>flex</code>, <code>block</code>, <code>inline</code></td><td><code>display: flex;</code></td></tr>
+                        <tr><td><code>height</code></td><td>Dimensions</td><td><code>px</code>, <code>vh</code>, <code>%</code></td><td><code>height: 200px;</code></td></tr>
+                        <tr><td><code>display: flex</code></td><td>Layout</td><td><code>flex</code></td><td><code>display: flex;</code></td></tr>
                         <tr><td><code>justify-content</code></td><td>Flexbox</td><td><code>center</code>, <code>space-between</code></td><td><code>justify-content: center;</code></td></tr>
                         <tr><td><code>align-items</code></td><td>Flexbox</td><td><code>center</code>, <code>flex-start</code></td><td><code>align-items: center;</code></td></tr>
                         <tr><td><code>flex-direction</code></td><td>Flexbox</td><td><code>column</code>, <code>row</code></td><td><code>flex-direction: column;</code></td></tr>

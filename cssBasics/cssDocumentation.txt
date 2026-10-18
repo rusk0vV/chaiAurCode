@@ -159,10 +159,11 @@ SELECTOR SPECIFICITY HIERARCHY:
 
 
 ================================================================================
-4. THE CSS BOX MODEL
+4. THE CSS BOX MODEL & DISPLAY TYPES
 ================================================================================
 
-Every HTML element is treated as a rectangular box composed of 4 concentric layers:
+Every HTML element is treated by the browser as a rectangular box composed of 4
+concentric layers:
 
  [----------------------- MARGIN -----------------------]
  |   [------------------ BORDER -------------------]    |
@@ -175,16 +176,72 @@ Every HTML element is treated as a rectangular box composed of 4 concentric laye
  |   [---------------------------------------------]    |
  [------------------------------------------------------]
 
-1. CONTENT: The raw text, image, or child element itself.
-2. PADDING: The transparent spacing *inside* the border, around the content.
-   - padding: 30px; (gives breathing room inside a card or button)
-   - padding: 10px;
-3. BORDER: The edge/frame wrapped around the padding and content.
-   - border: 1px solid black; (width, line-style, color)
-   - border-radius: 8px; (rounds corners)
-4. MARGIN: The transparent spacing *outside* the border, pushing adjacent elements away.
-   - margin: 0; (resets default browser body margin)
-   - margin-bottom: 15px; (pushes the next input or button downwards)
+1. THE 4 CONCENTRIC LAYERS:
+   - CONTENT: The actual content of the box where text, media, and images appear.
+   - PADDING: The transparent spacing *inside* the border, around the content.
+     * padding: 20px; (gives breathing room between border and content)
+   - BORDER: The edge/boundary line enclosing padding and content.
+     * border: 5px solid #333; (width, line-style, color)
+     * border-radius: 8px; (rounds corners)
+   - MARGIN: The transparent spacing *outside* the border, pushing adjacent elements away.
+     * margin: 30px; (pushes surrounding elements away)
+     * margin: 0; (resets default browser margin)
+
+2. BOX SIZING (content-box VS border-box):
+   The box-sizing property determines how total rendered width and height are calculated.
+
+   A. CONTENT-BOX (BROWSER DEFAULT):
+      - width and height apply ONLY to the inner content area.
+      - Any padding and border are ADDED on top of width/height!
+      - Formula:
+        Total Rendered Width = width + padding-left + padding-right + border-left + border-right
+        Total Rendered Height = height + padding-top + padding-bottom + border-top + border-bottom
+      - Example (from boxmodel.html):
+        width: 300px; height: 200px; padding: 20px; border: 5px solid #333;
+        -> Total Width = 300px + 40px (padding) + 10px (border) = 350px!
+        -> Total Height = 200px + 40px (padding) + 10px (border) = 250px!
+      - Drawback: Adding padding causes boxes to grow larger and break layouts/grids.
+
+   B. BORDER-BOX (INDUSTRY BEST PRACTICE):
+      - width and height represent the ENTIRE rendered box, INCLUDING padding and border!
+      - Formula:
+        Total Rendered Width = declared width (e.g., exactly 300px)
+        Total Rendered Height = declared height (e.g., exactly 200px)
+        Inner Content Width = width - (padding + border)
+      - Example (from boxmodel.html):
+        width: 300px; height: 200px; padding: 20px; border: 5px solid #333;
+        -> Total Width remains strictly 300px! (Content area shrinks to 250px)
+        -> Total Height remains strictly 200px! (Content area shrinks to 150px)
+      - Why it's used in global reset:
+        * {
+            box-sizing: border-box;
+        }
+        Makes UI predictable and prevents unexpected sizing overflow.
+
+3. ELEMENT DISPLAY BEHAVIORS (INLINE vs BLOCK vs INLINE-BLOCK):
+   The display property defines how elements lay out in relation to surrounding content.
+
+   A. INLINE ELEMENTS (display: inline; e.g. <span>, <a>, <strong>):
+      - Do NOT start on a new line; flow along with text on the same line.
+      - Take up only as much width as necessary (shrink to fit content).
+      - CRITICAL: IGNORE declared width and height properties!
+        (e.g., width: 200px; height: 100px; have NO effect on an inline <span>).
+      - Vertical margins (top/bottom) do not push away surrounding lines of text.
+
+   B. BLOCK-LEVEL ELEMENTS (display: block; e.g. <div>, <p>, <h1>-<h6>, <section>):
+      - Always start on a new line (line break before and after).
+      - Expand to fill the full 100% available width of their parent container.
+      - Fully RESPECT width, height, padding, and margin in all four directions.
+
+   C. INLINE-BLOCK ELEMENTS (display: inline-block; e.g. .highlight):
+      - The perfect hybrid:
+        1. Flows inline alongside other elements on the same line (like inline).
+        2. Fully respects width, height, padding, and margin (like block)!
+      - Example:
+        .highlight {
+            background-color: yellow;
+            display: inline-block;
+        }
 
 
 ================================================================================
@@ -252,7 +309,81 @@ form {
 
 
 ================================================================================
-8. ONE-LINER QUICK REFERENCE TABLE
+8. NAVIGATION BAR PATTERNS & UI HOVER EFFECTS
+================================================================================
+
+Navigation bars are core website components built by combining semantic HTML (<nav>, <ul>, <li>, <a>)
+with CSS layout and interactive pseudo-element techniques:
+
+1. COMMON BASE NAV RESET:
+   ul {
+       list-style-type: none;  /* Removes default bullet points */
+       margin: 0;
+       padding: 0;
+   }
+   a {
+       text-decoration: none;   /* Removes default underline */
+   }
+
+2. VARIATION 1: HORIZONTAL FLEX NAVBAR WITH ANIMATED UNDERLINE:
+   - Uses Flexbox to align links horizontally:
+     ul {
+         display: flex;
+         justify-content: space-around;
+         align-items: center;
+     }
+   - Sliding Underline effect via ::after pseudo-element:
+     a {
+         position: relative;
+         padding: 5px 15px;
+     }
+     a::after {
+         content: "";
+         position: absolute;
+         height: 2px;
+         width: 100%;
+         bottom: 0;
+         left: 0;
+         background-color: #0a65c7;
+         transform: scaleX(0);            /* Hidden initially */
+         transition: transform 0.3s ease-in-out;
+     }
+     a:hover::after {
+         transform: scaleX(1);            /* Expands to 100% on hover */
+     }
+
+3. VARIATION 2: VERTICAL SIDEBAR NAVIGATION:
+   - Uses a fixed sidebar width and block-level links:
+     nav {
+         width: 200px;
+         padding: 20px;
+         background-color: #03643c;
+     }
+     a {
+         display: block;                  /* Fills full width of parent */
+         padding: 10px;
+         width: 100%;
+     }
+     a:hover {
+         background-color: #137e0a;
+     }
+
+4. VARIATION 3: HORIZONTAL NAVBAR WITH DROPDOWN MENU:
+   - Nested dropdown container hidden by default:
+     .dropdown-content {
+         display: none;
+     }
+   - Revealed on parent hover using absolute positioning:
+     .dropdown:hover .dropdown-content {
+         display: block;
+         position: absolute;
+         background-color: #3e3e3e;
+         min-width: 150px;
+     }
+
+
+================================================================================
+9. ONE-LINER QUICK REFERENCE TABLE
 ================================================================================
 
 Property / Concept | Category    | Common Values            | Example One-Liner
@@ -269,19 +400,22 @@ h2 ~ p (Gen. Sib.) | Combinator  | prev ~ all-siblings      | h2 ~ p { color: #8
 :hover             | Pseudo-class| interaction state        | button:hover { background-color: #0741ac; }
 ::first-letter     | Pseudo-elem | sub-element target       | p::first-letter { font-size: 30px; }
 h1, h2, h3 (Group) | Selector    | comma-separated list     | h1, h2, h3 { color: orange; }
-box-sizing         | Box Model   | content-box, border-box  | box-sizing: border-box;
+box-sizing         | Box Model   | content-box, border-box  | box-sizing: border-box; (or content-box)
+display: block     | Display     | block                    | display: block; (new line, 100% width)
+display: inline    | Display     | inline                   | display: inline; (flows with text, ignores w/h)
+display: inline-block| Display   | inline-block             | display: inline-block; (inline flow + w/h)
 color              | Typography  | names, hex (#fff), rgb   | color: #1a50a0;
 background-color   | Background  | hex (#1a1a1a), names     | background-color: #d5d4d4;
 font-family        | Typography  | font fallback stacks     | font-family: Arial, sans-serif;
 font-size          | Typography  | px, rem, em              | font-size: 25px;
 text-align         | Typography  | center, left, right      | text-align: center;
-padding            | Box Model   | px (inside spacing)      | padding: 30px;
-margin             | Box Model   | px (outside spacing)     | margin-bottom: 15px;
-border             | Box Model   | width style color        | border: 1px solid black;
+padding            | Box Model   | px (inside spacing)      | padding: 20px;
+margin             | Box Model   | px (outside spacing)     | margin: 30px;
+border             | Box Model   | width style color        | border: 5px solid #333;
 border-radius      | Box Model   | px (rounded corners)     | border-radius: 8px;
 width              | Dimensions  | px, %                    | width: 300px;
-height             | Dimensions  | px, vh, %                | height: 100vh;
-display            | Layout      | flex, block, inline      | display: flex;
+height             | Dimensions  | px, vh, %                | height: 200px;
+display: flex      | Layout      | flex                     | display: flex;
 justify-content    | Flexbox     | center, space-between    | justify-content: center;
 align-items        | Flexbox     | center, flex-start       | align-items: center;
 flex-direction     | Flexbox     | column, row              | flex-direction: column;
