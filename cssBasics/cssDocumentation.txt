@@ -277,35 +277,49 @@ form {
 
 
 ================================================================================
-6. COLORS & TYPOGRAPHY
+6. COLORS, GRADIENTS & TYPOGRAPHY
 ================================================================================
 
 - color:
-  * Defines font color (e.g., color: #1a50a0;, color: brown;, color: #fff;).
-- background-color:
-  * Defines the background fill color of an element.
+  * Defines font color (e.g., color: #333;, color: #666;, color: #fff;).
+- background / background-color:
+  * Solid colors: hex (#8a2be2), named colors, rgb.
+  * rgba(r, g, b, alpha): Enables opacity/transparency (e.g., rgba(255, 255, 255, 0.9)
+    creates a semi-transparent frosted card backdrop).
+  * linear-gradient(angle, color1, color2):
+    Smooth multi-color transitions.
+    Example: background: linear-gradient(135deg, #8a2be2, #4169e1);
+- Google Fonts & @import:
+  * External web fonts can be imported directly at the top of a CSS stylesheet:
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+  * Applied via font-family: "Noto Sans", sans-serif;
 - font-family:
-  * Fallback font stack.
-  * Example: font-family: Arial, Helvetica, sans-serif;
-    (Tries Arial, then Helvetica, then any system sans-serif).
+  * Fallback font stack (e.g. font-family: "Noto Sans", Arial, sans-serif;).
 - font-size:
-  * Controls font size with units (e.g. font-size: 25px;).
+  * Controls font size with units (e.g. font-size: 25px;, font-size: 1.5rem;).
 - text-align:
   * Horizontal text alignment inside its container (e.g. text-align: center;).
 
 
 ================================================================================
-7. CSS UNITS (px vs vh)
+7. CSS UNITS (px vs rem vs vh / %)
 ================================================================================
 
 - px (Pixels):
-  * Absolute unit representing screen pixels.
-  * Great for borders (1px), border-radius (8px), padding (10px, 30px), and card
-    widths (width: 300px;).
+  * Absolute unit representing fixed screen dots.
+  * Great for borders (1px), border-radius (5px, 10px), and box shadows.
 
-- vh (Viewport Height):
-  * Relative unit representing 1% of the browser window's visible height.
-  * 100vh = 100% full screen height, regardless of screen resolution or device.
+- rem (Root EM):
+  * Relative unit proportional to the root <html> font-size (default is 16px).
+  * Calculation: 1rem = 16px, 2rem = 32px, 0.5rem = 8px.
+  * Standard for scalable, accessible typography, paddings, and margins.
+  * Allows entire UI spacing to scale gracefully when user adjusts browser font size.
+
+- vh / % (Viewport Height & Percentages):
+  * vh: 1% of visible browser window height (100vh = full screen).
+  * %: Relative to the parent element's dimensions.
+  * Full-height chain: setting height: 100% on html and body enables child
+    containers (.container { height: 100%; }) to fill the full viewport accurately.
 
 
 ================================================================================
@@ -383,7 +397,45 @@ with CSS layout and interactive pseudo-element techniques:
 
 
 ================================================================================
-9. ONE-LINER QUICK REFERENCE TABLE
+9. VISUAL POLISH & COMPONENT PATTERNS (SHADOWS, TRANSITIONS, IMAGES)
+================================================================================
+
+1. BOX SHADOW (box-shadow):
+   - Adds realistic elevation, depth, and drop-shadows to cards and buttons.
+   - Syntax: box-shadow: offset-x offset-y blur-radius color;
+   - Example: box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+2. SMOOTH TRANSITIONS (transition):
+   - Smoothly animates property changes on pseudo-classes (:hover) rather than snapping abruptly.
+   - Syntax: transition: property duration timing-function;
+   - Example:
+     button {
+         background-color: #8a2be2;
+         transition: background-color 0.3s ease-in-out;
+     }
+     button:hover {
+         background-color: #7a1dd1;
+     }
+
+3. IMAGE FIT & RESPONSIVENESS (object-fit):
+   - Controls how an <img> or video resizes to fit its container box:
+     * object-fit: contain; (scales image to fit within dimensions while preserving aspect ratio)
+     * object-fit: cover; (crops image to fill dimensions completely)
+
+4. RESPONSIVE CONTAINER CONSTRAINTS (max-width):
+   - max-width: 400px; keeps a card compact on desktop screens, while allowing it
+     to scale down fluidly on smaller mobile viewports.
+
+5. THE COMING SOON / HERO LANDING PAGE RECIPE:
+   - Full-bleed gradient background:
+     html, body { height: 100%; margin: 0; }
+     .container { height: 100%; background: linear-gradient(135deg, #8a2be2, #4169e1); display: flex; justify-content: center; align-items: center; }
+   - Centered card:
+     .content { background-color: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 10px; max-width: 400px; text-align: center; }
+
+
+================================================================================
+10. ONE-LINER QUICK REFERENCE TABLE
 ================================================================================
 
 Property / Concept | Category    | Common Values            | Example One-Liner
@@ -404,17 +456,24 @@ box-sizing         | Box Model   | content-box, border-box  | box-sizing: border
 display: block     | Display     | block                    | display: block; (new line, 100% width)
 display: inline    | Display     | inline                   | display: inline; (flows with text, ignores w/h)
 display: inline-block| Display   | inline-block             | display: inline-block; (inline flow + w/h)
+linear-gradient    | Background  | angle, colors            | background: linear-gradient(135deg, #8a2be2, #4169e1);
+rgba()             | Color       | r, g, b, alpha (0 to 1)  | background-color: rgba(255, 255, 255, 0.9);
+rem                | Units       | rem (relative to root)   | padding: 2rem; (1rem = 16px)
+box-shadow         | Visual FX   | x y blur spread color    | box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+transition         | Animation   | property duration timing | transition: background-color 0.3s ease;
+object-fit         | Media       | contain, cover, fill     | object-fit: contain;
+max-width          | Dimensions  | px, %, rem               | max-width: 400px;
 color              | Typography  | names, hex (#fff), rgb   | color: #1a50a0;
 background-color   | Background  | hex (#1a1a1a), names     | background-color: #d5d4d4;
 font-family        | Typography  | font fallback stacks     | font-family: Arial, sans-serif;
 font-size          | Typography  | px, rem, em              | font-size: 25px;
 text-align         | Typography  | center, left, right      | text-align: center;
-padding            | Box Model   | px (inside spacing)      | padding: 20px;
-margin             | Box Model   | px (outside spacing)     | margin: 30px;
+padding            | Box Model   | px, rem (inside spacing) | padding: 20px;
+margin             | Box Model   | px, rem (outside spacing)| margin: 30px;
 border             | Box Model   | width style color        | border: 5px solid #333;
 border-radius      | Box Model   | px (rounded corners)     | border-radius: 8px;
-width              | Dimensions  | px, %                    | width: 300px;
-height             | Dimensions  | px, vh, %                | height: 200px;
+width              | Dimensions  | px, %, vw                | width: 300px;
+height             | Dimensions  | px, vh, %                | height: 100%; (or 200px)
 display: flex      | Layout      | flex                     | display: flex;
 justify-content    | Flexbox     | center, space-between    | justify-content: center;
 align-items        | Flexbox     | center, flex-start       | align-items: center;

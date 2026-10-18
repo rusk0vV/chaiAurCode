@@ -887,6 +887,96 @@
             color: #38bdf8;
         }
 
+        /* Coming Soon Hero Landing Demo */
+        .landing-hero-demo {
+            background: linear-gradient(135deg, #8a2be2, #4169e1);
+            border-radius: 12px;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 380px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .landing-content-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            color: #111827;
+        }
+
+        .landing-logo-circle {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 14px auto;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+
+        .landing-content-card h3 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .landing-content-card p {
+            color: #4b5563;
+            margin-bottom: 20px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .landing-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .landing-input {
+            padding: 0.65rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            background: #ffffff;
+            color: #111827;
+        }
+
+        .landing-input:focus {
+            border-color: #8a2be2;
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+        }
+
+        .landing-btn {
+            padding: 0.7rem 1rem;
+            background-color: #8a2be2;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease-in-out, transform 0.15s ease;
+        }
+
+        .landing-btn:hover {
+            background-color: #7a1dd1;
+            transform: translateY(-1px);
+        }
+
         footer.doc-footer {
             text-align: center;
             margin-top: 60px;
@@ -905,18 +995,19 @@
         <header class="doc-header">
             <div class="badge-pill">🎨 Chai Aur Code • CSS Fundamentals</div>
             <h1 class="main-title">CSS Basics Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, navigation bar patterns, modern Flexbox layouts, colors, and typography.</p>
+            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, navigation bar patterns, Coming Soon hero landing UI, colors, and typography.</p>
             
             <div class="quick-nav">
                 <a href="#methods">1. 3 Ways to Apply CSS</a>
                 <a href="#selectors">2. Selectors &amp; Combinators</a>
                 <a href="#box-model">3. Box Model &amp; Display</a>
                 <a href="#flexbox">4. Flexbox Layout</a>
-                <a href="#typography">5. Colors &amp; Typography</a>
+                <a href="#typography">5. Colors &amp; Gradients</a>
                 <a href="#pseudo">6. Interactive States &amp; Pseudo</a>
-                <a href="#units">7. CSS Units (px, vh)</a>
+                <a href="#units">7. CSS Units (px, rem, vh)</a>
                 <a href="#navbars">8. Navigation Bar Patterns</a>
-                <a href="#table-ref">9. Quick Reference Table</a>
+                <a href="#hero-landing">9. Hero Landing UI</a>
+                <a href="#table-ref">10. Quick Reference Table</a>
             </div>
         </header>
 
@@ -1470,29 +1561,38 @@
         <section id="typography">
             <div class="section-header">
                 <div class="section-number">5</div>
-                <h2 class="section-title">Colors &amp; Typography</h2>
+                <h2 class="section-title">Colors, Gradients &amp; Typography</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">color • background-color • font-family</span>
-                    <span class="tag-badge badge-color">Styling</span>
+                    <span class="tag-name">color • gradients • rgba • @import</span>
+                    <span class="tag-badge badge-color">Visual Design</span>
                 </div>
                 
                 <div class="prop-box">
                     <div class="prop-title">Core Styling Properties</div>
-                    <div class="prop-item"><span class="p-name">color</span> — Sets the font color (e.g. <code>brown</code>, <code>orangered</code>, <code>#fff</code>).</div>
-                    <div class="prop-item"><span class="p-name">background-color</span> — Sets background fill (e.g. <code>#1a1a1a</code> dark body, <code>#1b81da</code> blue button).</div>
-                    <div class="prop-item"><span class="p-name">font-family: Arial, Helvetica, sans-serif;</span> — Font fallback stack: browser uses Arial, falls back to Helvetica, then any generic sans-serif font.</div>
-                    <div class="prop-item"><span class="p-name">font-size: 25px;</span> — Specifies text height.</div>
+                    <div class="prop-item"><span class="p-name">color</span> — Sets font text color (e.g. <code>#333</code>, <code>#666</code>, <code>#fff</code>).</div>
+                    <div class="prop-item"><span class="p-name">background-color: rgba(...)</span> — Supports transparency! <code>rgba(255, 255, 255, 0.9)</code> creates a semi-transparent frosted card effect.</div>
+                    <div class="prop-item"><span class="p-name">linear-gradient(angle, c1, c2)</span> — Generates smooth color transitions across an angle (e.g. <code>linear-gradient(135deg, #8a2be2, #4169e1)</code>).</div>
+                    <div class="prop-item"><span class="p-name">@import url(...)</span> — Imports external Google Fonts into the stylesheet (e.g. Noto Sans).</div>
+                    <div class="prop-item"><span class="p-name">font-family</span> — Defines font preference and fallback stacks (e.g. <code>"Noto Sans", sans-serif;</code>).</div>
                     <div class="prop-item"><span class="p-name">text-align: center;</span> — Centers text horizontally within its container.</div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="cs-sel">h2</span> <span class="cs-punct">{</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">color</span><span class="cs-punct">:</span> <span class="cs-val">#1a50a0</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">text-align</span><span class="cs-punct">:</span> <span class="cs-val">center</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">margin-bottom</span><span class="cs-punct">:</span> <span class="cs-val">20</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-comm">/* 1. Google Font Import */</span><br>
+                    <span class="cs-sel">@import</span> <span class="cs-val">url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap")</span><span class="cs-punct">;</span><br><br>
+
+                    <span class="cs-comm">/* 2. Linear Gradient Fullscreen Container */</span><br>
+                    <span class="cs-sel">.container</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background</span><span class="cs-punct">:</span> <span class="cs-val">linear-gradient(135deg, #8a2be2, #4169e1)</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* 3. Frosted RGBA Background Card */</span><br>
+                    <span class="cs-sel">.content</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">rgba(255, 255, 255, 0.9)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">font-family</span><span class="cs-punct">:</span> <span class="cs-val">"Noto Sans", sans-serif</span><span class="cs-punct">;</span><br>
                     <span class="cs-punct">}</span>
                 </div>
             </div>
@@ -1536,17 +1636,30 @@
         <section id="units">
             <div class="section-header">
                 <div class="section-number">7</div>
-                <h2 class="section-title">CSS Units (px vs vh)</h2>
+                <h2 class="section-title">CSS Units (px vs rem vs vh / %)</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">Units: px &amp; vh</span>
+                    <span class="tag-name">Units: px • rem • vh • %</span>
                     <span class="tag-badge badge-core">Measurements</span>
                 </div>
                 <div class="prop-box">
-                    <div class="prop-item"><span class="p-name">px (Pixels)</span> — Absolute unit. <code>1px</code> = 1 dot on screen. Ideal for borders, fixed padding, and controlled card widths (e.g. <code>width: 300px;</code>).</div>
-                    <div class="prop-item"><span class="p-name">vh (Viewport Height)</span> — Relative unit. <code>1vh</code> = 1% of the browser window's height. <code>100vh</code> = exactly 100% full screen height. Essential for full-height layouts.</div>
+                    <div class="prop-item"><span class="p-name">px (Pixels)</span> — Absolute unit. <code>1px</code> = 1 fixed dot on screen. Ideal for borders, fixed radii (<code>5px</code>), and subtle box shadows.</div>
+                    <div class="prop-item"><span class="p-name">rem (Root EM)</span> — Proportional to the root <code>&lt;html&gt;</code> font size (16px by default). <code>1rem = 16px</code>, <code>2rem = 32px</code>, <code>0.5rem = 8px</code>. Industry standard for accessible, scalable padding, margins, and typography.</div>
+                    <div class="prop-item"><span class="p-name">vh (Viewport Height)</span> — Relative unit. <code>1vh</code> = 1% of the viewport's height. <code>100vh</code> = 100% full screen.</div>
+                    <div class="prop-item"><span class="p-name">% (Percentage)</span> — Relative to the parent container. Setting <code>height: 100%</code> on both <code>html, body</code> is required so child containers can inherit full viewport height.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Full-height chain and rem padding */</span><br>
+                    <span class="cs-sel">html, body</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">0</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">100</span><span class="cs-unit">%</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+                    <span class="cs-sel">.content</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">2</span><span class="cs-unit">rem</span><span class="cs-punct">;</span> <span class="cs-comm">/* 32px of scalable padding */</span><br>
+                    <span class="cs-punct">}</span>
                 </div>
             </div>
         </section>
@@ -1666,10 +1779,69 @@
             </div>
         </section>
 
-        <!-- 9. Quick Reference Table -->
-        <section id="table-ref">
+        <!-- 9. Hero Landing Page & Modern UI Components -->
+        <section id="hero-landing">
             <div class="section-header">
                 <div class="section-number">9</div>
+                <h2 class="section-title">Hero Landing Page &amp; Modern UI Polish</h2>
+            </div>
+
+            <!-- Card 9A: Visual Polish Techniques -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">box-shadow • transition • object-fit • max-width</span>
+                    <span class="tag-badge badge-layout">Component Polish</span>
+                </div>
+                <p class="desc-text">Techniques used to elevate simple HTML forms into a commercial-grade, responsive "Coming Soon" landing page:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Modern Component Styling Rules</div>
+                    <div class="prop-item"><span class="p-name">1. box-shadow: 0 4px 6px rgba(0,0,0,0.2);</span> — Gives buttons and cards tactile elevation and depth.</div>
+                    <div class="prop-item"><span class="p-name">2. transition: background-color 0.3s ease-in-out;</span> — Replaces sudden hover color snaps with a silky smooth 300ms fade.</div>
+                    <div class="prop-item"><span class="p-name">3. object-fit: contain;</span> — Ensures logos and images scale cleanly inside fixed dimensions without distortion.</div>
+                    <div class="prop-item"><span class="p-name">4. max-width: 400px;</span> — Restricts the card from ballooning on wide desktop monitors while letting it compress gracefully on mobile screens.</div>
+                    <div class="prop-item"><span class="p-name">5. input[type="email"]:</span> — Attribute-selected input field styled with rounded corners and clean borders.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Button elevation & smooth transition */</span><br>
+                    <span class="cs-sel">button</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">padding</span><span class="cs-punct">:</span> <span class="cs-val">0.5</span><span class="cs-unit">rem</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#8a2be2</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">color</span><span class="cs-punct">:</span> <span class="cs-val">#fff</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">border</span><span class="cs-punct">:</span> <span class="cs-val">none</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">border-radius</span><span class="cs-punct">:</span> <span class="cs-val">5</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">cursor</span><span class="cs-punct">:</span> <span class="cs-val">pointer</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">box-shadow</span><span class="cs-punct">:</span> <span class="cs-val">0 4px 6px rgba(0, 0, 0, 0.2)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">transition</span><span class="cs-punct">:</span> <span class="cs-val">background-color 0.3s ease-in-out</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+                    <span class="cs-sel">button:hover</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">#7a1dd1</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+
+                <!-- Live Coming Soon Demo Widget -->
+                <div class="live-preview" style="margin-top: 24px;">
+                    <span class="preview-label">Live Interactive Hero Landing Card (Rendered from 05_coming_soon):</span>
+                    <div class="landing-hero-demo">
+                        <div class="landing-content-card">
+                            <div class="landing-logo-circle">☕</div>
+                            <h3>Coming Soon</h3>
+                            <p>We're working hard to bring something amazing. Stay tuned!</p>
+                            <form class="landing-form" onsubmit="event.preventDefault(); alert('Subscribed!');">
+                                <input type="email" placeholder="Enter your email" required class="landing-input">
+                                <button type="submit" class="landing-btn">Notify Me</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Quick Reference Table -->
+        <section id="table-ref">
+            <div class="section-header">
+                <div class="section-number">10</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -1689,28 +1861,37 @@
                         <tr><td><code>.highlight</code></td><td>Selector</td><td><code>.classname</code></td><td><code>.highlight { background-color: #21a2c9; }</code></td></tr>
                         <tr><td><code>#header</code></td><td>Selector</td><td><code>#idname</code> (unique per page)</td><td><code>#header { background-color: #860303; }</code></td></tr>
                         <tr><td><code>input[type="text"]</code></td><td>Selector</td><td><code>[attribute="value"]</code></td><td><code>input[type="text"] { border: 2px solid; }</code></td></tr>
+                        <tr><td><code>input[type="email"]</code></td><td>Selector</td><td><code>[type="email"]</code></td><td><code>input[type="email"] { padding: 0.5rem; }</code></td></tr>
                         <tr><td><code>article p</code></td><td>Combinator</td><td>ancestor descendant (space)</td><td><code>article p { font-style: italic; }</code></td></tr>
                         <tr><td><code>div &gt; p</code></td><td>Combinator</td><td>parent &gt; direct-child</td><td><code>div &gt; p { background-color: #880404; }</code></td></tr>
                         <tr><td><code>h1 + p</code></td><td>Combinator</td><td>prev + next-sibling</td><td><code>h1 + p { font-weight: bold; }</code></td></tr>
                         <tr><td><code>h2 ~ p</code></td><td>Combinator</td><td>prev ~ all-siblings</td><td><code>h2 ~ p { color: #860303; }</code></td></tr>
-                        <tr><td><code>:hover</code></td><td>Pseudo-class</td><td>Dynamic state rules</td><td><code>a:hover { background-color: #14a50e; }</code></td></tr>
+                        <tr><td><code>:hover</code></td><td>Pseudo-class</td><td>Dynamic state rules</td><td><code>button:hover { background-color: #7a1dd1; }</code></td></tr>
                         <tr><td><code>::first-letter</code></td><td>Pseudo-elem</td><td>Sub-element targeting</td><td><code>p::first-letter { font-size: 30px; }</code></td></tr>
+                        <tr><td><code>::after</code></td><td>Pseudo-elem</td><td>Virtual after-element</td><td><code>a::after { content: ""; transform: scaleX(0); }</code></td></tr>
                         <tr><td><code>h1, h2, h3</code></td><td>Grouping</td><td>comma-separated list</td><td><code>h1, h2, h3 { color: orange; }</code></td></tr>
                         <tr><td><code>box-sizing</code></td><td>Box Model</td><td><code>content-box</code>, <code>border-box</code></td><td><code>box-sizing: border-box;</code></td></tr>
                         <tr><td><code>display: block</code></td><td>Display</td><td><code>block</code></td><td><code>display: block;</code> (new line, 100% width)</td></tr>
                         <tr><td><code>display: inline</code></td><td>Display</td><td><code>inline</code></td><td><code>display: inline;</code> (inline flow, ignores w/h)</td></tr>
                         <tr><td><code>display: inline-block</code></td><td>Display</td><td><code>inline-block</code></td><td><code>display: inline-block;</code> (inline flow + w/h)</td></tr>
+                        <tr><td><code>linear-gradient</code></td><td>Background</td><td>angle, color stops</td><td><code>background: linear-gradient(135deg, #8a2be2, #4169e1);</code></td></tr>
+                        <tr><td><code>rgba()</code></td><td>Color</td><td>r, g, b, alpha</td><td><code>background-color: rgba(255, 255, 255, 0.9);</code></td></tr>
+                        <tr><td><code>rem</code></td><td>Units</td><td>scalable root units</td><td><code>padding: 2rem;</code> (1rem = 16px)</td></tr>
+                        <tr><td><code>box-shadow</code></td><td>Visual FX</td><td>x y blur spread color</td><td><code>box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);</code></td></tr>
+                        <tr><td><code>transition</code></td><td>Animation</td><td>property duration timing</td><td><code>transition: background-color 0.3s ease-in-out;</code></td></tr>
+                        <tr><td><code>object-fit</code></td><td>Media</td><td><code>contain</code>, <code>cover</code></td><td><code>object-fit: contain;</code></td></tr>
+                        <tr><td><code>max-width</code></td><td>Dimensions</td><td><code>px</code>, <code>%</code>, <code>rem</code></td><td><code>max-width: 400px;</code></td></tr>
                         <tr><td><code>color</code></td><td>Typography</td><td>names, hex (<code>#fff</code>), rgb</td><td><code>color: #1a50a0;</code></td></tr>
                         <tr><td><code>background-color</code></td><td>Background</td><td>hex (<code>#1a1a1a</code>), rgba</td><td><code>background-color: #d5d4d4;</code></td></tr>
-                        <tr><td><code>font-family</code></td><td>Typography</td><td>Font fallback stacks</td><td><code>font-family: Arial, sans-serif;</code></td></tr>
+                        <tr><td><code>font-family</code></td><td>Typography</td><td>Font fallback stacks</td><td><code>font-family: 'Noto Sans', sans-serif;</code></td></tr>
                         <tr><td><code>font-size</code></td><td>Typography</td><td><code>px</code>, <code>rem</code>, <code>em</code></td><td><code>font-size: 25px;</code></td></tr>
                         <tr><td><code>text-align</code></td><td>Typography</td><td><code>center</code>, <code>left</code>, <code>right</code></td><td><code>text-align: center;</code></td></tr>
-                        <tr><td><code>padding</code></td><td>Box Model</td><td><code>px</code> (inside spacing)</td><td><code>padding: 20px;</code></td></tr>
-                        <tr><td><code>margin</code></td><td>Box Model</td><td><code>px</code>, <code>auto</code> (outside spacing)</td><td><code>margin: 30px;</code></td></tr>
-                        <tr><td><code>border</code></td><td>Box Model</td><td>width style color</td><td><code>border: 5px solid #333;</code></td></tr>
-                        <tr><td><code>border-radius</code></td><td>Box Model</td><td><code>px</code>, <code>%</code> (rounded corners)</td><td><code>border-radius: 8px;</code></td></tr>
-                        <tr><td><code>width</code></td><td>Dimensions</td><td><code>px</code>, <code>%</code></td><td><code>width: 300px;</code></td></tr>
-                        <tr><td><code>height</code></td><td>Dimensions</td><td><code>px</code>, <code>vh</code>, <code>%</code></td><td><code>height: 200px;</code></td></tr>
+                        <tr><td><code>padding</code></td><td>Box Model</td><td><code>px</code>, <code>rem</code></td><td><code>padding: 2rem;</code></td></tr>
+                        <tr><td><code>margin</code></td><td>Box Model</td><td><code>px</code>, <code>auto</code>, <code>rem</code></td><td><code>margin-bottom: 20px;</code></td></tr>
+                        <tr><td><code>border</code></td><td>Box Model</td><td>width style color</td><td><code>border: 1px solid #ccc;</code></td></tr>
+                        <tr><td><code>border-radius</code></td><td>Box Model</td><td><code>px</code>, <code>%</code> (rounded corners)</td><td><code>border-radius: 10px;</code></td></tr>
+                        <tr><td><code>width</code></td><td>Dimensions</td><td><code>px</code>, <code>%</code></td><td><code>width: 150px;</code></td></tr>
+                        <tr><td><code>height</code></td><td>Dimensions</td><td><code>px</code>, <code>vh</code>, <code>%</code></td><td><code>height: 100%;</code></td></tr>
                         <tr><td><code>display: flex</code></td><td>Layout</td><td><code>flex</code></td><td><code>display: flex;</code></td></tr>
                         <tr><td><code>justify-content</code></td><td>Flexbox</td><td><code>center</code>, <code>space-between</code></td><td><code>justify-content: center;</code></td></tr>
                         <tr><td><code>align-items</code></td><td>Flexbox</td><td><code>center</code>, <code>flex-start</code></td><td><code>align-items: center;</code></td></tr>
