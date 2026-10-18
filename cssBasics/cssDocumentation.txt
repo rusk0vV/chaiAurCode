@@ -40,35 +40,122 @@ Inline Style > Internal/External Stylesheet > Browser Default Styles
 
 
 ================================================================================
-3. CSS SELECTORS
+3. CSS SELECTORS & COMBINATORS
 ================================================================================
 
-A selector determines which HTML element(s) to apply styles to:
+A selector determines which HTML element(s) to target and apply styles to.
+CSS provides simple selectors, combinators, attribute selectors, pseudo-classes,
+and pseudo-elements:
 
-1. ELEMENT (TYPE) SELECTOR:
-   - Targets all elements matching the HTML tag name.
+1. UNIVERSAL SELECTOR (*):
+   - Targets every single element on the HTML page.
+   - Most commonly used for global resets and enforcing consistent box-sizing.
+   - Syntax:
+     * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+     }
+
+2. ELEMENT (TYPE) SELECTOR:
+   - Targets all elements matching the given HTML tag name.
    - Syntax:
      p {
-         color: cornflowerblue;
-         font-size: 25px;
+         font-size: 16px;
+         margin-bottom: 10px;
      }
 
-2. CLASS SELECTOR (.):
+3. CLASS SELECTOR (.):
    - Targets any element with a matching class="name" attribute.
-   - Prefixed with a period (.). Can be reused across multiple elements.
+   - Prefixed with a period (.). Reusable across multiple elements on the same page.
    - Syntax:
-     .card {
-         background-color: #d5d4d4;
-         border-radius: 8px;
+     .highlight {
+         background-color: #21a2c9;
      }
 
-3. PSEUDO-CLASS SELECTOR (:):
-   - Targets an element based on its dynamic interaction state.
-   - Example: :hover (triggers when the mouse cursor points at the element).
+4. ID SELECTOR (#):
+   - Targets a unique element having a specific id="name" attribute.
+   - Prefixed with a hash (#). An ID must be unique per HTML page.
+   - Carries higher specificity than classes or element selectors.
    - Syntax:
-     button:hover {
-         background-color: #0741ac;
+     #header {
+         background-color: #860303;
      }
+
+5. ATTRIBUTE SELECTOR ([attribute="value"]):
+   - Targets elements based on the presence or exact value of an HTML attribute.
+   - Extremely useful for form inputs and custom data attributes.
+   - Syntax:
+     input[type="text"] {
+         border: 2px solid #21a2c9;
+     }
+
+6. DESCENDANT COMBINATOR (space):
+   - Targets all specified elements nested inside an ancestor, regardless of depth
+     (children, grandchildren, great-grandchildren, etc.).
+   - Syntax:
+     article p {
+         font-style: italic;
+         background-color: #1a1a1a;
+         color: #fff;
+         padding: 10px;
+     }
+
+7. CHILD COMBINATOR (>):
+   - Targets ONLY direct (immediate) children of a parent element.
+   - Ignores nested grandchildren or deeper descendants.
+   - Syntax:
+     div > p {
+         background-color: #880404;
+     }
+
+8. ADJACENT SIBLING COMBINATOR (+):
+   - Targets the immediate next sibling element that directly follows another element
+     at the same nesting level.
+   - Syntax:
+     h1 + p {
+         font-weight: bold;
+     }
+
+9. GENERAL SIBLING COMBINATOR (~):
+   - Targets all sibling elements following a specified element under the same parent,
+     even if they are separated by other elements.
+   - Syntax:
+     h2 ~ p {
+         color: #860303;
+     }
+
+10. PSEUDO-CLASS SELECTOR (:):
+    - Targets an element based on its dynamic interaction state or position.
+    - Examples: :hover, :focus, :active, :visited, :first-child.
+    - Syntax:
+      a:hover {
+          background-color: #14a50e;
+          text-decoration: none;
+          color: #1a1a1a;
+          padding: 5px;
+          margin: 4px;
+      }
+
+11. PSEUDO-ELEMENT SELECTOR (::):
+    - Targets and styles a specific piece or sub-part of an element's content.
+    - Examples: ::first-letter, ::first-line, ::before, ::after, ::selection.
+    - Syntax:
+      p::first-letter {
+          font-weight: bold;
+          font-size: 30px;
+      }
+
+12. GROUPING SELECTOR (,):
+    - Combines multiple different selectors so they share the exact same style declarations.
+    - Reduces repetitive CSS code (DRY - Don't Repeat Yourself).
+    - Syntax:
+      h1, h2, h3 {
+          color: orange;
+      }
+
+SELECTOR SPECIFICITY HIERARCHY:
+!important > Inline styles > IDs (#) > Classes (.), Attributes ([ ]), Pseudo-classes (:) > Elements (tag), Pseudo-elements (::) > Universal (*)
 
 
 ================================================================================
@@ -170,6 +257,19 @@ form {
 
 Property / Concept | Category    | Common Values            | Example One-Liner
 -------------------+-------------+--------------------------+-------------------------------------------
+* (Universal)      | Selector    | all elements             | * { margin: 0; box-sizing: border-box; }
+p (Type / Tag)     | Selector    | tag names (h1, p, div)   | p { font-size: 16px; }
+.highlight (Class) | Selector    | .classname               | .highlight { background-color: #21a2c9; }
+#header (ID)       | Selector    | #idname (unique)         | #header { background-color: #860303; }
+[type="text"]      | Selector    | [attr="value"]           | input[type="text"] { border: 2px solid; }
+article p (Desc.)  | Combinator  | ancestor descendant      | article p { font-style: italic; }
+div > p (Child)    | Combinator  | parent > direct-child    | div > p { background-color: #880404; }
+h1 + p (Adj. Sib.) | Combinator  | prev + next-sibling      | h1 + p { font-weight: bold; }
+h2 ~ p (Gen. Sib.) | Combinator  | prev ~ all-siblings      | h2 ~ p { color: #860303; }
+:hover             | Pseudo-class| interaction state        | button:hover { background-color: #0741ac; }
+::first-letter     | Pseudo-elem | sub-element target       | p::first-letter { font-size: 30px; }
+h1, h2, h3 (Group) | Selector    | comma-separated list     | h1, h2, h3 { color: orange; }
+box-sizing         | Box Model   | content-box, border-box  | box-sizing: border-box;
 color              | Typography  | names, hex (#fff), rgb   | color: #1a50a0;
 background-color   | Background  | hex (#1a1a1a), names     | background-color: #d5d4d4;
 font-family        | Typography  | font fallback stacks     | font-family: Arial, sans-serif;
@@ -185,7 +285,6 @@ display            | Layout      | flex, block, inline      | display: flex;
 justify-content    | Flexbox     | center, space-between    | justify-content: center;
 align-items        | Flexbox     | center, flex-start       | align-items: center;
 flex-direction     | Flexbox     | column, row              | flex-direction: column;
-:hover             | Pseudo-class| interaction state        | button:hover { background-color: #0741ac; }
 
 ================================================================================
                               End of Notes
