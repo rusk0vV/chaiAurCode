@@ -194,6 +194,40 @@
         .badge-oxide { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
         .badge-layout { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
         .badge-interact { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .badge-vite { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+        .badge-next { background: rgba(255, 255, 255, 0.12); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.28); }
+        .badge-ssr { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .badge-csr { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 20px;
+            margin-top: 14px;
+        }
+
+        .framework-card {
+            background: rgba(3, 7, 18, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .framework-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .framework-card.vite-accent {
+            border-top: 3px solid #a855f7;
+        }
+
+        .framework-card.next-accent {
+            border-top: 3px solid #38bdf8;
+        }
 
         .desc-text {
             color: var(--text-muted);
@@ -292,6 +326,17 @@
             text-decoration: underline;
             text-align: center;
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .demo-next-banner {
+            background-color: #fcd34d;
+            color: #000000;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 2.25rem;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35);
         }
 
         .color-palette-grid {
@@ -435,22 +480,23 @@
         <header class="doc-header">
             <div class="badge-pill">⚡ Chai Aur Code • Modern Frontend</div>
             <h1 class="main-title">Tailwind CSS v4 Documentation</h1>
-            <p class="subtitle">A visual, color-coded study guide covering utility-first philosophy, Vite + React integration, the Rust-powered Oxide engine, zero-config styling, autocomplete tooling, and responsive design patterns.</p>
+            <p class="subtitle">A visual, color-coded study guide covering utility-first philosophy, Vite &amp; Next.js project architectures, the Rust-powered Oxide engine, zero-config styling, initial setups, autocomplete tooling, and responsive design patterns.</p>
             
             <div class="quick-nav">
                 <a href="#philosophy">1. Utility-First Philosophy</a>
                 <a href="#v4-oxide">2. What's New in v4</a>
-                <a href="#setup">3. Vite + React Setup</a>
-                <a href="#intellisense">4. VS Code Autocomplete</a>
-                <a href="#spacing-colors">5. Spacing, Sizing &amp; Colors</a>
-                <a href="#typography">6. Typography &amp; Text</a>
-                <a href="#borders">7. Borders &amp; Shadows</a>
-                <a href="#flex-grid">8. Flexbox &amp; Grid</a>
-                <a href="#interactive">9. Interactive States (:hover)</a>
-                <a href="#responsive">10. Responsive Breakpoints</a>
-                <a href="#jsx-gotchas">11. HTML vs JSX</a>
-                <a href="#showcase">12. Live Component Showcase</a>
-                <a href="#table-ref">13. Quick Reference Table</a>
+                <a href="#vite-vs-next">3. Vite vs Next.js</a>
+                <a href="#setup-guides">4. Setup Guides (Vite &amp; Next)</a>
+                <a href="#intellisense">5. VS Code Autocomplete</a>
+                <a href="#spacing-colors">6. Spacing, Sizing &amp; Colors</a>
+                <a href="#typography">7. Typography &amp; Text</a>
+                <a href="#borders">8. Borders &amp; Shadows</a>
+                <a href="#flex-grid">9. Flexbox &amp; Grid</a>
+                <a href="#interactive">10. Interactive States</a>
+                <a href="#responsive">11. Responsive Breakpoints</a>
+                <a href="#jsx-gotchas">12. HTML vs JSX</a>
+                <a href="#showcase">13. Component Showcase</a>
+                <a href="#table-ref">14. Quick Reference Table</a>
             </div>
         </header>
 
@@ -523,44 +569,176 @@
             </div>
         </section>
 
-        <!-- 3. Vite + React Setup Guide -->
-        <section id="setup">
+        <!-- 3. Vite vs Next.js Architectural Comparison -->
+        <section id="vite-vs-next">
             <div class="section-header">
                 <div class="section-number">3</div>
-                <h2 class="section-title">Complete Setup Guide: Vite + React + Tailwind v4</h2>
+                <h2 class="section-title">Vite vs Next.js: Architectural Comparison &amp; Differences</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">Vite 6 • React 19 • @tailwindcss/vite</span>
-                    <span class="tag-badge badge-core">Workflow</span>
+                    <span class="tag-name">Vite (SPA / Client-Side) vs Next.js (Full-Stack / Hybrid SSR / RSC)</span>
+                    <span class="tag-badge badge-oxide">Architecture</span>
                 </div>
-                <p class="desc-text">The official, modern 4-step installation workflow to bootstrap any new project with Vite and Tailwind v4:</p>
+                <p class="desc-text">Both Vite and Next.js are industry standards in the modern React ecosystem, but they are built for fundamentally different application architectures:</p>
+
+                <div class="table-wrapper" style="margin-bottom: 20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature / Criterion</th>
+                                <th><span class="tag-badge badge-vite">Vite + React (tailfour)</span></th>
+                                <th><span class="tag-badge badge-next">Next.js 16 (tailnextfour)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Core Identity</strong></td>
+                                <td>Next-generation frontend build tool and dev server</td>
+                                <td>Full-stack production React framework</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rendering Model</strong></td>
+                                <td><strong>CSR (Client-Side Rendering):</strong> Browser downloads an empty HTML shell, then loads JS bundles to render components on client machine.</td>
+                                <td><strong>Hybrid SSR &amp; RSC:</strong> React Server Components (RSC), Server-Side Rendering (SSR), Static Generation (SSG), and Client components (<code>'use client'</code>).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>HTML Entry Point</strong></td>
+                                <td>Traditional <code>index.html</code> at project root with <code>&lt;div id="root"&gt;&lt;/div&gt;</code></td>
+                                <td>No <code>index.html</code>. Managed via App Router: <code>app/layout.js</code> wraps the root HTML/body and renders <code>app/page.js</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Routing Mechanism</strong></td>
+                                <td>No built-in router. Requires client libraries like <code>react-router-dom</code> or TanStack Router.</td>
+                                <td>Built-in file-system router. Folders under <code>app/</code> automatically define URL endpoints (e.g. <code>app/about/page.js</code> ➔ <code>/about</code>).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tailwind v4 Integration</strong></td>
+                                <td><code>@tailwindcss/vite</code> plugin registered in <code>vite.config.js</code>. Imported in <code>src/index.css</code>.</td>
+                                <td><code>@tailwindcss/turbopack</code> with Turbopack. Imported in <code>app/globals.css</code>. Zero custom config needed!</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dev Server &amp; Port</strong></td>
+                                <td>Runs on <code>http://localhost:5173</code> powered by native ES modules. Instant cold start.</td>
+                                <td>Runs on <code>http://localhost:3000</code> powered by Turbopack / Node runtime.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SEO &amp; Web Crawlers</strong></td>
+                                <td>Requires extra work (prerendering or helmet). Crawlers see an initial empty page shell.</td>
+                                <td>Out-of-the-box SEO perfection. HTML is pre-rendered on the server with full metadata before reaching the client.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Backend / API Routes</strong></td>
+                                <td>Frontend only. Requires a separate backend server (Express, FastAPI, Django, Go).</td>
+                                <td>Full-stack built-in. Create serverless API handlers in <code>app/api/.../route.js</code> alongside frontend code.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Image Optimization</strong></td>
+                                <td>Standard HTML <code>&lt;img&gt;</code> tags without automatic format conversion or lazy-loading resizing.</td>
+                                <td>Built-in <code>&lt;Image /&gt;</code> component automatically converts to WebP/AVIF and prevents layout shifts (CLS).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Production Deployment</strong></td>
+                                <td>Static bundle (<code>dist/</code> folder). Can be deployed for free anywhere (GitHub Pages, Vercel, Netlify, AWS S3).</td>
+                                <td>Requires a Node.js server environment or Serverless / Edge platform (Vercel, AWS Amplify, Docker container).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="prop-box">
-                    <div class="prop-title">Step-by-Step Installation Pipeline</div>
-                    <div class="prop-item"><span class="p-name">Step 1 (Scaffold):</span> <code>npm create vite@latest tailfour -- --template react</code></div>
-                    <div class="prop-item"><span class="p-name">Step 2 (Install):</span> <code>npm install tailwindcss @tailwindcss/vite</code></div>
-                    <div class="prop-item"><span class="p-name">Step 3 (Config):</span> Add <code>import tailwindcss from '@tailwindcss/vite'</code> and register <code>tailwindcss()</code> in <code>vite.config.js</code> plugins array.</div>
-                    <div class="prop-item"><span class="p-name">Step 4 (Import):</span> Add <code>@import "tailwindcss";</code> at the top of <code>src/index.css</code>.</div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="cs-comm">// vite.config.js</span><br>
-                    <span class="cs-kw">import</span> <span class="cs-val">{ defineConfig }</span> <span class="cs-kw">from</span> <span class="cs-val">'vite'</span><br>
-                    <span class="cs-kw">import</span> <span class="cs-val">react</span> <span class="cs-kw">from</span> <span class="cs-val">'@vitejs/plugin-react'</span><br>
-                    <span class="cs-kw">import</span> <span class="cs-val">tailwindcss</span> <span class="cs-kw">from</span> <span class="cs-val">'@tailwindcss/vite'</span><br><br>
-                    <span class="cs-kw">export default</span> <span class="cs-fn">defineConfig</span><span class="cs-punct">({</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">plugins</span><span class="cs-punct">: [</span><span class="cs-fn">react</span><span class="cs-punct">(),</span> <span class="cs-fn">tailwindcss</span><span class="cs-punct">()]</span><br>
-                    <span class="cs-punct">})</span>
+                    <div class="prop-title">Decision Guide: When to Choose Which?</div>
+                    <div class="prop-item"><span class="p-name">Choose Vite when:</span> Building single-page web apps (SPAs), internal admin dashboards, authenticated SaaS portals, offline/PWA apps, or learning pure React fundamentals without server-side complexity.</div>
+                    <div class="prop-item"><span class="p-name">Choose Next.js when:</span> Building public-facing commercial apps, e-commerce stores, blogs, marketing portals where Google SEO and instant initial page load speed are mission critical, or when you want frontend + backend APIs in a single cohesive repository.</div>
                 </div>
             </div>
         </section>
 
-        <!-- 4. VS Code Autocomplete -->
-        <section id="intellisense">
+        <!-- 4. Initial Setup Guides: Vite & Next.js with Tailwind v4 -->
+        <section id="setup-guides">
             <div class="section-header">
                 <div class="section-number">4</div>
+                <h2 class="section-title">Initial Setup Guides: Vite &amp; Next.js with Tailwind v4</h2>
+            </div>
+
+            <div class="framework-grid">
+                <!-- Vite Setup Card -->
+                <div class="framework-card vite-accent">
+                    <div class="card-header">
+                        <span class="tag-name">Vite 6 + React + Tailwind v4</span>
+                        <span class="tag-badge badge-vite">Client-Side (tailfour)</span>
+                    </div>
+                    <p class="desc-text">Modern, minimal 4-step workflow using the official Vite plugin:</p>
+
+                    <div class="prop-box">
+                        <div class="prop-title">Terminal Commands</div>
+                        <div class="prop-item"><span class="p-name">1. Scaffold:</span> <code>npm create vite@latest tailfour -- --template react</code></div>
+                        <div class="prop-item"><span class="p-name">2. Install deps:</span> <code>cd tailfour &amp;&amp; npm install</code></div>
+                        <div class="prop-item"><span class="p-name">3. Add Tailwind v4:</span> <code>npm install tailwindcss @tailwindcss/vite</code></div>
+                        <div class="prop-item"><span class="p-name">4. Start Dev Server:</span> <code>npm run dev</code> (Open <code>http://localhost:5173</code>)</div>
+                    </div>
+
+                    <div class="code-snippet">
+                        <span class="cs-comm">// vite.config.js</span><br>
+                        <span class="cs-kw">import</span> <span class="cs-val">{ defineConfig }</span> <span class="cs-kw">from</span> <span class="cs-val">'vite'</span><br>
+                        <span class="cs-kw">import</span> <span class="cs-val">react</span> <span class="cs-kw">from</span> <span class="cs-val">'@vitejs/plugin-react'</span><br>
+                        <span class="cs-kw">import</span> <span class="cs-val">tailwindcss</span> <span class="cs-kw">from</span> <span class="cs-val">'@tailwindcss/vite'</span><br><br>
+                        <span class="cs-kw">export default</span> <span class="cs-fn">defineConfig</span><span class="cs-punct">({</span><br>
+                        &nbsp;&nbsp;<span class="cs-prop">plugins</span><span class="cs-punct">: [</span><span class="cs-fn">react</span><span class="cs-punct">(),</span> <span class="cs-fn">tailwindcss</span><span class="cs-punct">()]</span><br>
+                        <span class="cs-punct">})</span>
+                    </div>
+
+                    <div class="code-snippet">
+                        <span class="cs-comm">/* src/index.css */</span><br>
+                        <span class="cs-kw">@import</span> <span class="cs-val">"tailwindcss"</span><span class="cs-punct">;</span>
+                    </div>
+                </div>
+
+                <!-- Next.js Setup Card -->
+                <div class="framework-card next-accent">
+                    <div class="card-header">
+                        <span class="tag-name">Next.js 16 + React 19 + Tailwind v4</span>
+                        <span class="tag-badge badge-next">Full-Stack (tailnextfour)</span>
+                    </div>
+                    <p class="desc-text">Zero-config automated setup powered by Next.js and Turbopack:</p>
+
+                    <div class="prop-box">
+                        <div class="prop-title">Terminal Commands &amp; Options</div>
+                        <div class="prop-item"><span class="p-name">1. Scaffold Project:</span> <code>npx create-next-app@latest tailnextfour</code></div>
+                        <div class="prop-item"><span class="p-name">Prompt Selections:</span><br>
+                            &bull; TypeScript? <code>No</code> (JavaScript)<br>
+                            &bull; ESLint? <code>Yes</code><br>
+                            &bull; Tailwind CSS? <code>Yes</code><br>
+                            &bull; App Router? <code>Yes (recommended)</code><br>
+                            &bull; Turbopack? <code>Yes</code>
+                        </div>
+                        <div class="prop-item"><span class="p-name">2. Start Dev Server:</span> <code>cd tailnextfour &amp;&amp; npm run dev</code> (Open <code>http://localhost:3000</code>)</div>
+                    </div>
+
+                    <div class="code-snippet">
+                        <span class="cs-comm">/* app/globals.css (Pre-generated by Next.js) */</span><br>
+                        <span class="cs-kw">@import</span> <span class="cs-val">"tailwindcss"</span><span class="cs-punct">;</span>
+                    </div>
+
+                    <div class="code-snippet">
+                        <span class="cs-comm">// app/page.js (Live Test Verification)</span><br>
+                        <span class="cs-kw">export default function</span> <span class="cs-fn">Home</span><span class="cs-punct">() {</span><br>
+                        &nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-punct">(</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-tag">&lt;h1</span> <span class="cs-attr">className</span>=<span class="cs-val">"bg-amber-300 text-4xl text-black p-4 font-bold rounded-lg"</span><span class="cs-tag">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testing Tailwind CSS<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-tag">&lt;/h1&gt;</span><br>
+                        &nbsp;&nbsp;<span class="cs-punct">);</span><br>
+                        <span class="cs-punct">}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. VS Code Autocomplete -->
+        <section id="intellisense">
+            <div class="section-header">
+                <div class="section-number">5</div>
                 <h2 class="section-title">VS Code Autocomplete &amp; IntelliSense Setup</h2>
             </div>
 
@@ -592,10 +770,10 @@
             </div>
         </section>
 
-        <!-- 5. Spacing, Sizing & Colors -->
+        <!-- 6. Spacing, Sizing & Colors -->
         <section id="spacing-colors">
             <div class="section-header">
-                <div class="section-number">5</div>
+                <div class="section-number">6</div>
                 <h2 class="section-title">Core Utilities: Spacing, Sizing &amp; Colors</h2>
             </div>
 
@@ -631,10 +809,10 @@
             </div>
         </section>
 
-        <!-- 6. Typography -->
+        <!-- 7. Typography -->
         <section id="typography">
             <div class="section-header">
-                <div class="section-number">6</div>
+                <div class="section-number">7</div>
                 <h2 class="section-title">Typography &amp; Text Utilities</h2>
             </div>
 
@@ -648,6 +826,7 @@
                 <div class="prop-box">
                     <div class="prop-title">Text Styling Rules</div>
                     <div class="prop-item"><span class="p-name">text-3xl:</span> <code>font-size: 1.875rem (30px); line-height: 2.25rem;</code></div>
+                    <div class="prop-item"><span class="p-name">text-4xl:</span> <code>font-size: 2.25rem (36px); line-height: 2.5rem;</code> (used in Next.js test banner!)</div>
                     <div class="prop-item"><span class="p-name">font-bold:</span> <code>font-weight: 700;</code> (or <code>font-extrabold: 800;</code>)</div>
                     <div class="prop-item"><span class="p-name">underline:</span> <code>text-decoration: underline;</code></div>
                     <div class="prop-item"><span class="p-name">text-center / text-left:</span> Sets horizontal text alignment.</div>
@@ -662,34 +841,34 @@
             </div>
         </section>
 
-        <!-- 7. Borders, Radius & Shadows -->
+        <!-- 8. Borders, Radius & Shadows -->
         <section id="borders">
             <div class="section-header">
-                <div class="section-number">7</div>
+                <div class="section-number">8</div>
                 <h2 class="section-title">Borders, Corner Radii &amp; Elevation Shadows</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">rounded-xl • shadow-lg • border-2</span>
+                    <span class="tag-name">rounded-xl • rounded-lg • shadow-lg • border-2</span>
                     <span class="tag-badge badge-core">Decorations</span>
                 </div>
                 <p class="desc-text">Create tactile depth, rounded containers, and modern border aesthetics with simple modifier utilities:</p>
 
                 <div class="prop-box">
                     <div class="prop-title">Border &amp; Elevation Scale</div>
-                    <div class="prop-item"><span class="p-name">rounded-lg (8px):</span> Standard cards and form inputs.</div>
-                    <div class="prop-item"><span class="p-name">rounded-xl (12px):</span> Premium modern containers (used in our test banner).</div>
+                    <div class="prop-item"><span class="p-name">rounded-lg (8px):</span> Standard cards and modern button elements.</div>
+                    <div class="prop-item"><span class="p-name">rounded-xl (12px):</span> Premium modern containers (used in our Vite test banner).</div>
                     <div class="prop-item"><span class="p-name">rounded-full (9999px):</span> Circular avatars and pill badges.</div>
                     <div class="prop-item"><span class="p-name">shadow-lg / shadow-2xl:</span> Adds soft, layered ambient box shadows.</div>
                 </div>
             </div>
         </section>
 
-        <!-- 8. Flexbox & Grid -->
+        <!-- 9. Flexbox & Grid -->
         <section id="flex-grid">
             <div class="section-header">
-                <div class="section-number">8</div>
+                <div class="section-number">9</div>
                 <h2 class="section-title">Flexbox &amp; CSS Grid in Tailwind</h2>
             </div>
 
@@ -709,10 +888,10 @@
             </div>
         </section>
 
-        <!-- 9. Interactive States -->
+        <!-- 10. Interactive States -->
         <section id="interactive">
             <div class="section-header">
-                <div class="section-number">9</div>
+                <div class="section-number">10</div>
                 <h2 class="section-title">Interactive States (:hover, :focus, :active) &amp; Transitions</h2>
             </div>
 
@@ -742,10 +921,10 @@
             </div>
         </section>
 
-        <!-- 10. Responsive Breakpoints -->
+        <!-- 11. Responsive Breakpoints -->
         <section id="responsive">
             <div class="section-header">
-                <div class="section-number">10</div>
+                <div class="section-number">11</div>
                 <h2 class="section-title">Responsive Design &amp; Mobile-First Breakpoints</h2>
             </div>
 
@@ -774,10 +953,10 @@
             </div>
         </section>
 
-        <!-- 11. HTML vs JSX Gotchas -->
+        <!-- 12. HTML vs JSX Gotchas -->
         <section id="jsx-gotchas">
             <div class="section-header">
-                <div class="section-number">11</div>
+                <div class="section-number">12</div>
                 <h2 class="section-title">HTML vs React (JSX) Key Differences</h2>
             </div>
 
@@ -797,33 +976,42 @@
             </div>
         </section>
 
-        <!-- 12. Live Component Showcase -->
+        <!-- 13. Live Component Showcase -->
         <section id="showcase">
             <div class="section-header">
-                <div class="section-number">12</div>
-                <h2 class="section-title">Live Component Showcase (Rendered from tailfour)</h2>
+                <div class="section-number">13</div>
+                <h2 class="section-title">Live Component Showcase (Vite &amp; Next.js Demos)</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">Real-Time Component Output</span>
+                    <span class="tag-name">Real-Time Component Outputs</span>
                     <span class="tag-badge badge-interact">Live Lab</span>
                 </div>
-                <p class="desc-text">The exact component output currently active in your <code>src/App.jsx</code> and running on your Vite dev server:</p>
+                <p class="desc-text">The exact component outputs currently active across both our Vite and Next.js projects:</p>
 
-                <div class="live-preview" style="background: #0b0f19;">
-                    <span class="preview-label">Live Output of: className="text-3xl font-bold underline bg-blue-500 p-12 rounded-xl text-red-400"</span>
+                <!-- Vite Output Demo -->
+                <div class="live-preview" style="background: #0b0f19; margin-bottom: 24px;">
+                    <span class="preview-label">1. Vite Live Output (tailfour • src/App.jsx • localhost:5173):<br>className="text-3xl font-bold underline bg-blue-500 p-12 rounded-xl text-red-400"</span>
                     <div class="demo-user-banner">
                         Hello world!
+                    </div>
+                </div>
+
+                <!-- Next.js Output Demo -->
+                <div class="live-preview" style="background: #0b0f19;">
+                    <span class="preview-label">2. Next.js Live Output (tailnextfour • app/page.js • localhost:3000):<br>className="bg-amber-300 text-4xl text-black p-4 font-bold rounded-lg"</span>
+                    <div class="demo-next-banner">
+                        Testing Tailwind CSS
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 13. Quick Reference Table -->
+        <!-- 14. Quick Reference Table -->
         <section id="table-ref">
             <div class="section-header">
-                <div class="section-number">13</div>
+                <div class="section-number">14</div>
                 <h2 class="section-title">One-Liner Quick Reference Table</h2>
             </div>
 
@@ -838,20 +1026,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><code>@import "tailwindcss";</code></td><td>Setup</td><td>Vite Compiler Entry</td><td>Activates Tailwind v4 in <code>src/index.css</code></td></tr>
+                        <tr><td><code>@import "tailwindcss";</code></td><td>Setup</td><td>Vite &amp; Next Compiler Entry</td><td>Activates Tailwind v4 in <code>index.css</code> or <code>globals.css</code></td></tr>
+                        <tr><td><code>@tailwindcss/vite</code></td><td>Tooling</td><td>Vite 6 Plugin</td><td>Plugin configured in <code>vite.config.js</code> for instant HMR</td></tr>
+                        <tr><td><code>@tailwindcss/turbopack</code></td><td>Tooling</td><td>Next.js Turbopack Plugin</td><td>Zero-config bundler integration in Next.js 16</td></tr>
                         <tr><td><code>p-4 / p-12</code></td><td>Spacing</td><td><code>padding: 1rem / 3rem;</code></td><td>All-sides padding scale (4px units)</td></tr>
                         <tr><td><code>px-6 / py-2</code></td><td>Spacing</td><td><code>padding-inline / block;</code></td><td>Horizontal and vertical padding</td></tr>
                         <tr><td><code>m-4 / mx-auto</code></td><td>Spacing</td><td><code>margin: 1rem / 0 auto;</code></td><td>Outside spacing and centering</td></tr>
                         <tr><td><code>w-full / w-screen</code></td><td>Sizing</td><td><code>width: 100% / 100vw;</code></td><td>Container width controls</td></tr>
                         <tr><td><code>min-h-screen</code></td><td>Sizing</td><td><code>min-height: 100vh;</code></td><td>Guaranteed full-viewport height</td></tr>
                         <tr><td><code>bg-blue-500</code></td><td>Background</td><td><code>background-color: #3b82f6;</code></td><td>Vibrant medium blue background</td></tr>
-                        <tr><td><code>bg-amber-400</code></td><td>Background</td><td><code>background-color: #fbbf24;</code></td><td>Warm amber/gold background</td></tr>
+                        <tr><td><code>bg-amber-300 / bg-amber-400</code></td><td>Background</td><td><code>background-color: #fcd34d / #fbbf24;</code></td><td>Warm amber/gold background (used in Next.js test banner!)</td></tr>
                         <tr><td><code>text-white / text-black</code></td><td>Typography</td><td><code>color: #fff / #000;</code></td><td>Solid text color</td></tr>
                         <tr><td><code>text-red-400</code></td><td>Typography</td><td><code>color: #f87171;</code></td><td>Soft crimson text color</td></tr>
                         <tr><td><code>text-3xl / text-4xl</code></td><td>Typography</td><td><code>font-size: 1.875rem / 2.25rem;</code></td><td>Fluid headline typography scale</td></tr>
                         <tr><td><code>font-bold / font-extrabold</code></td><td>Typography</td><td><code>font-weight: 700 / 800;</code></td><td>Font boldness level</td></tr>
                         <tr><td><code>underline</code></td><td>Typography</td><td><code>text-decoration: underline;</code></td><td>Text underline decoration</td></tr>
-                        <tr><td><code>rounded-xl</code></td><td>Borders</td><td><code>border-radius: 0.75rem (12px);</code></td><td>Smooth card corner rounding</td></tr>
+                        <tr><td><code>rounded-lg / rounded-xl</code></td><td>Borders</td><td><code>border-radius: 0.5rem / 0.75rem;</code></td><td>Smooth card and banner corner rounding</td></tr>
                         <tr><td><code>rounded-full</code></td><td>Borders</td><td><code>border-radius: 9999px;</code></td><td>Pill buttons and circle avatars</td></tr>
                         <tr><td><code>flex / flex-col</code></td><td>Flexbox</td><td><code>display: flex; flex-direction: col;</code></td><td>1D flexbox direction &amp; context</td></tr>
                         <tr><td><code>items-center / justify-center</code></td><td>Flexbox</td><td><code>align-items: center; justify: center;</code></td><td>Dual-axis absolute centering</td></tr>
