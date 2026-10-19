@@ -569,6 +569,108 @@
         .pastel-c4 { background-color: #ffffba; }
         .pastel-c5 { background-color: #ffdfba; }
 
+        /* CSS Grid Masterclass Demos (07_grid) */
+        .grid-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .grid-demo-card {
+            background: #090e17;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .grid-demo-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .grid-demo-card-header .code-pill {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            padding: 3px 8px;
+            border-radius: 5px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            font-weight: 500;
+        }
+
+        .grid-demo-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .grid-box-stage {
+            background-color: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            display: grid;
+            padding: 8px;
+            box-sizing: border-box;
+            position: relative;
+            min-height: 140px;
+        }
+
+        .grid-tile {
+            background-color: #3b82f6;
+            color: #ffffff;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .grid-tile:hover {
+            transform: scale(1.03);
+        }
+
+        .grid-tile-even {
+            background-color: #ef4444;
+        }
+
+        .grid-tile-orange {
+            background-color: #f97316;
+            border: 1px solid #000;
+        }
+
+        .grid-tile-green {
+            background-color: #10b981;
+        }
+
+        .grid-tile-area {
+            background-color: #8b5cf6;
+            color: #fff;
+            padding: 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+
         /* Selectors Interactive Demo Container */
         .selectors-demo {
             background: #090e17;
@@ -1077,19 +1179,20 @@
         <header class="doc-header">
             <div class="badge-pill">🎨 Chai Aur Code • CSS Fundamentals</div>
             <h1 class="main-title">CSS Basics Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, navigation bar patterns, Coming Soon hero landing UI, colors, and typography.</p>
+            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, Flexbox 1D &amp; Grid 2D masterclasses, navigation bar patterns, Coming Soon hero landing UI, colors, and typography.</p>
             
             <div class="quick-nav">
                 <a href="#methods">1. 3 Ways to Apply CSS</a>
                 <a href="#selectors">2. Selectors &amp; Combinators</a>
                 <a href="#box-model">3. Box Model &amp; Display</a>
                 <a href="#flexbox">4. Flexbox Layout</a>
-                <a href="#typography">5. Colors &amp; Gradients</a>
-                <a href="#pseudo">6. Interactive States &amp; Pseudo</a>
-                <a href="#units">7. CSS Units (px, rem, vh)</a>
-                <a href="#navbars">8. Navigation Bar Patterns</a>
-                <a href="#hero-landing">9. Hero Landing UI</a>
-                <a href="#table-ref">10. Quick Reference Table</a>
+                <a href="#grid">5. CSS Grid Layout</a>
+                <a href="#typography">6. Colors &amp; Gradients</a>
+                <a href="#pseudo">7. Interactive States</a>
+                <a href="#units">8. CSS Units (px, rem, vh)</a>
+                <a href="#navbars">9. Navigation Bar Patterns</a>
+                <a href="#hero-landing">10. Hero Landing UI</a>
+                <a href="#table-ref">11. Quick Reference Table</a>
             </div>
         </header>
 
@@ -1920,10 +2023,315 @@
             </div>
         </section>
 
-        <!-- 5. Colors & Typography -->
-        <section id="typography">
+        <!-- 5. CSS Grid Layout -->
+        <section id="grid">
             <div class="section-header">
                 <div class="section-number">5</div>
+                <h2 class="section-title">CSS Grid Layout (2D Layout Masterclass)</h2>
+            </div>
+
+            <!-- Card 5A: Grid Architecture & Core Terminology -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">2D Grid Architecture vs. 1D Flexbox</span>
+                    <span class="tag-badge badge-layout">2D System</span>
+                </div>
+                <p class="desc-text">CSS Grid is the ultimate two-dimensional layout system for the web. While Flexbox manages layouts in one dimension at a time (rows OR columns), CSS Grid coordinates <strong>both horizontal rows and vertical columns simultaneously</strong>:</p>
+                
+                <div class="prop-box">
+                    <div class="prop-title">Core Grid Terminology</div>
+                    <div class="prop-item">
+                        <span class="p-name">1. Grid Lines:</span> The invisible numbered dividing lines that separate tracks horizontally and vertically (1, 2, 3... and <code>-1</code> for the final edge).
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">2. Grid Track:</span> The entire strip/channel between two adjacent grid lines (a row track or a column track).
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">3. Grid Cell:</span> The single intersection unit of a row and a column track (the smallest building block).
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">4. Grid Area:</span> Any rectangular region bounded by 4 grid lines containing one or more grid cells.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">⚡ When to Use What:</span> Use <strong>Flexbox</strong> for micro-components, content-driven sizing, navbars, and buttons. Use <strong>CSS Grid</strong> for macro page layouts, dashboard cards, complex overlapping tiles, and 2D galleries.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Basic 3x3 Grid Definition */</span><br>
+                    <span class="cs-sel">.grid-container</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">grid</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-template-columns</span><span class="cs-punct">:</span> <span class="cs-val">repeat(3, 1fr)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-template-rows</span><span class="cs-punct">:</span> <span class="cs-val">repeat(3, 100px)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">gap</span><span class="cs-punct">:</span> <span class="cs-val">10</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 5B: Grid Container Properties -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Grid Container Properties (Parent)</span>
+                    <span class="tag-badge badge-core">Parent Control</span>
+                </div>
+                <p class="desc-text">Applied to the parent container to establish track sizing, fractional distribution, gaps, and semantic template areas:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Container Property Reference</div>
+                    <div class="prop-item">
+                        <span class="p-name">display: grid | inline-grid;</span> — Activates the 2D grid formatting context.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">grid-template-columns:</span> Defines column tracks using units like <code>1fr</code> (fractional space), <code>repeat(3, 1fr)</code>, or fluid functions like <code>repeat(auto-fit, minmax(100px, 1fr))</code>.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">grid-template-rows:</span> Defines row heights (e.g. <code>100px 200px 100px</code> or <code>repeat(3, 100px)</code>).
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">gap: &lt;row-gap&gt; &lt;col-gap&gt;;</span> — Clean gutter spacing between rows and columns (e.g. <code>gap: 10px;</code>).
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">grid-template-areas:</span> An intuitive visual ASCII blueprint defining named sections of your page layout.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">align-items &amp; justify-items:</span> Aligns items vertically and horizontally within their respective grid cells.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Semantic Page Layout with Grid Template Areas */</span><br>
+                    <span class="cs-sel">.app-layout</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">grid</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-template-areas</span><span class="cs-punct">:</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-val">'header header header'</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-val">'sidebar main main'</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-val">'footer footer footer'</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">gap</span><span class="cs-punct">:</span> <span class="cs-val">12</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 5C: Grid Item Placement & Spanning -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Grid Item Properties (Children)</span>
+                    <span class="tag-badge badge-pseudo">Child Placement</span>
+                </div>
+                <p class="desc-text">Applied to individual child elements to control custom column/row spanning, named area assignment, and nested grids:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Child Item Property Reference</div>
+                    <div class="prop-item">
+                        <span class="p-name">grid-column: start / end;</span> — Dictates start and end column lines. <code>grid-column: 1 / 3;</code> spans 2 columns from line 1 to line 3.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">grid-row: start / end;</span> — Dictates start and end row lines. <code>grid-row: 1 / 3;</code> makes the item span across 2 vertical rows.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">grid-area: &lt;name&gt;;</span> — Attaches the child element to a named area specified in <code>grid-template-areas</code> (e.g. <code>grid-area: header;</code>).
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">Nested Grids:</span> Any grid child can also declare <code>display: grid;</code> to create a completely autonomous sub-grid within its own boundaries!
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">Auto Rows:</span> When items contain uneven or dynamic content, CSS Grid automatically stretches the entire row track cleanly to fit the tallest item.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Multi-Column and Multi-Row Spanning Item */</span><br>
+                    <span class="cs-sel">.featured-tile</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-column</span><span class="cs-punct">:</span> <span class="cs-val">1 / 3</span><span class="cs-punct">;</span> <span class="cs-comm">/* Spans horizontally across columns 1 &amp; 2 */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-row</span><span class="cs-punct">:</span> <span class="cs-val">1 / 3</span><span class="cs-punct">;</span>    <span class="cs-comm">/* Spans vertically across rows 1 &amp; 2 (2x2 big tile) */</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-sel">.header-bar</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-area</span><span class="cs-punct">:</span> <span class="cs-val">header</span><span class="cs-punct">;</span>    <span class="cs-comm">/* Occupies the named 'header' region */</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 5D: 10 Masterclass Live Demonstrations -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">10 Masterclass Demonstrations (from 07_grid)</span>
+                    <span class="tag-badge badge-layout">Live Demos</span>
+                </div>
+                <p class="desc-text">A complete, interactive visual recreation of the exercises built in <code>07_grid/gridbasics.html</code> and <code>07_grid/gridMasterClass.html</code>:</p>
+
+                <div class="grid-gallery-grid">
+                    <!-- Demo A: Line-Based Spanning (gridbasics.html) -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>0. Line Placement (gridbasics.html)</span>
+                            <span class="code-pill">grid-column &amp; grid-row</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Item 1 spans cols 1/3; Item 2 spans 2 vertical rows (1/3) at col 3/4; Item 6 spans cols 2/4.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 60px 100px 60px; gap: 4px;">
+                            <div class="grid-tile grid-tile-orange" style="grid-column: 1/3; grid-row: 1/2;">1</div>
+                            <div class="grid-tile grid-tile-orange" style="grid-column: 3/4; grid-row: 1/3;">2</div>
+                            <div class="grid-tile grid-tile-orange">3</div>
+                            <div class="grid-tile grid-tile-orange">4</div>
+                            <div class="grid-tile grid-tile-orange">5</div>
+                            <div class="grid-tile grid-tile-orange" style="grid-column: 2/4;">6</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 1: Basic 3x3 Grid -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>1. Basic 3x3 Grid</span>
+                            <span class="code-pill">repeat(3, 1fr)</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Standard 3-column by 3-row grid with alternating colors using <code>:nth-child(even)</code>.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 50px); gap: 8px;">
+                            <div class="grid-tile">1</div>
+                            <div class="grid-tile grid-tile-even">2</div>
+                            <div class="grid-tile">3</div>
+                            <div class="grid-tile grid-tile-even">4</div>
+                            <div class="grid-tile">5</div>
+                            <div class="grid-tile grid-tile-even">6</div>
+                            <div class="grid-tile">7</div>
+                            <div class="grid-tile grid-tile-even">8</div>
+                            <div class="grid-tile">9</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 2: Column Sizes (Fractional Unit fr) -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>2. Fractional Column Sizes</span>
+                            <span class="code-pill">1fr 2fr 1fr</span>
+                        </div>
+                        <p class="grid-demo-card-desc">The middle column receives double the available space (<code>2fr</code>) compared to the outer columns.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: 1fr 2fr 1fr; gap: 10px;">
+                            <div class="grid-tile">1 (1fr)</div>
+                            <div class="grid-tile grid-tile-even">2 (2fr Double Width)</div>
+                            <div class="grid-tile">3 (1fr)</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 3: Grid with Gaps -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>3. Grid with Gaps</span>
+                            <span class="code-pill">gap: 20px</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Explicit gutters between cells without needing margin calculations or resets.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                            <div class="grid-tile">1</div>
+                            <div class="grid-tile grid-tile-even">2</div>
+                            <div class="grid-tile">3</div>
+                            <div class="grid-tile grid-tile-even">4</div>
+                            <div class="grid-tile">5</div>
+                            <div class="grid-tile grid-tile-even">6</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 4: Grid Item Placement (2x2 Tile) -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>4. Item Placement &amp; Spanning</span>
+                            <span class="code-pill">col: 1/3 &bull; row: 1/3</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Box 1 spans 2 cols &amp; 2 rows forming a 2x2 hero tile; Box 5 spans columns 2 to 4.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 50px); gap: 8px;">
+                            <div class="grid-tile" style="grid-column: 1/3; grid-row: 1/3;">1 (2x2 Big Tile)</div>
+                            <div class="grid-tile grid-tile-even">2</div>
+                            <div class="grid-tile">3</div>
+                            <div class="grid-tile grid-tile-even">4</div>
+                            <div class="grid-tile" style="grid-column: 2/4;">5 (Spans 2 cols)</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 5: Grid Template Areas -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>5. Grid Template Areas</span>
+                            <span class="code-pill">grid-template-areas</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Semantic page scaffolding using named ASCII mapping for Header, Sidebar, Main, and Footer.</p>
+                        <div class="grid-box-stage" style="grid-template-areas: 'header header header' 'sidebar main main' 'footer footer footer'; gap: 8px; min-height: 180px;">
+                            <div class="grid-tile-area" style="grid-area: header; background-color: #6366f1;">Header</div>
+                            <div class="grid-tile-area" style="grid-area: sidebar; background-color: #06b6d4;">Sidebar</div>
+                            <div class="grid-tile-area" style="grid-area: main; background-color: #3b82f6;">Main Content</div>
+                            <div class="grid-tile-area" style="grid-area: footer; background-color: #475569;">Footer</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 6: Auto-Fit and Minmax -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>6. Auto-Fit &amp; Minmax</span>
+                            <span class="code-pill">minmax(80px, 1fr)</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Responsive auto-wrapping! As container width changes, items wrap and flex automatically without media queries.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px;">
+                            <div class="grid-tile">1</div>
+                            <div class="grid-tile grid-tile-even">2</div>
+                            <div class="grid-tile">3</div>
+                            <div class="grid-tile grid-tile-even">4</div>
+                            <div class="grid-tile">5</div>
+                            <div class="grid-tile grid-tile-even">6</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 7: Alignment and Justification -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>7. Cell Alignment</span>
+                            <span class="code-pill">align-items: center</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Vertically centers items inside their grid cell tracks within a fixed 140px container height.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(3, 1fr); height: 140px; align-items: center; gap: 10px;">
+                            <div class="grid-tile" style="padding: 10px;">1</div>
+                            <div class="grid-tile grid-tile-even" style="padding: 10px;">2</div>
+                            <div class="grid-tile" style="padding: 10px;">3</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 8: Nested Grids -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>8. Nested Grids</span>
+                            <span class="code-pill">display: grid inside item</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Box 2 contains another independent 2x2 grid container holding 4 green sub-tiles (2.1 to 2.4).</p>
+                        <div class="grid-box-stage" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="grid-tile" style="height: 100%;">Box 1</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background-color: #0f172a; padding: 6px; border-radius: 6px;">
+                                <div class="grid-tile grid-tile-green" style="padding: 6px; font-size: 0.8rem;">2.1</div>
+                                <div class="grid-tile grid-tile-green" style="padding: 6px; font-size: 0.8rem;">2.2</div>
+                                <div class="grid-tile grid-tile-green" style="padding: 6px; font-size: 0.8rem;">2.3</div>
+                                <div class="grid-tile grid-tile-green" style="padding: 6px; font-size: 0.8rem;">2.4</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 9: Grid with Auto Rows -->
+                    <div class="grid-demo-card">
+                        <div class="grid-demo-card-header">
+                            <span>9. Auto Rows &amp; Dynamic Content</span>
+                            <span class="code-pill">Implicit Auto Sizing</span>
+                        </div>
+                        <p class="grid-demo-card-desc">Box 5 has taller content with extra padding; the entire row track automatically expands to match it.</p>
+                        <div class="grid-box-stage" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                            <div class="grid-tile">1</div>
+                            <div class="grid-tile grid-tile-even">2</div>
+                            <div class="grid-tile">3</div>
+                            <div class="grid-tile grid-tile-even">4</div>
+                            <div class="grid-tile" style="padding: 24px; font-size: 0.85rem;">5 (Taller Content)</div>
+                            <div class="grid-tile grid-tile-even">6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Colors & Typography -->
+        <section id="typography">
+            <div class="section-header">
+                <div class="section-number">6</div>
                 <h2 class="section-title">Colors, Gradients &amp; Typography</h2>
             </div>
 
@@ -1961,10 +2369,10 @@
             </div>
         </section>
 
-        <!-- 6. Pseudo-classes -->
+        <!-- 7. Pseudo-classes -->
         <section id="pseudo">
             <div class="section-header">
-                <div class="section-number">6</div>
+                <div class="section-number">7</div>
                 <h2 class="section-title">Interactive States (:hover)</h2>
             </div>
 
@@ -1995,10 +2403,10 @@
             </div>
         </section>
 
-        <!-- 7. Units -->
+        <!-- 8. Units -->
         <section id="units">
             <div class="section-header">
-                <div class="section-number">7</div>
+                <div class="section-number">8</div>
                 <h2 class="section-title">CSS Units (px vs rem vs vh / %)</h2>
             </div>
 
@@ -2027,10 +2435,10 @@
             </div>
         </section>
 
-        <!-- 8. Navigation Bar Variations & UI Patterns -->
+        <!-- 9. Navigation Bar Variations & UI Patterns -->
         <section id="navbars">
             <div class="section-header">
-                <div class="section-number">8</div>
+                <div class="section-number">9</div>
                 <h2 class="section-title">Navigation Bar Patterns &amp; UI Hover Effects</h2>
             </div>
 
@@ -2142,10 +2550,10 @@
             </div>
         </section>
 
-        <!-- 9. Hero Landing Page & Modern UI Components -->
+        <!-- 10. Hero Landing Page & Modern UI Components -->
         <section id="hero-landing">
             <div class="section-header">
-                <div class="section-number">9</div>
+                <div class="section-number">10</div>
                 <h2 class="section-title">Hero Landing Page &amp; Modern UI Polish</h2>
             </div>
 
@@ -2201,10 +2609,10 @@
             </div>
         </section>
 
-        <!-- 10. Quick Reference Table -->
+        <!-- 11. Quick Reference Table -->
         <section id="table-ref">
             <div class="section-header">
-                <div class="section-number">10</div>
+                <div class="section-number">11</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -2261,12 +2669,21 @@
                         <tr><td><code>align-items</code></td><td>Flexbox</td><td><code>center</code>, <code>flex-start</code>, <code>stretch</code></td><td><code>align-items: center;</code></td></tr>
                         <tr><td><code>flex-wrap</code></td><td>Flexbox</td><td><code>nowrap</code>, <code>wrap</code>, <code>wrap-reverse</code></td><td><code>flex-wrap: wrap;</code></td></tr>
                         <tr><td><code>align-content</code></td><td>Flexbox</td><td><code>space-around</code>, <code>center</code>, <code>stretch</code></td><td><code>align-content: space-around;</code></td></tr>
-                        <tr><td><code>gap</code></td><td>Flexbox</td><td><code>px</code>, <code>rem</code></td><td><code>gap: 15px;</code> (gutters between items)</td></tr>
+                        <tr><td><code>gap</code></td><td>Grid/Flex</td><td><code>px</code>, <code>rem</code></td><td><code>gap: 15px;</code> (gutters between items)</td></tr>
                         <tr><td><code>order</code></td><td>Flex Item</td><td>integer (<code>0</code>, <code>1</code>, <code>5</code>, <code>-1</code>)</td><td><code>order: 5;</code> (visual reordering)</td></tr>
                         <tr><td><code>flex-grow</code></td><td>Flex Item</td><td>number (<code>0</code>, <code>1</code>, <code>5</code>)</td><td><code>flex-grow: 5;</code> (absorbs extra space)</td></tr>
                         <tr><td><code>flex-shrink</code></td><td>Flex Item</td><td>number (<code>1</code>, <code>0</code>)</td><td><code>flex-shrink: 0;</code> (prevents shrink)</td></tr>
                         <tr><td><code>flex-basis</code></td><td>Flex Item</td><td><code>px</code>, <code>rem</code>, <code>auto</code></td><td><code>flex-basis: 200px;</code></td></tr>
                         <tr><td><code>align-self</code></td><td>Flex Item</td><td><code>flex-start</code>, <code>center</code>, <code>stretch</code></td><td><code>align-self: flex-end;</code> (item override)</td></tr>
+                        <tr><td><code>display: grid</code></td><td>Grid</td><td><code>grid</code>, <code>inline-grid</code></td><td><code>display: grid;</code> (2D layout context)</td></tr>
+                        <tr><td><code>grid-template-columns</code></td><td>Grid</td><td><code>repeat(3, 1fr)</code>, <code>1fr 2fr</code></td><td><code>grid-template-columns: repeat(3, 1fr);</code></td></tr>
+                        <tr><td><code>grid-template-rows</code></td><td>Grid</td><td><code>repeat(3, 100px)</code>, <code>px</code></td><td><code>grid-template-rows: 100px 200px;</code></td></tr>
+                        <tr><td><code>grid-template-areas</code></td><td>Grid</td><td><code>"header header" "main"</code></td><td><code>grid-template-areas: 'h h' 'm s';</code></td></tr>
+                        <tr><td><code>grid-column</code></td><td>Grid Item</td><td>start / end (<code>1/3</code>, <code>span 2</code>)</td><td><code>grid-column: 1 / 3;</code> (spans 2 cols)</td></tr>
+                        <tr><td><code>grid-row</code></td><td>Grid Item</td><td>start / end (<code>1/3</code>, <code>span 2</code>)</td><td><code>grid-row: 1 / 3;</code> (spans 2 rows)</td></tr>
+                        <tr><td><code>grid-area</code></td><td>Grid Item</td><td>named area or coordinates</td><td><code>grid-area: header;</code></td></tr>
+                        <tr><td><code>minmax()</code></td><td>Grid</td><td><code>minmax(min, max)</code></td><td><code>minmax(100px, 1fr)</code></td></tr>
+                        <tr><td><code>repeat()</code></td><td>Grid</td><td><code>repeat(count, track)</code></td><td><code>repeat(auto-fit, minmax(100px, 1fr))</code></td></tr>
                     </tbody>
                 </table>
             </div>

@@ -407,7 +407,144 @@ D. SUMMARY OF THE 9 MASTERCLASS DEMOS FROM 06_FLEXBOX:
 
 
 ================================================================================
-6. COLORS, GRADIENTS & TYPOGRAPHY
+6. CSS GRID LAYOUT (2D ARCHITECTURE & GRID MASTERCLASS)
+================================================================================
+
+CSS Grid Layout is the most powerful 2-dimensional layout system in CSS. While
+Flexbox handles 1-dimensional layouts (either a row OR a column at a time),
+CSS Grid controls BOTH rows and columns simultaneously in a unified matrix.
+
+--------------------------------------------------------------------------------
+FLEXBOX vs CSS GRID: WHEN TO USE WHAT?
+--------------------------------------------------------------------------------
+- Use FLEXBOX when:
+  * You need 1D alignment (single row or single column).
+  * Content dictates the sizing (e.g. navigation bars, button groups, centering a card).
+  * Items wrap naturally without aligning to a rigid grid column structure.
+- Use CSS GRID when:
+  * You need 2D control (rows AND columns at the same time).
+  * Layout structure dictates item placement (e.g. dashboards, photo galleries, page scaffolding).
+  * You need precise spanning across multiple rows and columns (e.g. 2x2 hero card).
+  * You want full-page responsive layouts with auto-fit/minmax without media queries.
+
+--------------------------------------------------------------------------------
+CORE GRID TERMINOLOGY:
+--------------------------------------------------------------------------------
+1. Grid Container: The parent element with 'display: grid' or 'display: inline-grid'.
+2. Grid Item: The immediate direct children of the grid container.
+3. Grid Lines: The invisible numbered dividing lines separating columns and rows.
+   - For 3 columns, there are 4 column lines: Line 1 (start), Line 2, Line 3, Line 4 (end).
+   - Negative line indices exist: -1 refers to the very last grid line.
+4. Grid Track: The space between two adjacent grid lines (a row track or a column track).
+5. Grid Cell: The single intersection unit of a row and a column track (like a spreadsheet cell).
+6. Grid Area: Any rectangular area bounded by 4 grid lines (can span 1 or many cells).
+7. Grid Gap (Gutter): The empty spacing directly between grid tracks ('gap: 10px;').
+
+--------------------------------------------------------------------------------
+6.1. GRID CONTAINER PROPERTIES (APPLIED TO PARENT)
+--------------------------------------------------------------------------------
+
+1. display: grid; (or display: inline-grid;)
+   - Establishes a 2D grid formatting context on the parent container.
+   - Immediate children become grid items.
+
+2. grid-template-columns:
+   - Defines the number and widths of the column tracks.
+   - Track Sizing Units & Functions:
+     * repeat(count, size): Shorthand to create identical columns.
+       e.g., grid-template-columns: repeat(3, 1fr); -> 3 equal columns.
+     * fr (Fractional Unit): Represents a fraction of the remaining free container space.
+       e.g., grid-template-columns: 1fr 2fr 1fr; -> Middle column gets double the width!
+     * Explicit Lengths (px, rem, %):
+       e.g., grid-template-columns: 100px 200px 100px;
+     * repeat(auto-fit, minmax(min, max)):
+       The responsive Holy Grail! Automatically fits as many columns as possible.
+       e.g., grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+       Items shrink to 100px on small screens and expand up to 1fr on large screens
+       without writing a single media query!
+
+3. grid-template-rows:
+   - Defines the number and heights of the row tracks.
+   - e.g., grid-template-rows: repeat(3, 100px); -> 3 rows of 100px each.
+   - e.g., grid-template-rows: 100px 200px 100px; -> Row 1 is 100px, Row 2 is 200px, Row 3 is 100px.
+
+4. gap (row-gap, column-gap):
+   - Sets spacing gutters between grid cells without using margin hacks.
+   - e.g., gap: 10px; (10px gap between all rows and columns).
+   - e.g., gap: 20px 10px; (20px row-gap, 10px column-gap).
+
+5. grid-template-areas:
+   - Allows naming rectangular sections of the grid visually using an ASCII map.
+   - Syntax:
+     grid-template-areas:
+       "header header header"
+       "sidebar main main"
+       "footer footer footer";
+   - Child elements connect to these areas via 'grid-area: header;', etc.
+
+6. align-items & justify-items:
+   - align-items: stretch | start | center | end; (Vertical alignment of items within their grid cells).
+   - justify-items: stretch | start | center | end; (Horizontal alignment of items within their grid cells).
+
+--------------------------------------------------------------------------------
+6.2. GRID ITEM PROPERTIES (APPLIED TO CHILDREN)
+--------------------------------------------------------------------------------
+
+1. grid-column (Line-Based Placement):
+   - Specifies where an item starts and ends horizontally along column grid lines.
+   - Syntax: grid-column: <start-line> / <end-line>;
+   - Examples:
+     * grid-column: 1 / 3; -> Starts at line 1 and ends at line 3 (spans 2 columns).
+     * grid-column: 2 / 4; -> Starts at line 2 and ends at line 4 (spans 2 columns).
+     * grid-column: 1 / -1; -> Spans full width from first line to very last line!
+     * grid-column: span 2; -> Spans across 2 column tracks from its natural position.
+
+2. grid-row (Line-Based Placement):
+   - Specifies where an item starts and ends vertically along row grid lines.
+   - Syntax: grid-row: <start-line> / <end-line>;
+   - Examples:
+     * grid-row: 1 / 2; -> Sits in the first row.
+     * grid-row: 1 / 3; -> Spans rows 1 and 2 (making the item 2 rows tall!).
+
+3. grid-area:
+   - Named Area Assignment:
+     Connects the child item to a named area defined in the parent's grid-template-areas.
+     e.g., grid-area: header;
+   - Coordinate Shorthand:
+     grid-area: <row-start> / <col-start> / <row-end> / <col-end>;
+
+4. Nested Grids:
+   - Any grid item can also declare 'display: grid' to create a nested sub-grid!
+   - Example (from gridMasterClass.html):
+     Box 2 contains another grid container with 'grid-template-columns: 1fr 1fr;'
+     creating a 2x2 green grid inside an outer blue grid cell!
+
+5. Dynamic Content & Auto-Rows:
+   - When items have differing content amounts (e.g. padding: 40px with long text),
+     CSS Grid automatically stretches the entire row track to fit the tallest item cleanly.
+
+--------------------------------------------------------------------------------
+6.3. SUMMARY OF THE 10 DEMOS FROM 07_GRID:
+--------------------------------------------------------------------------------
+- Demo A (gridbasics.html):
+  3-column grid with custom line spanning:
+  * Item 1: grid-column: 1/3; grid-row: 1/2; (spans 2 columns in top row)
+  * Item 2: grid-column: 3/4; grid-row: 1/3; (spans 2 rows in rightmost column)
+  * Item 6: grid-column: 2/4; (spans 2 columns in bottom row)
+- Demo 1 (gridMasterClass.html): Basic 3x3 Grid -> repeat(3, 1fr) x repeat(3, 100px)
+- Demo 2: Different Column Sizes -> grid-template-columns: 1fr 2fr 1fr;
+- Demo 3: Grid with Gaps -> gap: 20px;
+- Demo 4: Grid Item Placement -> grid-column: 1/3; grid-row: 1/3; (creates a 2x2 big tile)
+- Demo 5: Grid Template Areas -> header, sidebar, main, footer layout
+- Demo 6: Auto-Fit and Minmax -> repeat(auto-fit, minmax(100px, 1fr)) (fluid responsive)
+- Demo 7: Alignment and Justification -> align-items: center in fixed height container
+- Demo 8: Nested Grids -> 2x2 green sub-grid nested inside outer grid cell
+- Demo 9: Grid with Auto Rows -> dynamic row heights accommodating tall content
+
+
+
+================================================================================
+7. COLORS, GRADIENTS & TYPOGRAPHY
 ================================================================================
 
 - color:
@@ -432,7 +569,7 @@ D. SUMMARY OF THE 9 MASTERCLASS DEMOS FROM 06_FLEXBOX:
 
 
 ================================================================================
-7. CSS UNITS (px vs rem vs vh / %)
+8. CSS UNITS (px vs rem vs vh / %)
 ================================================================================
 
 - px (Pixels):
@@ -453,7 +590,7 @@ D. SUMMARY OF THE 9 MASTERCLASS DEMOS FROM 06_FLEXBOX:
 
 
 ================================================================================
-8. NAVIGATION BAR PATTERNS & UI HOVER EFFECTS
+9. NAVIGATION BAR PATTERNS & UI HOVER EFFECTS
 ================================================================================
 
 Navigation bars are core website components built by combining semantic HTML (<nav>, <ul>, <li>, <a>)
@@ -527,7 +664,7 @@ with CSS layout and interactive pseudo-element techniques:
 
 
 ================================================================================
-9. VISUAL POLISH & COMPONENT PATTERNS (SHADOWS, TRANSITIONS, IMAGES)
+10. VISUAL POLISH & COMPONENT PATTERNS (SHADOWS, TRANSITIONS, IMAGES)
 ================================================================================
 
 1. BOX SHADOW (box-shadow):
@@ -565,7 +702,7 @@ with CSS layout and interactive pseudo-element techniques:
 
 
 ================================================================================
-10. ONE-LINER QUICK REFERENCE TABLE
+11. ONE-LINER QUICK REFERENCE TABLE
 ================================================================================
 
 Property / Concept | Category    | Common Values            | Example One-Liner
@@ -610,12 +747,21 @@ justify-content    | Flexbox     | space-between, center    | justify-content: s
 align-items        | Flexbox     | center, flex-start, stretch | align-items: center;
 flex-wrap          | Flexbox     | nowrap, wrap, wrap-reverse | flex-wrap: wrap;
 align-content      | Flexbox     | space-around, center, stretch | align-content: space-around;
-gap                | Flexbox     | px, rem                  | gap: 15px; (or row-gap / col-gap)
 order              | Flex Item   | integer (0, 1, 5, -1)    | order: 5; (reorders visually)
 flex-grow          | Flex Item   | number (0, 1, 5)         | flex-grow: 5; (absorbs extra space)
 flex-shrink        | Flex Item   | number (1, 0)            | flex-shrink: 0; (prevents shrinking)
 flex-basis         | Flex Item   | px, rem, auto            | flex-basis: 200px;
 align-self         | Flex Item   | flex-start, center, stretch | align-self: flex-end; (item override)
+display: grid      | Grid        | grid, inline-grid        | display: grid; (2D layout context)
+grid-template-columns| Grid      | repeat(3, 1fr), 1fr 2fr  | grid-template-columns: repeat(3, 1fr);
+grid-template-rows | Grid        | repeat(3, 100px), px     | grid-template-rows: 100px 200px;
+grid-template-areas| Grid        | "header header" "main"   | grid-template-areas: 'h h' 'm s';
+gap                | Grid/Flex   | px, rem (row-gap, col)   | gap: 10px; (gutters between tracks)
+grid-column        | Grid Item   | start / end (1/3, span 2)| grid-column: 1 / 3; (spans 2 cols)
+grid-row           | Grid Item   | start / end (1/3, span 2)| grid-row: 1 / 3; (spans 2 rows)
+grid-area          | Grid Item   | named area or coordinates| grid-area: header;
+minmax()           | Grid        | minmax(min, max)         | minmax(100px, 1fr)
+repeat()           | Grid        | repeat(count, track)     | repeat(auto-fit, minmax(100px, 1fr))
 
 ================================================================================
                               End of Notes
