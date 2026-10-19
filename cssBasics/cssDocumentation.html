@@ -487,6 +487,88 @@
             background-color: #0741ac;
         }
 
+        /* Flexbox Masterclass Demos (06_flexbox) */
+        .flex-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .flex-demo-card {
+            background: #090e17;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .flex-demo-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .flex-demo-card-header .code-pill {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            padding: 3px 8px;
+            border-radius: 5px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            font-weight: 500;
+        }
+
+        .flex-demo-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .flex-box-stage {
+            background-color: #ffffff;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            display: flex;
+            height: 180px;
+            padding: 8px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .flex-item-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .flex-item-circle:hover {
+            transform: scale(1.1);
+        }
+
+        .pastel-c1 { background-color: #ffb3ba; }
+        .pastel-c2 { background-color: #baffc9; }
+        .pastel-c3 { background-color: #bae1ff; }
+        .pastel-c4 { background-color: #ffffba; }
+        .pastel-c5 { background-color: #ffdfba; }
+
         /* Selectors Interactive Demo Container */
         .selectors-demo {
             background: #090e17;
@@ -1508,42 +1590,158 @@
         <section id="flexbox">
             <div class="section-header">
                 <div class="section-number">4</div>
-                <h2 class="section-title">Modern Flexbox Layout</h2>
+                <h2 class="section-title">Modern Flexbox Layout (Flexbox Masterclass)</h2>
             </div>
 
+            <!-- Card 4A: Flexbox Architecture & Axes -->
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">display: flex &amp; Viewport Centering</span>
-                    <span class="tag-badge badge-layout">Alignment</span>
+                    <span class="tag-name">Main Axis vs. Cross Axis</span>
+                    <span class="tag-badge badge-layout">Architecture</span>
                 </div>
-                <p class="desc-text">Flexbox is a 1-dimensional CSS layout model designed to distribute space and align items seamlessly.</p>
+                <p class="desc-text">Flexbox (Flexible Box Layout) is a 1-dimensional CSS layout model designed to distribute space and align items along two perpendicular coordinate axes:</p>
                 
                 <div class="prop-box">
-                    <div class="prop-title">The Ultimate Centering Technique</div>
-                    <div class="prop-item"><span class="p-name">height: 100vh;</span> — Expands body to occupy 100% of the viewport's visible height.</div>
-                    <div class="prop-item"><span class="p-name">display: flex;</span> — Turns the parent into a flex container.</div>
-                    <div class="prop-item"><span class="p-name">justify-content: center;</span> — Centers children horizontally along the main axis.</div>
-                    <div class="prop-item"><span class="p-name">align-items: center;</span> — Centers children vertically along the cross axis.</div>
-                    <div class="prop-item"><span class="p-name">flex-direction: column;</span> — Stacks items vertically (used on forms to stack input fields one above another).</div>
+                    <div class="prop-title">The Two Fundamental Axes</div>
+                    <div class="prop-item">
+                        <span class="p-name">1. Main Axis (justify-content):</span> The primary direction in which flex items are placed. By default (<code>flex-direction: row</code>), it flows <strong>horizontally from left to right</strong>.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">2. Cross Axis (align-items &amp; align-content):</span> The perpendicular axis across which items are aligned. By default, it runs <strong>vertically from top to bottom</strong>.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">🔄 The Axis Flip Rule:</span> When you set <code>flex-direction: column</code>, the axes swap roles! The Main Axis becomes vertical (controlled by <code>justify-content</code>), and the Cross Axis becomes horizontal (controlled by <code>align-items</code>).
+                    </div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="cs-comm">/* Perfect Screen-Center Login Page */</span><br>
-                    <span class="cs-sel">body</span> <span class="cs-punct">{</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">0</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">100</span><span class="cs-unit">vh</span><span class="cs-punct">;</span><br>
+                    <span class="cs-comm">/* Default: Main Axis = Horizontal (Left to Right) | Cross Axis = Vertical (Top to Bottom) */</span><br>
+                    <span class="cs-sel">.flex-container</span> <span class="cs-punct">{</span><br>
                     &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">flex</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">justify-content</span><span class="cs-punct">:</span> <span class="cs-val">center</span><span class="cs-punct">;</span> <span class="cs-comm">/* Horizontal Center */</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">align-items</span><span class="cs-punct">:</span> <span class="cs-val">center</span><span class="cs-punct">;</span>     <span class="cs-comm">/* Vertical Center */</span><br>
-                    <span class="cs-punct">}</span><br><br>
+                    &nbsp;&nbsp;<span class="cs-prop">flex-direction</span><span class="cs-punct">:</span> <span class="cs-val">row</span><span class="cs-punct">;</span>        <span class="cs-comm">/* Main: Horizontal */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">justify-content</span><span class="cs-punct">:</span> <span class="cs-val">space-between</span><span class="cs-punct">;</span> <span class="cs-comm">/* Aligns along Main Axis */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">align-items</span><span class="cs-punct">:</span> <span class="cs-val">center</span><span class="cs-punct">;</span>          <span class="cs-comm">/* Aligns along Cross Axis */</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
 
-                    <span class="cs-sel">form</span> <span class="cs-punct">{</span><br>
+            <!-- Card 4B: Flex Container Properties -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Flex Container Properties (Parent)</span>
+                    <span class="tag-badge badge-core">Parent Control</span>
+                </div>
+                <p class="desc-text">Applied directly to the parent element to configure the layout context and spacing rules for its immediate children:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Container Property Reference</div>
+                    <div class="prop-item">
+                        <span class="p-name">display: flex | inline-flex;</span> — Activates the flexbox formatting context. Children become flexible items.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">flex-direction: row | column | row-reverse | column-reverse;</span> — Defines the flow direction of items and establishes the Main Axis.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">justify-content: flex-start | center | flex-end | space-between | space-around | space-evenly;</span> — Distributes items and extra free space along the Main Axis.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">align-items: stretch | flex-start | center | flex-end | baseline;</span> — Aligns items across the single-line Cross Axis. Default is <code>stretch</code>.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">flex-wrap: nowrap | wrap | wrap-reverse;</span> — Controls whether items are forced into a single line (<code>nowrap</code>) or wrap onto multiple lines when container width is exceeded.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">align-content: stretch | flex-start | center | flex-end | space-between | space-around | space-evenly;</span> — Aligns multiple wrapped lines along the Cross Axis. <strong style="color: #facc15;">Only has an effect when <code>flex-wrap: wrap</code> is active and items create 2+ lines!</strong>
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">gap: &lt;length&gt;;</span> — Cleanly sets spacing gutters between flex items without applying outer margin hacks.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Multi-line Wrapped Flex Container with Cross-Axis Spacing */</span><br>
+                    <span class="cs-sel">.grid-wrapper</span> <span class="cs-punct">{</span><br>
                     &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">flex</span><span class="cs-punct">;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">flex-direction</span><span class="cs-punct">:</span> <span class="cs-val">column</span><span class="cs-punct">;</span> <span class="cs-comm">/* Stack inputs downwards */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">flex-wrap</span><span class="cs-punct">:</span> <span class="cs-val">wrap</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">justify-content</span><span class="cs-punct">:</span> <span class="cs-val">space-between</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">align-content</span><span class="cs-punct">:</span> <span class="cs-val">space-around</span><span class="cs-punct">;</span> <span class="cs-comm">/* Distributes wrapped rows vertically */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">gap</span><span class="cs-punct">:</span> <span class="cs-val">10</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 4C: Flex Item Properties -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Flex Item Properties (Children)</span>
+                    <span class="tag-badge badge-pseudo">Child Control</span>
+                </div>
+                <p class="desc-text">Applied to individual flex items (children) to override default behaviors and control their individual growth, shrinkage, order, and alignment:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Child Item Property Reference</div>
+                    <div class="prop-item">
+                        <span class="p-name">order: &lt;integer&gt;;</span> — Reorders elements visually without rearranging the HTML markup! Default is <code>0</code>. Negative values move items forward; higher positive values move items backward.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">flex-grow: &lt;number&gt;;</span> — Defines what portion of remaining container space the item should absorb along the Main Axis. If one item has <code>flex-grow: 5</code> and others have <code>flex-grow: 1</code>, it absorbs 5x more free space.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">flex-shrink: &lt;number&gt;;</span> — Dictates how much an item will shrink relative to other items when container overflows. Default is <code>1</code>; set to <code>0</code> to prevent shrinking.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">flex-basis: &lt;length&gt; | auto;</span> — Specifies the initial default size of the item before any grow/shrink calculation occurs.
+                    </div>
+                    <div class="prop-item">
+                        <span class="p-name">align-self: auto | flex-start | center | flex-end | baseline | stretch;</span> — Overrides the parent container's <code>align-items</code> for this specific individual child element along the Cross Axis.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Individual Child Overrides */</span><br>
+                    <span class="cs-sel">.featured-item</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">order</span><span class="cs-punct">:</span> <span class="cs-val">-1</span><span class="cs-punct">;</span>             <span class="cs-comm">/* Moves to front of visual sequence */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">flex-grow</span><span class="cs-punct">:</span> <span class="cs-val">5</span><span class="cs-punct">;</span>          <span class="cs-comm">/* Absorbs 5x more space than siblings */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">align-self</span><span class="cs-punct">:</span> <span class="cs-val">flex-end</span><span class="cs-punct">;</span>   <span class="cs-comm">/* Snaps to bottom of cross axis */</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 4D: Visual Layout Recipes -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">The Circle &amp; Screen-Centering Recipes</span>
+                    <span class="tag-badge badge-color">UI Recipes</span>
+                </div>
+                <p class="desc-text">Two essential, production-proven Flexbox patterns used across modern web interfaces:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">1. The Perfect Circle with Centered Content</div>
+                    <div class="prop-item">
+                        <code>width: 50px; height: 50px; border-radius: 50%;</code> creates a square turned into a round badge. Adding <code>display: flex; justify-content: center; align-items: center;</code> centers any text, number, or icon dead-center inside!
+                    </div>
+                </div>
+
+                <div class="prop-box" style="border-left-color: var(--accent-purple);">
+                    <div class="prop-title" style="color: var(--accent-purple);">2. 100vh Viewport Centering</div>
+                    <div class="prop-item">
+                        Combines <code>min-height: 100vh;</code> with <code>display: flex; justify-content: center; align-items: center;</code> to lock modals or login boxes dead-center on any screen size.
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Perfect Circle Recipe */</span><br>
+                    <span class="cs-sel">.circle</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">width</span><span class="cs-punct">:</span> <span class="cs-val">50</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">50</span><span class="cs-unit">px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">border-radius</span><span class="cs-punct">:</span> <span class="cs-val">50%</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">flex</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">justify-content</span><span class="cs-punct">:</span> <span class="cs-val">center</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">align-items</span><span class="cs-punct">:</span> <span class="cs-val">center</span><span class="cs-punct">;</span><br>
                     <span class="cs-punct">}</span>
                 </div>
 
-                <div class="live-preview">
+                <div class="live-preview" style="margin-top: 15px;">
                     <span class="preview-label">Live Centered Login Card Preview:</span>
                     <div class="flex-center-demo">
                         <div class="demo-card">
@@ -1551,6 +1749,171 @@
                             <input type="email" placeholder="Email" class="demo-input">
                             <input type="password" placeholder="Password" class="demo-input">
                             <button type="button" class="demo-btn">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4E: The 9 Masterclass Demos Live Visual Gallery -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">9 Masterclass Demonstrations (from 06_flexbox)</span>
+                    <span class="tag-badge badge-layout">Live Demos</span>
+                </div>
+                <p class="desc-text">A complete visual recreation of all 9 interactive exercises built in <code>06_flexbox/flexbox.html</code>, showcasing container and item dynamics live:</p>
+
+                <div class="flex-gallery-grid">
+                    <!-- Demo 1: Default Flex (Row) -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>1. Default Flex (row)</span>
+                            <span class="code-pill">display: flex</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Default row direction. Items sit side-by-side along the horizontal Main Axis.</p>
+                        <div class="flex-box-stage">
+                            <div class="flex-item-circle pastel-c1">1</div>
+                            <div class="flex-item-circle pastel-c2">2</div>
+                            <div class="flex-item-circle pastel-c3">3</div>
+                            <div class="flex-item-circle pastel-c4">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 2: Flex Direction: Column -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>2. Flex Direction: Column</span>
+                            <span class="code-pill">flex-direction: column</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Swaps axes! Items stack vertically from top to bottom along the new vertical Main Axis.</p>
+                        <div class="flex-box-stage" style="flex-direction: column; height: 260px;">
+                            <div class="flex-item-circle pastel-c1">1</div>
+                            <div class="flex-item-circle pastel-c2">2</div>
+                            <div class="flex-item-circle pastel-c3">3</div>
+                            <div class="flex-item-circle pastel-c4">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 3: Justify Content: Space-Between -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>3. Justify Content</span>
+                            <span class="code-pill">justify-content: space-between</span>
+                        </div>
+                        <p class="flex-demo-card-desc">First item flush to start, last item flush to end, equal distributed space in between.</p>
+                        <div class="flex-box-stage" style="justify-content: space-between;">
+                            <div class="flex-item-circle pastel-c1">1</div>
+                            <div class="flex-item-circle pastel-c2">2</div>
+                            <div class="flex-item-circle pastel-c3">3</div>
+                            <div class="flex-item-circle pastel-c4">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 4: Align Items: Center -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>4. Align Items: Center</span>
+                            <span class="code-pill">align-items: center</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Centers all flex items vertically along the Cross Axis within their container row.</p>
+                        <div class="flex-box-stage" style="align-items: center;">
+                            <div class="flex-item-circle pastel-c1">1</div>
+                            <div class="flex-item-circle pastel-c2">2</div>
+                            <div class="flex-item-circle pastel-c3">3</div>
+                            <div class="flex-item-circle pastel-c4">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 5: Flex Wrap: Wrap -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>5. Flex Wrap: Wrap</span>
+                            <span class="code-pill">flex-wrap: wrap</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Allows items to break cleanly onto multiple lines instead of shrinking or overflowing.</p>
+                        <div class="flex-box-stage" style="flex-wrap: wrap; height: auto;">
+                            <div class="flex-item-circle pastel-c1">1</div>
+                            <div class="flex-item-circle pastel-c2">2</div>
+                            <div class="flex-item-circle pastel-c3">3</div>
+                            <div class="flex-item-circle pastel-c4">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
+                            <div class="flex-item-circle pastel-c1">6</div>
+                            <div class="flex-item-circle pastel-c2">7</div>
+                            <div class="flex-item-circle pastel-c3">8</div>
+                            <div class="flex-item-circle pastel-c4">9</div>
+                            <div class="flex-item-circle pastel-c5">10</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 6: Align Content: Space-Around (with Wrap) -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>6. Align Content (Wrapped)</span>
+                            <span class="code-pill">align-content: space-around</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Distributes multiple wrapped rows vertically along the Cross Axis with equal surrounding space.</p>
+                        <div class="flex-box-stage" style="flex-wrap: wrap; align-content: space-around; height: 200px;">
+                            <div class="flex-item-circle pastel-c1">1</div>
+                            <div class="flex-item-circle pastel-c2">2</div>
+                            <div class="flex-item-circle pastel-c3">3</div>
+                            <div class="flex-item-circle pastel-c4">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
+                            <div class="flex-item-circle pastel-c1">6</div>
+                            <div class="flex-item-circle pastel-c2">7</div>
+                            <div class="flex-item-circle pastel-c3">8</div>
+                            <div class="flex-item-circle pastel-c4">9</div>
+                            <div class="flex-item-circle pastel-c5">10</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 7: Order Property -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>7. Order Property</span>
+                            <span class="code-pill">order: 5..1 (Reversed)</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Visual reordering: Circle 1 has <code>order: 5</code>, Circle 5 has <code>order: 1</code>. Completely reverses visual rendering!</p>
+                        <div class="flex-box-stage">
+                            <div class="flex-item-circle pastel-c1" style="order: 5;">1</div>
+                            <div class="flex-item-circle pastel-c2" style="order: 4;">2</div>
+                            <div class="flex-item-circle pastel-c3" style="order: 3;">3</div>
+                            <div class="flex-item-circle pastel-c4" style="order: 2;">4</div>
+                            <div class="flex-item-circle pastel-c5" style="order: 1;">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 8: Flex Grow -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>8. Flex Grow</span>
+                            <span class="code-pill">flex-grow: 1 vs 5</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Items 2 &amp; 4 have <code>flex-grow: 5</code>; Items 1, 3, 5 have <code>flex-grow: 1</code>. Items 2 &amp; 4 expand to absorb 5x more free space!</p>
+                        <div class="flex-box-stage">
+                            <div class="flex-item-circle pastel-c1" style="flex-grow: 1; border-radius: 20px; width: auto; min-width: 44px;">1</div>
+                            <div class="flex-item-circle pastel-c2" style="flex-grow: 5; border-radius: 20px; width: auto; min-width: 44px;">2</div>
+                            <div class="flex-item-circle pastel-c3" style="flex-grow: 1; border-radius: 20px; width: auto; min-width: 44px;">3</div>
+                            <div class="flex-item-circle pastel-c4" style="flex-grow: 5; border-radius: 20px; width: auto; min-width: 44px;">4</div>
+                            <div class="flex-item-circle pastel-c5" style="flex-grow: 1; border-radius: 20px; width: auto; min-width: 44px;">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 9: Align Self -->
+                    <div class="flex-demo-card">
+                        <div class="flex-demo-card-header">
+                            <span>9. Align Self</span>
+                            <span class="code-pill">align-self: individual</span>
+                        </div>
+                        <p class="flex-demo-card-desc">Individual item overrides: Circle 1 at start, Circle 2 at center, Circle 3 at end, Circle 4 stretches full height!</p>
+                        <div class="flex-box-stage">
+                            <div class="flex-item-circle pastel-c1" style="align-self: flex-start;">1</div>
+                            <div class="flex-item-circle pastel-c2" style="align-self: center;">2</div>
+                            <div class="flex-item-circle pastel-c3" style="align-self: flex-end;">3</div>
+                            <div class="flex-item-circle pastel-c4" style="align-self: stretch; height: auto; border-radius: 10px;">4</div>
+                            <div class="flex-item-circle pastel-c5">5</div>
                         </div>
                     </div>
                 </div>
@@ -1892,10 +2255,18 @@
                         <tr><td><code>border-radius</code></td><td>Box Model</td><td><code>px</code>, <code>%</code> (rounded corners)</td><td><code>border-radius: 10px;</code></td></tr>
                         <tr><td><code>width</code></td><td>Dimensions</td><td><code>px</code>, <code>%</code></td><td><code>width: 150px;</code></td></tr>
                         <tr><td><code>height</code></td><td>Dimensions</td><td><code>px</code>, <code>vh</code>, <code>%</code></td><td><code>height: 100%;</code></td></tr>
-                        <tr><td><code>display: flex</code></td><td>Layout</td><td><code>flex</code></td><td><code>display: flex;</code></td></tr>
-                        <tr><td><code>justify-content</code></td><td>Flexbox</td><td><code>center</code>, <code>space-between</code></td><td><code>justify-content: center;</code></td></tr>
-                        <tr><td><code>align-items</code></td><td>Flexbox</td><td><code>center</code>, <code>flex-start</code></td><td><code>align-items: center;</code></td></tr>
-                        <tr><td><code>flex-direction</code></td><td>Flexbox</td><td><code>column</code>, <code>row</code></td><td><code>flex-direction: column;</code></td></tr>
+                        <tr><td><code>display: flex</code></td><td>Flexbox</td><td><code>flex</code>, <code>inline-flex</code></td><td><code>display: flex;</code></td></tr>
+                        <tr><td><code>flex-direction</code></td><td>Flexbox</td><td><code>row</code>, <code>column</code>, <code>reverse</code></td><td><code>flex-direction: column;</code></td></tr>
+                        <tr><td><code>justify-content</code></td><td>Flexbox</td><td><code>space-between</code>, <code>center</code></td><td><code>justify-content: space-between;</code></td></tr>
+                        <tr><td><code>align-items</code></td><td>Flexbox</td><td><code>center</code>, <code>flex-start</code>, <code>stretch</code></td><td><code>align-items: center;</code></td></tr>
+                        <tr><td><code>flex-wrap</code></td><td>Flexbox</td><td><code>nowrap</code>, <code>wrap</code>, <code>wrap-reverse</code></td><td><code>flex-wrap: wrap;</code></td></tr>
+                        <tr><td><code>align-content</code></td><td>Flexbox</td><td><code>space-around</code>, <code>center</code>, <code>stretch</code></td><td><code>align-content: space-around;</code></td></tr>
+                        <tr><td><code>gap</code></td><td>Flexbox</td><td><code>px</code>, <code>rem</code></td><td><code>gap: 15px;</code> (gutters between items)</td></tr>
+                        <tr><td><code>order</code></td><td>Flex Item</td><td>integer (<code>0</code>, <code>1</code>, <code>5</code>, <code>-1</code>)</td><td><code>order: 5;</code> (visual reordering)</td></tr>
+                        <tr><td><code>flex-grow</code></td><td>Flex Item</td><td>number (<code>0</code>, <code>1</code>, <code>5</code>)</td><td><code>flex-grow: 5;</code> (absorbs extra space)</td></tr>
+                        <tr><td><code>flex-shrink</code></td><td>Flex Item</td><td>number (<code>1</code>, <code>0</code>)</td><td><code>flex-shrink: 0;</code> (prevents shrink)</td></tr>
+                        <tr><td><code>flex-basis</code></td><td>Flex Item</td><td><code>px</code>, <code>rem</code>, <code>auto</code></td><td><code>flex-basis: 200px;</code></td></tr>
+                        <tr><td><code>align-self</code></td><td>Flex Item</td><td><code>flex-start</code>, <code>center</code>, <code>stretch</code></td><td><code>align-self: flex-end;</code> (item override)</td></tr>
                     </tbody>
                 </table>
             </div>
