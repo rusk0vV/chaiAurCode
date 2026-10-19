@@ -671,6 +671,133 @@
             font-size: 0.85rem;
         }
 
+        /* Responsive Masterclass Demos (08_responsive) */
+        .responsive-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .responsive-demo-card {
+            background: #090e17;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .responsive-demo-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .responsive-demo-card-header .code-pill {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            padding: 3px 8px;
+            border-radius: 5px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            font-weight: 500;
+        }
+
+        .responsive-demo-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .resp-box-stage {
+            background-color: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .resp-tile {
+            background-color: #3b82f6;
+            color: white;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .resp-tile-even {
+            background-color: #ef4444;
+        }
+
+        .resp-img-preview {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .responsive-nav-bar {
+            background-color: #1e293b;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .responsive-nav-bar ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .responsive-nav-bar a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .responsive-nav-bar a:hover {
+            background-color: rgba(56, 189, 248, 0.15);
+        }
+
+        .utility-tag-box {
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 0.88rem;
+        }
+
+        .tag-desktop-visible {
+            background-color: #3b82f6;
+            color: #fff;
+        }
+
+        .tag-mobile-visible {
+            background-color: #10b981;
+            color: #fff;
+        }
+
         /* Selectors Interactive Demo Container */
         .selectors-demo {
             background: #090e17;
@@ -1161,6 +1288,183 @@
             transform: translateY(-1px);
         }
 
+        /* =========================================================
+           Responsive Masterclass Styles & Live Demos
+           ========================================================= */
+        .responsive-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .responsive-demo-card {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .responsive-demo-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+
+        .responsive-demo-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+        }
+
+        .responsive-demo-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .resp-box-stage {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .resp-tile {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .resp-tile-alt {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .resp-tile-accent {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .resp-tile-purple {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+
+        .resp-img-wrapper {
+            width: 100%;
+            background: #0f172a;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .resp-img-mockup {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 6px;
+        }
+
+        .responsive-nav-preview {
+            width: 100%;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resp-nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .resp-nav-links a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .resp-nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .utility-tag-box {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .util-badge {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-align: center;
+            flex: 1;
+        }
+
+        .util-desktop {
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid #2563eb;
+            color: #60a5fa;
+        }
+
+        .util-mobile {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #34d399;
+        }
+
+        @media (max-width: 600px) {
+            .util-desktop.hidden-on-mobile {
+                display: none;
+            }
+            .responsive-nav-preview {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .resp-nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
         footer.doc-footer {
             text-align: center;
             margin-top: 60px;
@@ -1179,7 +1483,7 @@
         <header class="doc-header">
             <div class="badge-pill">🎨 Chai Aur Code • CSS Fundamentals</div>
             <h1 class="main-title">CSS Basics Documentation</h1>
-            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, Flexbox 1D &amp; Grid 2D masterclasses, navigation bar patterns, Coming Soon hero landing UI, colors, and typography.</p>
+            <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, Flexbox 1D &amp; Grid 2D masterclasses, Responsive Web Design &amp; media queries, navigation bar patterns, Coming Soon hero landing UI, colors, and typography.</p>
             
             <div class="quick-nav">
                 <a href="#methods">1. 3 Ways to Apply CSS</a>
@@ -1187,12 +1491,13 @@
                 <a href="#box-model">3. Box Model &amp; Display</a>
                 <a href="#flexbox">4. Flexbox Layout</a>
                 <a href="#grid">5. CSS Grid Layout</a>
-                <a href="#typography">6. Colors &amp; Gradients</a>
-                <a href="#pseudo">7. Interactive States</a>
-                <a href="#units">8. CSS Units (px, rem, vh)</a>
-                <a href="#navbars">9. Navigation Bar Patterns</a>
-                <a href="#hero-landing">10. Hero Landing UI</a>
-                <a href="#table-ref">11. Quick Reference Table</a>
+                <a href="#responsive">6. Responsive Design &amp; Queries</a>
+                <a href="#typography">7. Colors &amp; Gradients</a>
+                <a href="#pseudo">8. Interactive States</a>
+                <a href="#units">9. CSS Units (px, rem, vh)</a>
+                <a href="#navbars">10. Navigation Bar Patterns</a>
+                <a href="#hero-landing">11. Hero Landing UI</a>
+                <a href="#table-ref">12. Quick Reference Table</a>
             </div>
         </header>
 
@@ -2328,10 +2633,284 @@
             </div>
         </section>
 
-        <!-- 6. Colors & Typography -->
-        <section id="typography">
+        <!-- 6. Responsive Web Design & Media Queries -->
+        <section id="responsive">
             <div class="section-header">
                 <div class="section-number">6</div>
+                <h2 class="section-title">Responsive Web Design &amp; Media Queries (Masterclass)</h2>
+            </div>
+
+            <!-- Card 6A: Responsive Design Core Pillars & Viewport Configuration -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Viewport Meta • Fluid Layouts • Responsive Media</span>
+                    <span class="tag-badge badge-layout">Responsive Core</span>
+                </div>
+                <p class="desc-text">Responsive Web Design (RWD) ensures web pages adapt seamlessly across smartphones, tablets, laptops, and ultra-wide desktop monitors without horizontal scrolling or distorted layouts.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">The Three Pillars of Responsive Design</div>
+                    <div class="prop-item"><span class="p-name">1. Viewport Meta Tag:</span> <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> — Instructs mobile browsers to render the document at the device's actual physical screen width rather than zooming out to a default 980px desktop canvas.</div>
+                    <div class="prop-item"><span class="p-name">2. Fluid Grids &amp; Containers:</span> Using relative units (<code>%</code>, <code>vw</code>, <code>fr</code>) instead of fixed widths (<code>width: 100%</code>, <code>max-width: 1200px</code>) allows elements to expand or contract with the browser window.</div>
+                    <div class="prop-item"><span class="p-name">3. Responsive Media (Images &amp; Video):</span> Applying <code>max-width: 100%; height: auto;</code> prevents images from spilling out of their parent containers while preserving their native aspect ratio.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">&lt;!-- 1. Mandatory HTML Head Viewport Configuration --&gt;</span><br>
+                    <span class="cs-sel">&lt;meta</span> <span class="cs-prop">name</span>=<span class="cs-val">"viewport"</span> <span class="cs-prop">content</span>=<span class="cs-val">"width=device-width, initial-scale=1.0"</span><span class="cs-sel">&gt;</span><br><br>
+
+                    <span class="cs-comm">/* 2. Fluid Layout Container */</span><br>
+                    <span class="cs-sel">.container</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">width</span><span class="cs-punct">:</span> <span class="cs-val">100%</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">max-width</span><span class="cs-punct">:</span> <span class="cs-val">1200px</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">margin</span><span class="cs-punct">:</span> <span class="cs-val">0 auto</span><span class="cs-punct">;</span> <span class="cs-comm">/* Centers container horizontally */</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* 3. Responsive Images Rule */</span><br>
+                    <span class="cs-sel">img, video</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">max-width</span><span class="cs-punct">:</span> <span class="cs-val">100%</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">height</span><span class="cs-punct">:</span> <span class="cs-val">auto</span><span class="cs-punct">;</span> <span class="cs-comm">/* Prevents vertical distortion */</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">block</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 6B: Media Queries & Breakpoint Strategy -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">@media (max-width) • @media (min-width) • Breakpoints</span>
+                    <span class="tag-badge badge-core">Conditional CSS</span>
+                </div>
+                <p class="desc-text">Media queries allow conditional application of CSS rules based on device viewport width, orientation, resolution, or color-scheme preference.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Media Query Architecture &amp; Breakpoints</div>
+                    <div class="prop-item"><span class="p-name">Desktop-First (@media (max-width)):</span> Base styles are written for desktop; max-width queries progressively collapse columns and shrink spacing for smaller screens (e.g. <code>@media (max-width: 600px)</code>).</div>
+                    <div class="prop-item"><span class="p-name">Mobile-First (@media (min-width)):</span> Base styles are written for mobile (single column); min-width queries progressively expand layouts as screen size increases (e.g. <code>@media (min-width: 768px)</code>).</div>
+                    <div class="prop-item"><span class="p-name">Standard Breakpoints:</span> Mobile phones (<code>&lt;= 600px</code>), Tablets (<code>601px - 800px</code>), Desktops / Laptops (<code>&gt; 800px</code>).</div>
+                    <div class="prop-item"><span class="p-name">Cascading Precedence:</span> Because CSS cascades top-to-bottom, multi-breakpoint max-width queries must be ordered from largest breakpoint to smallest (e.g., 800px then 500px).</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Desktop Default (3 Columns) */</span><br>
+                    <span class="cs-sel">.grid-container</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">display</span><span class="cs-punct">:</span> <span class="cs-val">grid</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">grid-template-columns</span><span class="cs-punct">:</span> <span class="cs-val">repeat(3, 1fr)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">gap</span><span class="cs-punct">:</span> <span class="cs-val">20px</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Tablet Viewport (2 Columns) */</span><br>
+                    <span class="cs-sel">@media</span> <span class="cs-punct">(</span><span class="cs-prop">max-width</span><span class="cs-punct">:</span> <span class="cs-val">800px</span><span class="cs-punct">) {</span><br>
+                    &nbsp;&nbsp;<span class="cs-sel">.grid-container</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">grid-template-columns</span><span class="cs-punct">:</span> <span class="cs-val">repeat(2, 1fr)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-punct">}</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Mobile Viewport (1 Column Stack) */</span><br>
+                    <span class="cs-sel">@media</span> <span class="cs-punct">(</span><span class="cs-prop">max-width</span><span class="cs-punct">:</span> <span class="cs-val">500px</span><span class="cs-punct">) {</span><br>
+                    &nbsp;&nbsp;<span class="cs-sel">.grid-container</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">grid-template-columns</span><span class="cs-punct">:</span> <span class="cs-val">1fr</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-punct">}</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 6C: Fluid Typography & Modern Sizing -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Fluid Typography • calc() • clamp() • Viewport Units</span>
+                    <span class="tag-badge badge-pseudo">Dynamic Units</span>
+                </div>
+                <p class="desc-text">Instead of jumping abruptly between discrete font sizes across media queries, fluid typography smoothly scales with browser window resize.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Fluid Typography Formulas</div>
+                    <div class="prop-item"><span class="p-name">1. Viewport Units (vw):</span> <code>font-size: 2vw;</code> — Font size equals 2% of screen width. Caution: on tiny mobile screens, pure <code>vw</code> can become unreadably small!</div>
+                    <div class="prop-item"><span class="p-name">2. Hybrid Formula with calc():</span> <code>font-size: calc(16px + 1vw);</code> — Provides a minimum baseline readability floor of 16px while adding 1% viewport scaling as width expands.</div>
+                    <div class="prop-item"><span class="p-name">3. Modern clamp(min, preferred, max):</span> <code>font-size: clamp(1rem, 2.5vw, 2.5rem);</code> — Restricts text size between an explicit floor (16px) and ceiling (40px) while dynamically scaling in between.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* Pure Viewport Scaling */</span><br>
+                    <span class="cs-sel">h2.resp-vw</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">font-size</span><span class="cs-punct">:</span> <span class="cs-val">2vw</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Hybrid Baseline + Viewport Calculation */</span><br>
+                    <span class="cs-sel">p.resp-calc</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">font-size</span><span class="cs-punct">:</span> <span class="cs-val">calc(16px + 1vw)</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+
+                    <span class="cs-comm">/* Modern Clamped Dynamic Typography */</span><br>
+                    <span class="cs-sel">h1.resp-clamp</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">font-size</span><span class="cs-punct">:</span> <span class="cs-val">clamp(1.5rem, 4vw, 3rem)</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+
+            <!-- Card 6D: 9 Masterclass Interactive Demos -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">9 Live Interactive Responsive Demonstrations</span>
+                    <span class="tag-badge badge-grid">Interactive Lab</span>
+                </div>
+                <p class="desc-text">The 9 core responsive layout patterns from <code>08_responsive/Responsive-design.html</code>. Try resizing your browser window or mobile view to observe real-time adaptation:</p>
+
+                <div class="responsive-gallery-grid">
+                    
+                    <!-- Demo 1: Fluid Layout -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>1. Fluid Layout</span>
+                            <span class="code-pill">width: 100%</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Fluid elements automatically expand to fill available parent width without causing horizontal overflow.</p>
+                        <div class="resp-box-stage">
+                            <div class="resp-tile" style="width: 100%; border: 1px dashed rgba(255,255,255,0.4);">
+                                Fluid Container (100% Width)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 2: Media Queries Flex -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>2. Media Queries Flex</span>
+                            <span class="code-pill">@media (max-width: 600px)</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Items occupy <code>flex: 1 1 300px</code> side-by-side, collapsing to full width <code>100%</code> below 600px.</p>
+                        <div class="resp-box-stage" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <div class="resp-tile" style="flex: 1 1 120px; font-size: 0.8rem;">Item A (300px / 100%)</div>
+                            <div class="resp-tile resp-tile-alt" style="flex: 1 1 120px; font-size: 0.8rem;">Item B (300px / 100%)</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 3: Responsive Images -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>3. Responsive Images</span>
+                            <span class="code-pill">max-width: 100%</span>
+                        </div>
+                        <p class="responsive-demo-card-desc"><code>max-width: 100%; height: auto;</code> scales images proportionally inside any container size.</p>
+                        <div class="resp-box-stage">
+                            <div class="resp-img-wrapper" style="max-width: 280px; width: 100%; border: 1px solid rgba(255,255,255,0.15);">
+                                <svg class="resp-img-mockup" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e293b, #0f172a);">
+                                    <rect width="300" height="120" fill="none" />
+                                    <circle cx="60" cy="60" r="30" fill="#38bdf8" opacity="0.8" />
+                                    <rect x="110" y="40" width="150" height="14" rx="4" fill="#94a3b8" />
+                                    <rect x="110" y="65" width="100" height="10" rx="4" fill="#64748b" />
+                                    <text x="150" y="105" fill="#38bdf8" font-size="11" font-family="sans-serif" text-anchor="middle">Responsive SVG Graphic (100% Auto)</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 4: Flexbox Wrapping -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>4. Flexbox Wrapping</span>
+                            <span class="code-pill">flex-wrap: wrap</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Child items wrap onto multiple rows when parent horizontal space runs out, sharing remaining space.</p>
+                        <div class="resp-box-stage" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <div class="resp-tile" style="flex: 1 1 80px; font-size: 0.8rem;">Flex 1</div>
+                            <div class="resp-tile resp-tile-alt" style="flex: 1 1 80px; font-size: 0.8rem;">Flex 2</div>
+                            <div class="resp-tile resp-tile-accent" style="flex: 1 1 80px; font-size: 0.8rem;">Flex 3</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 5: Auto-Fit Minmax Grid -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>5. Auto-Fit Minmax Grid</span>
+                            <span class="code-pill">repeat(auto-fit, minmax(100px, 1fr))</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">No media queries required! The CSS Grid algorithm automatically wraps and stretches columns dynamically.</p>
+                        <div class="resp-box-stage" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; width: 100%;">
+                            <div class="resp-tile" style="padding: 8px; font-size: 0.8rem;">Col 1</div>
+                            <div class="resp-tile resp-tile-alt" style="padding: 8px; font-size: 0.8rem;">Col 2</div>
+                            <div class="resp-tile resp-tile-purple" style="padding: 8px; font-size: 0.8rem;">Col 3</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 6: Responsive Typography -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>6. Responsive Typography</span>
+                            <span class="code-pill">calc(16px + 1vw)</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Fluid scaling: font size adapts dynamically to viewport dimensions while preserving baseline readability.</p>
+                        <div class="resp-box-stage" style="flex-direction: column; gap: 6px; text-align: center;">
+                            <div style="font-size: clamp(14px, 2vw, 22px); font-weight: 800; color: #38bdf8;">
+                                Title: 2vw / clamp()
+                            </div>
+                            <div style="font-size: calc(13px + 0.5vw); color: #e2e8f0;">
+                                Body: calc(16px + 1vw) Formula
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 7: Responsive Navigation -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>7. Responsive Navigation</span>
+                            <span class="code-pill">Flex Row ➔ Stack</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Horizontal top navbar on desktop collapses into a mobile-friendly vertical stack at <code>600px</code>.</p>
+                        <div class="resp-box-stage">
+                            <nav class="responsive-nav-preview">
+                                <span style="font-weight: 800; font-size: 0.9rem; color: #f8fafc;">Brand Logo</span>
+                                <ul class="resp-nav-links">
+                                    <li><a href="javascript:void(0)">Home</a></li>
+                                    <li><a href="javascript:void(0)">Features</a></li>
+                                    <li><a href="javascript:void(0)">Pricing</a></li>
+                                    <li><a href="javascript:void(0)">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Demo 8: Multi-Breakpoint Grid -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>8. Multi-Breakpoint Grid</span>
+                            <span class="code-pill">3 Col ➔ 2 Col ➔ 1 Col</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Precise layout control: 3 columns on desktop, 2 columns at <code>&lt;=800px</code>, and 1 column at <code>&lt;=500px</code>.</p>
+                        <div class="resp-box-stage" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%;">
+                            <div class="resp-tile" style="padding: 8px; font-size: 0.8rem;">Desktop: 3</div>
+                            <div class="resp-tile resp-tile-alt" style="padding: 8px; font-size: 0.8rem;">Tablet: 2</div>
+                            <div class="resp-tile resp-tile-accent" style="padding: 8px; font-size: 0.8rem;">Mobile: 1</div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 9: Responsive Utilities -->
+                    <div class="responsive-demo-card">
+                        <div class="responsive-demo-card-header">
+                            <span>9. Responsive Utilities</span>
+                            <span class="code-pill">.hidden-on-mobile</span>
+                        </div>
+                        <p class="responsive-demo-card-desc">Conditional visibility: show or hide UI components based on device context using utility classes.</p>
+                        <div class="resp-box-stage">
+                            <div class="utility-tag-box">
+                                <div class="util-badge util-desktop hidden-on-mobile">
+                                    🖥️ Desktop Only (.hidden-on-mobile)
+                                </div>
+                                <div class="util-badge util-mobile">
+                                    📱 Mobile/All View (.visible-on-mobile)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Colors & Typography -->
+        <section id="typography">
+            <div class="section-header">
+                <div class="section-number">7</div>
                 <h2 class="section-title">Colors, Gradients &amp; Typography</h2>
             </div>
 
@@ -2369,10 +2948,10 @@
             </div>
         </section>
 
-        <!-- 7. Pseudo-classes -->
+        <!-- 8. Interactive States -->
         <section id="pseudo">
             <div class="section-header">
-                <div class="section-number">7</div>
+                <div class="section-number">8</div>
                 <h2 class="section-title">Interactive States (:hover)</h2>
             </div>
 
@@ -2403,10 +2982,10 @@
             </div>
         </section>
 
-        <!-- 8. Units -->
+        <!-- 9. Units -->
         <section id="units">
             <div class="section-header">
-                <div class="section-number">8</div>
+                <div class="section-number">9</div>
                 <h2 class="section-title">CSS Units (px vs rem vs vh / %)</h2>
             </div>
 
@@ -2435,14 +3014,14 @@
             </div>
         </section>
 
-        <!-- 9. Navigation Bar Variations & UI Patterns -->
+        <!-- 10. Navigation Bar Variations & UI Patterns -->
         <section id="navbars">
             <div class="section-header">
-                <div class="section-number">9</div>
+                <div class="section-number">10</div>
                 <h2 class="section-title">Navigation Bar Patterns &amp; UI Hover Effects</h2>
             </div>
 
-            <!-- Card 8A: Horizontal Navbar with Animated Underline -->
+            <!-- Card 10A: Horizontal Navbar with Animated Underline -->
             <div class="card">
                 <div class="card-header">
                     <span class="tag-name">Variation 1: Sliding Underline (Flexbox + ::after)</span>
@@ -2481,7 +3060,7 @@
                 </div>
             </div>
 
-            <!-- Card 8B: Vertical Sidebar & Dropdown -->
+            <!-- Card 10B: Vertical Sidebar & Dropdown -->
             <div class="card">
                 <div class="card-header">
                     <span class="tag-name">Variations 2 &amp; 3: Sidebar &amp; Dropdown Menu</span>
@@ -2550,14 +3129,14 @@
             </div>
         </section>
 
-        <!-- 10. Hero Landing Page & Modern UI Components -->
+        <!-- 11. Hero Landing Page & Modern UI Components -->
         <section id="hero-landing">
             <div class="section-header">
-                <div class="section-number">10</div>
+                <div class="section-number">11</div>
                 <h2 class="section-title">Hero Landing Page &amp; Modern UI Polish</h2>
             </div>
 
-            <!-- Card 9A: Visual Polish Techniques -->
+            <!-- Card 11A: Visual Polish Techniques -->
             <div class="card">
                 <div class="card-header">
                     <span class="tag-name">box-shadow • transition • object-fit • max-width</span>
@@ -2609,10 +3188,10 @@
             </div>
         </section>
 
-        <!-- 11. Quick Reference Table -->
+        <!-- 12. Quick Reference Table -->
         <section id="table-ref">
             <div class="section-header">
-                <div class="section-number">11</div>
+                <div class="section-number">12</div>
                 <h2 class="section-title">Quick Reference Summary Table</h2>
             </div>
 
@@ -2684,6 +3263,14 @@
                         <tr><td><code>grid-area</code></td><td>Grid Item</td><td>named area or coordinates</td><td><code>grid-area: header;</code></td></tr>
                         <tr><td><code>minmax()</code></td><td>Grid</td><td><code>minmax(min, max)</code></td><td><code>minmax(100px, 1fr)</code></td></tr>
                         <tr><td><code>repeat()</code></td><td>Grid</td><td><code>repeat(count, track)</code></td><td><code>repeat(auto-fit, minmax(100px, 1fr))</code></td></tr>
+                        <tr><td><code>@media</code></td><td>Responsive</td><td><code>(max-width: 600px)</code></td><td><code>@media (max-width: 600px) { ... }</code></td></tr>
+                        <tr><td><code>viewport meta</code></td><td>Responsive</td><td><code>width=device-width, initial-scale=1.0</code></td><td><code>&lt;meta name="viewport" ...&gt;</code></td></tr>
+                        <tr><td><code>max-width: 100%</code></td><td>Responsive</td><td><code>100%</code>, <code>height: auto</code></td><td><code>img { max-width: 100%; height: auto; }</code></td></tr>
+                        <tr><td><code>calc()</code></td><td>Functions</td><td><code>calc(16px + 1vw)</code></td><td><code>font-size: calc(16px + 1vw);</code></td></tr>
+                        <tr><td><code>clamp()</code></td><td>Functions</td><td><code>clamp(min, val, max)</code></td><td><code>font-size: clamp(1rem, 2.5vw, 2.5rem);</code></td></tr>
+                        <tr><td><code>vw / vh</code></td><td>Units</td><td><code>1vw</code> = 1% viewport width</td><td><code>font-size: 2vw; width: 50vw;</code></td></tr>
+                        <tr><td><code>repeat(auto-fit, minmax())</code></td><td>Grid/Resp</td><td><code>auto-fit, minmax(100px, 1fr)</code></td><td><code>grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));</code></td></tr>
+                        <tr><td><code>.hidden-on-mobile</code></td><td>Utility</td><td><code>display: none</code> at breakpoint</td><td><code>@media (max-width: 600px) { .hidden-on-mobile { display: none; } }</code></td></tr>
                     </tbody>
                 </table>
             </div>
