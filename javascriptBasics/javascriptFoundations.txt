@@ -1,0 +1,535 @@
+================================================================================
+           CHAI AUR CODE • JAVASCRIPT FOUNDATIONS & RUNTIME ARCHITECTURE
+================================================================================
+Topic: What is JS, What is Node.js, V8 Engine & Code Execution Deep Dive
+Target Folder: javascriptBasics/
+Companion Files: hello.js, javascriptFoundations.html
+================================================================================
+
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+ 1. What is JavaScript? (Core Characteristics & History)
+ 2. What is Node.js? (Runtime vs Language, V8 + libuv Architecture)
+ 3. Browser Runtime vs Node.js Runtime (Side-by-Side Comparison)
+ 4. How JavaScript Executes Code (The Engine Pipeline from Text to Silicon)
+    - Phase 1: Stream & Source Code
+    - Phase 2: Lexical Analysis (Scanner & Tokenizer)
+    - Phase 3: Parsing & The Abstract Syntax Tree (AST)
+    - Phase 4: Bytecode Generation (Ignition Interpreter)
+    - Phase 5: Profiling & Feedback Vectors
+    - Phase 6: JIT Compilation (TurboFan Optimizer)
+    - Phase 7: Deoptimization (Deopt Bailout)
+ 5. AST Deep Dive: Parsing `console.log("Hello Chai!");`
+ 6. Memory Heap, Call Stack & Execution Context
+    - Creation Phase (Hoisting & Scope Chain)
+    - Execution Phase (Line-by-Line Assignment)
+ 7. Concurrency & The Event Loop (Call Stack, libuv, Microtasks vs Macrotasks)
+ 8. Useful Node.js CLI Flags & V8 Inspection Commands
+ 9. Part 1: Printing Methods in JS (console.log, process.stdout.write, console.table)
+ 10. Part 1: Data Types & The var vs let vs const Deep Dive
+ 11. Quick Reference Glossary of Terms
+================================================================================
+
+
+================================================================================
+1. WHAT IS JAVASCRIPT? (CORE CHARACTERISTICS & HISTORY)
+================================================================================
+
+1. HISTORICAL CONTEXT:
+   - Invented by Brendan Eich in May 1995 at Netscape Communications in just 10 days.
+   - Original internal name: Mocha -> renamed to LiveScript -> renamed to JavaScript
+     (a marketing move to capitalize on the popularity of Java at the time, though
+     JavaScript and Java have fundamentally different architectures).
+   - Standardized under Ecma International as ECMAScript (ECMA-262) in 1997.
+   - Major milestone: ES6 (ECMAScript 2015), introducing let/const, arrow functions,
+     classes, modules, promises, destructuring, and template literals.
+
+2. FORMAL DEFINITION:
+   JavaScript is a lightweight, cross-platform, single-threaded, dynamically typed,
+   prototype-based, multi-paradigm, garbage-collected programming language with
+   first-class functions and a non-blocking asynchronous event loop.
+
+3. CORE CHARACTERISTICS EXPLAINED:
+
+   a) Single-Threaded:
+      - Has exactly ONE Call Stack.
+      - Executes one instruction at a time sequentially.
+      - Does not create native OS threads directly for JS code execution.
+
+   b) Dynamically Typed:
+      - Variable types are checked at runtime, not compile time.
+      - Variables can change types during execution:
+        let score = 99;         // Number
+        score = "Ninety Nine";  // String (valid in JS)
+
+   c) Multi-Paradigm:
+      - Procedural (imperative functions and step-by-step logic)
+      - Object-Oriented (prototype-based inheritance and class syntax)
+      - Functional (first-class functions, higher-order functions: map, filter, reduce)
+
+   d) First-Class Functions:
+      - Functions are treated as first-class citizens (objects/values).
+      - You can assign a function to a variable, pass it as an argument to another
+        function, or return a function from another function.
+
+   e) Automatic Garbage Collection:
+      - Developers do not manually allocate or free memory (unlike malloc/free in C/C++).
+      - The engine automatically tracks references and cleans up unreachable memory.
+
+
+================================================================================
+2. WHAT IS NODE.JS? (RUNTIME VS LANGUAGE, V8 + libuv ARCHITECTURE)
+================================================================================
+
+1. WHAT NODE.JS IS NOT:
+   - Node.js is NOT a programming language.
+   - Node.js is NOT a framework or a library.
+
+2. WHAT NODE.JS ACTUALLY IS:
+   Node.js is an open-source, cross-platform JavaScript Runtime Environment that
+   allows developers to execute JavaScript code OUTSIDE of a web browser (on servers,
+   terminals, and desktop operating systems).
+
+   - Created by Ryan Dahl in 2009.
+   - Dahl took Google Chrome's open-source V8 JavaScript engine, wrapped it with
+     a high-performance C library called 'libuv', and exposed C++ bindings to
+     operating system APIs (file system, network sockets, process control).
+
+3. THE TWO PILLARS OF NODE.JS:
+
+   +-----------------------------------------------------------------------+
+   |                            NODE.JS RUNTIME                            |
+   +-----------------------------------------------------------------------+
+   |   1. V8 ENGINE (Google / C++)     |   2. libuv LIBRARY (C / Cross-OS) |
+   |   - Parses JavaScript source code  |   - Event Loop implementation     |
+   |   - Generates Bytecode (Ignition) |   - Asynchronous I/O polling      |
+   |   - Compiles to Machine Code      |   - Internal Worker Thread Pool   |
+   |   - Call Stack & Memory Heap      |   - Handles File System, DNS,     |
+   |   - Garbage Collection            |     Network sockets, Child Proc   |
+   +-----------------------------------+-----------------------------------+
+   |             Node.js Native C++ Bindings & Core Standard Library       |
+   |             (fs, path, http, crypto, os, events, stream, process)     |
+   +-----------------------------------------------------------------------+
+
+4. WHY NODE.JS REVOLUTIONIZED SOFTWARE:
+   - Before Node.js (1995-2009): JavaScript could only run inside web browser sandboxes.
+     Server-side code was written in PHP, Java, Python, Ruby, or C#.
+   - After Node.js (2009-Present): A single developer can write JavaScript across the
+     entire stack ("Full-Stack JavaScript"):
+       Frontend: React, Vue, Svelte, Vanilla JS (in browser)
+       Backend:  Express, NestJS, Fastify, Microservices (in Node.js)
+       Tooling:  Vite, Webpack, Tailwind CLI, npm/pnpm, ESLint (all run on Node.js!)
+
+
+================================================================================
+3. BROWSER RUNTIME VS NODE.JS RUNTIME (SIDE-BY-SIDE COMPARISON)
+================================================================================
+
+Feature            | Web Browser (Chrome/Firefox/Safari) | Node.js Environment
+-------------------+-------------------------------------+----------------------------------
+Host Environment   | Inside client web browser sandbox   | Server / Terminal / OS
+Global Object      | window, self, document, globalThis | global, process, globalThis
+DOM Manipulation   | Full access (document, window, etc.)| NO DOM! (document is undefined)
+File System Access | Sandboxed (cannot read C:\ or /etc) | Full OS access (fs.readFile, etc)
+Network Protocol   | Limited to HTTP/WS via fetch/XHR    | Raw TCP, UDP, HTTP, DNS, Sockets
+Primary Purpose    | Interactive UI & client UX          | Backend APIs, scripts, CLI tools
+Module Systems     | ES Modules (import / export)        | CommonJS (require) + ES Modules
+Thread Model       | Single main UI thread + Web Workers | Event Loop + libuv Thread Pool
+
+
+================================================================================
+4. HOW JAVASCRIPT EXECUTES CODE (THE V8 ENGINE PIPELINE)
+================================================================================
+
+When you execute:
+$ node hello.js
+
+The file contents are read from disk, and passed into Google's V8 engine.
+Here is the exact lifecycle of how text becomes machine actions:
+
+   [ Source Code (hello.js) ]
+              |
+              v
+   [ 1. Stream & Scanner (Lexer) ] ---> Converts code string to TOKENS
+              |
+              v
+   [ 2. Parser (Syntax Analysis) ] ---> Builds Abstract Syntax Tree (AST)
+              |
+              v
+   [ 3. Ignition (Interpreter) ]   ---> Emits Register-based BYTECODE
+              |
+              +--------------------------+
+              | (Executes Bytecode)      |
+              v                          v
+   [ 4. Feedback Vector ]         [ Call Stack Execution ]
+              |
+              | (Identifies "Hot" functions executed many times)
+              v
+   [ 5. TurboFan (JIT Compiler) ] ---> Generates OPTIMIZED MACHINE CODE
+              |
+              +<--- If types change dynamically? (Bailout / DEOPTIMIZE!)
+              |
+              v
+   [ Direct Silicon Execution (x86_64 / ARM64 Assembly) ]
+
+
+STEP-BY-STEP BREAKDOWN:
+
+PHASE 1: STREAMING & ENCODING
+- The file 'hello.js' is loaded from disk into memory as a byte stream (UTF-8 / UTF-16).
+- V8 decodes the raw bytes into code points ready for lexical inspection.
+
+PHASE 2: LEXICAL ANALYSIS (SCANNER / TOKENIZER)
+- The Scanner reads the stream character-by-character and groups them into lexical TOKENS.
+- Whitespace, newlines, and comments are stripped away.
+- Each token is assigned a type (Keyword, Identifier, String, Punctuator, Number).
+
+PHASE 3: PARSING (SYNTAX ANALYSIS & SCOPE RESOLUTION)
+- The Parser takes the linear stream of tokens and converts it into a nested,
+  hierarchical tree structure called the ABSTRACT SYNTAX TREE (AST).
+- If there are syntax errors (e.g., missing parenthesis or unclosed quote),
+  parsing stops immediately and throws a 'SyntaxError'.
+- At this step, V8 also creates the Scope Tree (tracking variables, functions,
+  and closures).
+
+PHASE 4: BYTECODE GENERATION (THE IGNITION INTERPRETER)
+- V8's interpreter, named IGNITION, traverses the AST and compiles it into
+  clean, portable BYTECODE.
+- What is Bytecode?
+  - It is an intermediate, low-level instruction set (smaller than machine code,
+    higher-level than raw assembly).
+  - Bytecode allows JavaScript to start running almost instantaneously with very
+    low memory overhead (crucial for mobile devices and fast page loads).
+
+PHASE 5: EXECUTION & RUNTIME PROFILING (FEEDBACK VECTORS)
+- Ignition begins executing the bytecode line-by-line inside the virtual machine.
+- As it runs, Ignition tracks runtime behavior:
+  - What types are being passed into functions?
+  - Which functions are executed repeatedly ("Hot Code")?
+- This metadata is stored in a "Feedback Vector".
+
+PHASE 6: JIT COMPILATION & OPTIMIZATION (TURBOFAN)
+- When a function becomes "hot" (e.g., called 10,000 times in a loop), V8 hands
+  that function's bytecode AND its feedback vector to TURBOFAN (V8's optimizing JIT compiler).
+- TurboFan makes speculative optimizations:
+  - It assumes: "This function has received 2 integers every time; let's compile it
+    directly into native machine code (CPU assembly) using fast CPU registers."
+- The result is blazing fast raw binary execution directly on your CPU!
+
+PHASE 7: DEOPTIMIZATION (DEOPT BAILOUT)
+- JavaScript is dynamically typed. What if TurboFan assumed a function only takes
+  numbers, but your code suddenly passes:
+    add("hello", 42); // string instead of number!
+- The speculative assumption is invalidated.
+- TurboFan immediately discards the optimized machine code, triggers a "Bailout",
+  and deoptimizes execution back to Ignition's safe bytecode interpreter.
+
+
+================================================================================
+5. AST DEEP DIVE: PARSING `console.log("Hello Chai!");`
+================================================================================
+
+Let us inspect the exact line of code in our 'hello.js' file:
+
+   console.log("Hello Chai!");
+
+1. TOKEN STREAM (Lexer Output):
+   Token 1: Identifier  -> "console"
+   Token 2: Punctuator  -> "."
+   Token 3: Identifier  -> "log"
+   Token 4: Punctuator  -> "("
+   Token 5: String      -> "\"Hello Chai!\""
+   Token 6: Punctuator  -> ")"
+   Token 7: Punctuator  -> ";"
+
+2. ABSTRACT SYNTAX TREE (AST Node Hierarchy):
+
+   Program
+     └── body: [1 item]
+           └── ExpressionStatement
+                 └── expression: CallExpression
+                       ├── callee: MemberExpression
+                       │     ├── object: Identifier (name: "console")
+                       │     └── property: Identifier (name: "log")
+                       └── arguments: [1 item]
+                             └── Literal (value: "Hello Chai!", raw: "\"Hello Chai!\"")
+
+3. WHY AST MATTERS:
+   - Tooling like Babel, TypeScript, ESLint, Prettier, and SWC all work by
+     parsing your code into an AST, transforming nodes in the tree, and emitting
+     the result back out as JavaScript!
+
+
+================================================================================
+6. MEMORY HEAP, CALL STACK & EXECUTION CONTEXT
+================================================================================
+
+1. MEMORY HEAP:
+   - An unstructured memory region used for dynamic memory allocation.
+   - Objects, arrays, functions, and complex data structures are stored here.
+   - Monitored and cleaned by V8's Garbage Collector (Orinoco).
+
+2. CALL STACK (EXECUTION STACK):
+   - A Last-In, First-Out (LIFO) data structure that keeps track of the currently
+     executing function calls.
+   - When a function is called, an Execution Context is pushed to the top of the stack.
+   - When the function returns, its Execution Context is popped off the stack.
+   - If too many nested functions call each other without returning, you get:
+     "Maximum call stack size exceeded" (Stack Overflow).
+
+3. EXECUTION CONTEXT (THE INNER WORKINGS):
+   Every time JavaScript code runs, it runs inside an Execution Context.
+   There are 2 main types:
+   - Global Execution Context (GEC): Created once when the script starts.
+   - Function Execution Context (FEC): Created whenever a function is invoked.
+
+   EVERY EXECUTION CONTEXT HAS TWO PHASES:
+
+   PHASE A: CREATION PHASE (MEMORY ALLOCATION / HOISTING)
+   - The engine scans code for declarations BEFORE executing a single line.
+   - Creates the Global Object (`window` in browser, `global` in Node.js).
+   - Sets up the `this` binding.
+   - Allocates memory for variables and functions:
+     * `var` variables are allocated and assigned `undefined`.
+     * `let` and `const` variables are allocated in the Temporal Dead Zone (TDZ)
+       (uninitialized; accessing them before definition throws ReferenceError).
+     * `function` declarations are placed into memory with their entire definition!
+
+   PHASE B: EXECUTION PHASE (CODE EXECUTION)
+   - The engine executes the code line-by-line from top to bottom.
+   - Variables are assigned their actual values.
+   - Functions are invoked, creating new child Function Execution Contexts.
+
+
+================================================================================
+7. CONCURRENCY & THE EVENT LOOP (libuv & ASYNC JS)
+================================================================================
+
+Because JavaScript is single-threaded, how does Node.js handle thousands of
+concurrent network requests, file reading, and timers without freezing?
+
+Answer: THE EVENT LOOP (powered by libuv in Node.js).
+
++--------------------------------------------------------------------------+
+|                               EVENT LOOP                                 |
++--------------------------------------------------------------------------+
+|                                                                          |
+|   1. CALL STACK (V8 Engine)                                              |
+|      - Executes synchronous code line-by-line.                           |
+|      - When an async function (e.g. fs.readFile, setTimeout) is called,  |
+|        it is handed off to libuv / Node APIs and popped off the stack!   |
+|                                                                          |
+|   2. NODE.JS WORKER THREAD POOL (libuv)                                  |
+|      - Handles heavy blocking tasks in background C/C++ threads:         |
+|        * File System I/O (fs)                                            |
+|        * DNS lookups                                                     |
+|        * Cryptography (crypto.pbkdf2)                                    |
+|        * Zlib compression                                                |
+|                                                                          |
+|   3. MICROTASK QUEUE (HIGHEST PRIORITY)                                  |
+|      - process.nextTick() callbacks                                      |
+|      - Resolved Promise callbacks (.then, .catch, .finally)              |
+|      - queueMicrotask()                                                  |
+|      * Emptied COMPLETELY after every synchronous stack operation!       |
+|                                                                          |
+|   4. MACROTASK / CALLBACK QUEUE                                          |
+|      - Timers (setTimeout, setInterval)                                  |
+|      - I/O events (network packets, file read complete)                  |
+|      - setImmediate() callbacks                                          |
+|      - Close events (socket.on('close'))                                 |
+|                                                                          |
+|   5. THE EVENT LOOP MONITOR                                              |
+|      - Constantly checks: "Is the Call Stack empty?"                     |
+|      - When the Call Stack is empty, it moves pending callbacks from     |
+|        the queues onto the Call Stack for execution.                     |
++--------------------------------------------------------------------------+
+
+
+================================================================================
+8. USEFUL NODE.JS CLI FLAGS & V8 INSPECTION COMMANDS
+================================================================================
+
+Run these commands inside your terminal to inspect the V8 engine in action:
+
+1. Basic Execution:
+   $ node hello.js
+   Output: Hello Chai!
+
+2. Check Installed Versions:
+   $ node -v       # Prints Node.js version (e.g. v22.x or v20.x)
+   $ node -p "process.versions.v8"  # Prints the exact Google V8 engine version!
+
+3. Interactive REPL (Read-Eval-Print Loop):
+   $ node
+   > 2 + 2
+   4
+   > console.log("Chai Aur Code")
+   Chai Aur Code
+   > .exit
+
+4. Inspect V8 Bytecode Generation:
+   $ node --print-bytecode hello.js
+   (Prints the actual Ignition Bytecode instructions emitted for hello.js!)
+
+5. Inspect Optimized Code:
+   $ node --trace-opt hello.js      # Traces when functions are optimized
+   $ node --trace-deopt hello.js    # Traces when functions are deoptimized
+
+6. Open V8 Debugger / Inspector in Chrome DevTools:
+   $ node --inspect-brk hello.js
+   (Opens a WebSocket debugger you can inspect at chrome://inspect in Chrome!)
+
+
+================================================================================
+9. PART 1: PRINTING METHODS IN JS (printing.js)
+================================================================================
+
+In Node.js, there are several distinct ways to output text and data to the console:
+
+1. console.log(...data):
+   - The standard utility for standard output.
+   - Automatically appends a newline character (\n) at the end of each call.
+   - Example:
+     console.log("Hello");
+     console.log("World");
+     // Output:
+     // Hello
+     // World
+
+2. process.stdout.write(string):
+   - Lower-level stream output provided directly by Node.js.
+   - Does NOT append an automatic newline!
+   - Can print subsequent outputs consecutively on the exact same terminal line.
+   - Requires a string (does not auto-serialize objects like console.log).
+   - Example (from part1/printing.js):
+     process.stdout.write("Chai");
+     process.stdout.write("Chai");
+     // Output: ChaiChai (on the same line!)
+
+3. console.table(tabularData):
+   - Formats arrays and objects into a clean, readable ASCII table with index/key columns.
+   - Example (from part1/printing.js):
+     console.table({ city: "Varanasi" });
+     // Output:
+     // ┌─────────┬────────────┐
+     // │ (index) │   Values   │
+     // ├─────────┼────────────┤
+     // │  city   │ 'Varanasi' │
+     // └─────────┴────────────┘
+
+
+================================================================================
+10. PART 1: DATA TYPES & THE VAR VS LET VS CONST DEEP DIVE (datatype.js)
+================================================================================
+
+JavaScript data types fall into two foundational categories:
+
+CATEGORY 1: PRIMITIVE DATA TYPES (Call by Value)
+- Stored directly in Stack memory.
+- When copied, a new copy of the actual value is created.
+- 7 Built-in Primitives:
+  1. String   : "chaicode.com", 'hello', `tea`
+  2. Number   : 102, 3.14, -42 (IEEE 754 64-bit float; max safe int: 2^53 - 1)
+  3. BigInt   : 9007199254740991n (for values exceeding 2^53 - 1)
+  4. Boolean  : true or false
+  5. undefined: A variable declared but not yet assigned a value
+  6. null     : Standalone primitive representing the deliberate absence of value
+  7. Symbol   : Symbol("id") creates a guaranteed unique, immutable identifier
+
+* NOTE ON typeof null:
+  console.log(typeof null); // "object"
+  This is a famous historical bug in JavaScript dating back to 1995. In the original
+  JS implementation, values were represented with type tags. The tag '000' represented
+  an object, and null was represented as a NULL pointer (0x00), resulting in typeof
+  returning "object". It cannot be fixed today without breaking millions of websites.
+
+CATEGORY 2: NON-PRIMITIVE / REFERENCE TYPES (Call by Reference)
+- Stored in the Memory Heap.
+- Variables store only a memory reference (pointer) to the heap location.
+- Includes:
+  1. Arrays   : let teaTypes = ["lemon tea", "orange tea", "oolong tea"];
+  2. Objects  : let user = { firstname: "Ali", lastname: "Sayeed" };
+  3. Functions: function brewTea() { ... }
+
+
+--------------------------------------------------------------------------------
+THE DEFINITIVE COMPARISON: var vs let vs const
+--------------------------------------------------------------------------------
+
+Feature          | var (Legacy - ES5)       | let (Modern - ES6)       | const (Modern - ES6)
+-----------------+--------------------------+--------------------------+--------------------------
+Scope            | FUNCTION-SCOPED          | BLOCK-SCOPED { }         | BLOCK-SCOPED { }
+Re-assignment    | Allowed anytime          | Allowed anytime          | FORBIDDEN (TypeError)
+Re-declaration   | Allowed (causes bugs!)   | FORBIDDEN (SyntaxError)  | FORBIDDEN (SyntaxError)
+Initialization   | Optional (default undef) | Optional (default undef) | MANDATORY at declaration
+Hoisting         | Hoisted to undefined     | Hoisted into TDZ         | Hoisted into TDZ
+Temporal Dead Zon| No TDZ (returns undef)   | Yes (ReferenceError)     | Yes (ReferenceError)
+Global Property  | Attaches to window/global| Does NOT attach to global| Does NOT attach to global
+
+1. SCOPE DIFFERENCE (The Block Leak Problem):
+   {
+       var a = 10;
+       let b = 20;
+       const c = 30;
+   }
+   console.log(a); // 10  (var ignores the block! Leaks outside!)
+   console.log(b); // ReferenceError: b is not defined (Properly contained!)
+   console.log(c); // ReferenceError: c is not defined (Properly contained!)
+
+2. RE-DECLARATION (The Silent Bug):
+   var score = 100;
+   var score = 200; // Silently overwrites score! High risk of collisions.
+
+   let points = 100;
+   // let points = 200; // SyntaxError: Identifier 'points' has already been declared.
+
+3. CONST WITH OBJECTS & ARRAYS (Mutation vs Reassignment):
+   const chaiOrder = { type: "Masala Chai", sugar: true };
+   
+   // A. Mutating a property is ALLOWED:
+   chaiOrder.sugar = false; // Valid! The internal object data mutated.
+   
+   // B. Reassigning the identifier is FORBIDDEN:
+   // chaiOrder = {}; // TypeError: Assignment to constant variable.
+
+MODERN BEST PRACTICE GUIDELINES:
+1. Always use 'const' by default for all variables, objects, arrays, and functions.
+2. Use 'let' only when you specifically need the variable value to change (e.g., loop counters, accumulators).
+3. NEVER use 'var' in modern JavaScript to eliminate scope leaks and unpredictable hoisting behavior.
+
+
+================================================================================
+11. QUICK REFERENCE GLOSSARY OF TERMS
+================================================================================
+
+Term             | Meaning / Definition
+-----------------+------------------------------------------------------------------
+JavaScript       | High-level, single-threaded, dynamically typed scripting language
+ECMAScript       | The official language specification maintained by Ecma TC39
+Node.js          | Open-source C++ JavaScript runtime environment outside browsers
+V8 Engine        | Google's open-source C++ high-performance JavaScript engine
+libuv            | Multi-platform C library providing Node.js event loop & thread pool
+Lexer / Scanner  | Subsystem converting source code text into tokens
+Token            | Atomic lexical element (keyword, identifier, punctuator, string)
+Parser           | Subsystem converting tokens into an Abstract Syntax Tree (AST)
+AST              | Hierarchical tree representing grammatical structure of code
+Ignition         | V8's fast interpreter converting AST into register-based Bytecode
+Bytecode         | Compact intermediate instructions executed by Ignition VM
+TurboFan         | V8's optimizing JIT compiler producing native CPU machine code
+JIT (Just-In-Time| Compiling code to machine language at runtime during execution
+Deoptimization   | Reverting from optimized machine code back to safe bytecode
+Call Stack       | LIFO data structure storing active function execution frames
+Memory Heap      | Unstructured memory region storing objects, arrays, and closures
+Hoisting         | Moving variable/function declarations to memory in creation phase
+Temporal Dead Zon| Zone between block start and 'let/const' declaration (TDZ)
+Primitive Types  | 7 basic types (string, number, bigint, boolean, undefined, null, symbol)
+Reference Types  | Objects, arrays, functions stored in heap memory (call by reference)
+Block Scope      | Visibility limited to the surrounding { } brackets (let and const)
+Function Scope   | Visibility limited to the enclosing function (var)
+Event Loop       | Coordinator shifting callbacks from queues onto the Call Stack
+Microtasks       | High-priority queue (Promises, process.nextTick)
+Macrotasks       | Standard queue (setTimeout, setInterval, I/O callbacks)
+
+================================================================================
+                              End of Foundations Note
+================================================================================

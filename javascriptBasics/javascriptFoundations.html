@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Foundations &amp; V8 Engine Execution Architecture • Chai Aur Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #030712;
+            --bg-secondary: #0b0f19;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(31, 41, 55, 0.85);
+            --border-color: rgba(55, 65, 81, 0.5);
+            --border-glow: rgba(245, 158, 11, 0.25);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --chai-gold: #f59e0b;
+            --chai-amber: #d97706;
+            --accent-sky: #38bdf8;
+            --accent-emerald: #10b981;
+            --accent-violet: #a855f7;
+            --accent-rose: #f43f5e;
+            --accent-blue: #3b82f6;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .doc-header {
+            text-align: center;
+            padding: 48px 20px 32px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 36px;
+            position: relative;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--chai-gold);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .main-title {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, var(--chai-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 820px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        /* Quick Navigation */
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .quick-nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.82rem;
+            padding: 6px 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .quick-nav a:hover {
+            color: var(--chai-gold);
+            border-color: var(--chai-gold);
+            background: rgba(245, 158, 11, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Section Containers */
+        section {
+            margin-bottom: 48px;
+            scroll-margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--chai-gold), var(--chai-amber));
+            color: #030712;
+            font-weight: 800;
+            font-size: 1.1rem;
+            font-family: var(--font-heading);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        /* Cards & Glassmorphism */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 26px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 24px;
+            transition: border-color 0.25s ease, transform 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-glow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-name {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .tag-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-core { background: rgba(56, 189, 248, 0.15); color: var(--accent-sky); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .badge-v8 { background: rgba(245, 158, 11, 0.15); color: var(--chai-gold); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-runtime { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-jit { background: rgba(168, 85, 247, 0.15); color: var(--accent-violet); border: 1px solid rgba(168, 85, 247, 0.3); }
+
+        .desc-text {
+            color: #cbd5e1;
+            font-size: 0.96rem;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        /* Property/Feature Boxes */
+        .prop-box {
+            background: rgba(3, 7, 18, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .prop-title {
+            color: var(--accent-sky);
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .prop-item {
+            color: #e2e8f0;
+            font-size: 0.92rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .prop-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .p-name {
+            font-family: var(--font-mono);
+            color: var(--chai-gold);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Code Snippet Display */
+        .code-snippet {
+            background: #030712;
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .cs-kw { color: #f43f5e; font-weight: 600; }
+        .cs-sel { color: #38bdf8; font-weight: 600; }
+        .cs-prop { color: #f59e0b; }
+        .cs-val { color: #34d399; }
+        .cs-comm { color: #64748b; font-style: italic; }
+        .cs-tag { color: #f43f5e; }
+        .cs-attr { color: #38bdf8; }
+        .cs-punct { color: #94a3b8; }
+        .cs-fn { color: #60a5fa; }
+
+        /* Flowchart Pipeline */
+        .pipeline-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .pipe-step {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pipe-step:hover {
+            border-color: var(--chai-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .pipe-badge {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--chai-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .pipe-title {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .pipe-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* Token Visualizer */
+        .token-matrix {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .token-chip {
+            display: inline-flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+
+        .token-chip:hover {
+            transform: scale(1.05);
+        }
+
+        .token-type {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .token-val {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .chip-identifier { border-color: rgba(56, 189, 248, 0.4); }
+        .chip-identifier .token-type { color: var(--accent-sky); }
+        .chip-identifier .token-val { color: #ffffff; }
+
+        .chip-punct { border-color: rgba(148, 163, 184, 0.3); }
+        .chip-punct .token-type { color: #94a3b8; }
+        .chip-punct .token-val { color: #f59e0b; }
+
+        .chip-string { border-color: rgba(16, 185, 129, 0.4); }
+        .chip-string .token-type { color: var(--accent-emerald); }
+        .chip-string .token-val { color: #34d399; }
+
+        /* AST Visual Tree */
+        .ast-tree {
+            background: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.86rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+        }
+
+        .ast-node {
+            color: var(--accent-violet);
+            font-weight: 600;
+        }
+
+        .ast-prop {
+            color: var(--accent-sky);
+        }
+
+        .ast-val {
+            color: var(--accent-emerald);
+        }
+
+        .ast-str {
+            color: #fcd34d;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin: 16px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: var(--bg-card);
+        }
+
+        th {
+            background-color: rgba(3, 7, 18, 0.9);
+            color: var(--chai-gold);
+            text-align: left;
+            padding: 14px 18px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+            font-family: var(--font-heading);
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        td code {
+            font-family: var(--font-mono);
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--chai-gold);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* CLI Interactive Box */
+        .cli-box {
+            background: #000000;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .cli-prompt {
+            color: var(--accent-emerald);
+            user-select: none;
+            margin-right: 8px;
+        }
+
+        .cli-cmd {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .cli-copy-btn {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--chai-gold);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-family: var(--font-main);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cli-copy-btn:hover {
+            background: var(--chai-gold);
+            color: #030712;
+        }
+
+        /* Interactive Simulator */
+        .interactive-sim {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .sim-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .sim-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .sim-btn.active {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--chai-gold);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .sim-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sim-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer.doc-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.1rem; }
+            .card { padding: 18px; }
+            body { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="doc-header">
+            <div class="badge-pill">☕ Chai Aur Code • Modern JavaScript Masterclass</div>
+            <h1 class="main-title">JavaScript Foundations &amp; V8 Engine Architecture</h1>
+            <p class="subtitle">An exhaustive, interactive visual guide covering the core mechanics of JavaScript, the Node.js runtime environment, and the step-by-step lifecycle of code execution from raw text to CPU silicon.</p>
+            
+            <div class="quick-nav">
+                <a href="#what-is-js">1. What is JavaScript?</a>
+                <a href="#what-is-node">2. What is Node.js?</a>
+                <a href="#runtime-comparison">3. Browser vs Node.js</a>
+                <a href="#execution-pipeline">4. Engine Execution Pipeline</a>
+                <a href="#ast-breakdown">5. Scanner &amp; AST Analysis</a>
+                <a href="#memory-stack">6. Memory Heap &amp; Call Stack</a>
+                <a href="#event-loop">7. Concurrency &amp; Event Loop</a>
+                <a href="#v4-cli">8. Terminal &amp; V8 Flags</a>
+                <a href="#printing-methods">9. Printing Methods (part1)</a>
+                <a href="#data-types-vars">10. Datatypes &amp; var/let/const</a>
+                <a href="#glossary">11. Technical Glossary</a>
+            </div>
+        </header>
+
+        <!-- 1. What is JavaScript? -->
+        <section id="what-is-js">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">What is JavaScript? (Core Characteristics &amp; Origin)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Brendan Eich (1995) • ECMAScript Standard • Multi-Paradigm</span>
+                    <span class="tag-badge badge-core">Core Language</span>
+                </div>
+                <p class="desc-text">JavaScript is a lightweight, cross-platform, single-threaded, dynamically typed, prototype-based, multi-paradigm, garbage-collected programming language with first-class functions and a non-blocking asynchronous event loop.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">The 5 Defining Pillars of JavaScript</div>
+                    <div class="prop-item"><span class="p-name">1. Single-Threaded:</span> Has exactly one Call Stack and executes instructions one at a time sequentially.</div>
+                    <div class="prop-item"><span class="p-name">2. Dynamically Typed:</span> Variable types are resolved at runtime rather than upfront during compilation.</div>
+                    <div class="prop-item"><span class="p-name">3. First-Class Functions:</span> Functions are values (can be assigned to variables, passed into callbacks, and returned from functions).</div>
+                    <div class="prop-item"><span class="p-name">4. Prototype-Based OOP:</span> Objects inherit directly from other objects through prototype linkage rather than strict class blueprints.</div>
+                    <div class="prop-item"><span class="p-name">5. Automatic Garbage Collection:</span> The engine tracks object memory and recycles unreferenced allocations automatically via the Orinoco GC.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Dynamic typing &amp; First-class functions in action</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">greeting</span> = <span class="cs-val">"Hello Chai!"</span>; <span class="cs-comm">// Initialized as a String</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-fn">printMessage</span> = (<span class="cs-prop">fn</span>) =&gt; <span class="cs-prop">fn</span>(<span class="cs-prop">greeting</span>); <span class="cs-comm">// Higher-order function</span><br><br>
+                    <span class="cs-fn">printMessage</span>(<span class="cs-prop">console</span>.<span class="cs-fn">log</span>); <span class="cs-comm">// Passing console.log as a first-class value</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. What is Node.js? -->
+        <section id="what-is-node">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">What is Node.js? (Runtime Architecture vs Language)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Ryan Dahl (2009) • V8 Engine + libuv + C++ Bindings</span>
+                    <span class="tag-badge badge-runtime">Runtime Environment</span>
+                </div>
+                <p class="desc-text">Node.js is <strong>NOT</strong> a programming language, framework, or library. It is an open-source, cross-platform <strong>JavaScript Runtime Environment</strong> that executes JavaScript code outside the confines of a web browser.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">The Node.js Anatomy (How it Works)</div>
+                    <div class="prop-item"><span class="p-name">1. Google V8 Engine:</span> Compiles and executes JS, manages the Call Stack, and performs garbage collection.</div>
+                    <div class="prop-item"><span class="p-name">2. libuv (C Library):</span> Powers the Event Loop and coordinates asynchronous I/O via an internal OS worker thread pool.</div>
+                    <div class="prop-item"><span class="p-name">3. Native C++ Bindings:</span> Bridges JavaScript calls to operating system syscalls (file system, TCP sockets, cryptography, process signals).</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subsystem</th>
+                                <th>Written In</th>
+                                <th>Primary Responsibility</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>V8 Engine</strong></td>
+                                <td>C++</td>
+                                <td>Parses JS, generates AST, emits Ignition Bytecode, JIT-optimizes via TurboFan.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>libuv</strong></td>
+                                <td>C</td>
+                                <td>Event loop, asynchronous file I/O threadpool (4 threads default), epoll/kqueue network polling.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Node Core APIs</strong></td>
+                                <td>JavaScript / C++</td>
+                                <td>Provides standard libraries: <code>fs</code>, <code>path</code>, <code>http</code>, <code>crypto</code>, <code>os</code>, <code>events</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Browser vs Node.js -->
+        <section id="runtime-comparison">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Browser Runtime vs Node.js Runtime (Side-by-Side)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Sandboxed Client-Side vs Unrestricted Server-Side</span>
+                    <span class="tag-badge badge-core">Comparison</span>
+                </div>
+                <p class="desc-text">While both environments share the same ECMAScript core language specifications, their host APIs and security boundaries are diametrically opposed:</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature / Capability</th>
+                                <th>Web Browser (Chrome / Edge / Firefox)</th>
+                                <th>Node.js Environment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Global Execution Scope</strong></td>
+                                <td><code>window</code>, <code>self</code>, <code>document</code></td>
+                                <td><code>global</code>, <code>process</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>DOM &amp; UI Manipulation</strong></td>
+                                <td>Full access (<code>document.getElementById</code>)</td>
+                                <td><strong>No DOM!</strong> (<code>document</code> is undefined)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Local File System Access</strong></td>
+                                <td>Strictly sandboxed (No arbitrary disk read)</td>
+                                <td>Full OS access (<code>fs.readFile</code>, <code>fs.writeFile</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Networking Capabilities</strong></td>
+                                <td>Limited to HTTP/WebSocket via <code>fetch</code> / <code>XHR</code></td>
+                                <td>Raw TCP, UDP, HTTP server, WebSockets, DNS</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Module Architecture</strong></td>
+                                <td>ES Modules (<code>import</code> / <code>export</code>)</td>
+                                <td>CommonJS (<code>require</code>) + ES Modules (<code>import</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Primary Role</strong></td>
+                                <td>Client user experience, animations, events</td>
+                                <td>Web servers, microservices, CLI tools, build engines</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. How JavaScript Executes Code (The Engine Pipeline) -->
+        <section id="execution-pipeline">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">How JavaScript Executes Code (The V8 Engine Pipeline)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">From Raw Characters to CPU Silicon (JIT Compilation)</span>
+                    <span class="tag-badge badge-v8">V8 Pipeline</span>
+                </div>
+                <p class="desc-text">When you run <code>node hello.js</code>, the V8 engine does not simply "interpret" text line by line. It runs an advanced multi-tier Just-In-Time (JIT) compilation pipeline:</p>
+
+                <!-- Step-by-Step Flowchart -->
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 1 • Lexing</div>
+                        <div class="pipe-title">Scanner / Tokenizer</div>
+                        <p class="pipe-desc">Streams raw characters and converts them into structured lexical tokens, stripping whitespace and comments.</p>
+                    </div>
+
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 2 • Syntax</div>
+                        <div class="pipe-title">Parser (AST)</div>
+                        <p class="pipe-desc">Validates syntax grammar and builds the hierarchical Abstract Syntax Tree (AST) while resolving scopes.</p>
+                    </div>
+
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 3 • Intermediate</div>
+                        <div class="pipe-title">Ignition (Interpreter)</div>
+                        <p class="pipe-desc">Compiles the AST into lightweight register-based Bytecode for instant startup execution.</p>
+                    </div>
+
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 4 • Profiling</div>
+                        <div class="pipe-title">Feedback Vector</div>
+                        <p class="pipe-desc">Monitors running bytecode, logging frequent type signatures and flagging "hot" repeatedly-called functions.</p>
+                    </div>
+
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 5 • JIT Compiling</div>
+                        <div class="pipe-title">TurboFan (Optimizer)</div>
+                        <p class="pipe-desc">Converts hot bytecode and type feedback into blazingly fast native machine code (CPU assembly).</p>
+                    </div>
+
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 6 • Fallback</div>
+                        <div class="pipe-title">Deoptimization (Bailout)</div>
+                        <p class="pipe-desc">If variable types unexpectedly change at runtime, TurboFan discards native code and bails out back to Ignition.</p>
+                    </div>
+                </div>
+
+                <div class="prop-box">
+                    <div class="prop-title">Why V8 Uses Ignition Bytecode Instead of Direct Machine Code</div>
+                    <div class="prop-item"><span class="p-name">1. Memory Footprint:</span> Machine code requires up to 10x more RAM than compact bytecode (saving gigabytes across browser tabs and mobile devices).</div>
+                    <div class="prop-item"><span class="p-name">2. Instant Startup:</span> Emitting bytecode is near-instantaneous, eliminating page-load freezes.</div>
+                    <div class="prop-item"><span class="p-name">3. Cross-CPU Portability:</span> Ignition emits standard bytecode that works identically across x86, x64, ARM, and Apple Silicon chips.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. AST Deep Dive -->
+        <section id="ast-breakdown">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Scanner &amp; AST Analysis: Dissecting <code>console.log("Hello Chai!");</code></h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Lexical Tokens &amp; Syntax Tree Node Hierarchy</span>
+                    <span class="tag-badge badge-jit">Syntax Tree</span>
+                </div>
+                <p class="desc-text">Here is the exact transformation of our single line of code in <code>hello.js</code> through the Lexer and Parser:</p>
+
+                <div class="prop-title" style="margin-bottom: 8px;">1. The Generated Token Stream (Scanner Output):</div>
+                <div class="token-matrix">
+                    <div class="token-chip chip-identifier">
+                        <span class="token-type">Identifier</span>
+                        <span class="token-val">console</span>
+                    </div>
+                    <div class="token-chip chip-punct">
+                        <span class="token-type">Punctuator</span>
+                        <span class="token-val">.</span>
+                    </div>
+                    <div class="token-chip chip-identifier">
+                        <span class="token-type">Identifier</span>
+                        <span class="token-val">log</span>
+                    </div>
+                    <div class="token-chip chip-punct">
+                        <span class="token-type">Punctuator</span>
+                        <span class="token-val">(</span>
+                    </div>
+                    <div class="token-chip chip-string">
+                        <span class="token-type">StringLiteral</span>
+                        <span class="token-val">"Hello Chai!"</span>
+                    </div>
+                    <div class="token-chip chip-punct">
+                        <span class="token-type">Punctuator</span>
+                        <span class="token-val">)</span>
+                    </div>
+                    <div class="token-chip chip-punct">
+                        <span class="token-type">Punctuator</span>
+                        <span class="token-val">;</span>
+                    </div>
+                </div>
+
+                <div class="prop-title" style="margin-top: 24px; margin-bottom: 8px;">2. The Resulting Abstract Syntax Tree (AST):</div>
+                <div class="ast-tree">
+<span class="ast-node">Program</span> {<br>
+&nbsp;&nbsp;type: <span class="ast-str">"Program"</span>,<br>
+&nbsp;&nbsp;body: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ast-node">ExpressionStatement</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <span class="ast-str">"ExpressionStatement"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expression: <span class="ast-node">CallExpression</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <span class="ast-str">"CallExpression"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ast-prop">callee</span>: <span class="ast-node">MemberExpression</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <span class="ast-str">"MemberExpression"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ast-prop">object</span>: <span class="ast-node">Identifier</span> { name: <span class="ast-val">"console"</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ast-prop">property</span>: <span class="ast-node">Identifier</span> { name: <span class="ast-val">"log"</span> }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ast-prop">arguments</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ast-node">Literal</span> { type: <span class="ast-str">"Literal"</span>, value: <span class="ast-val">"Hello Chai!"</span>, raw: <span class="ast-str">"\"Hello Chai!\""</span> }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Memory Heap, Call Stack & Execution Context -->
+        <section id="memory-stack">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Memory Heap, Call Stack &amp; Execution Context</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">LIFO Stack • Dynamic Heap • Creation vs Execution Phase</span>
+                    <span class="tag-badge badge-core">Runtime Mechanics</span>
+                </div>
+                <p class="desc-text">Every script runs inside an <strong>Execution Context</strong>. Understanding how memory is prepared before code runs is the key to understanding hoisting, closures, and variable scope.</p>
+
+                <!-- Interactive Tabbed Context Viewer -->
+                <div class="interactive-sim">
+                    <div class="sim-tabs">
+                        <button class="sim-btn active" onclick="switchTab('phase1')">Phase A: Creation (Hoisting)</button>
+                        <button class="sim-btn" onclick="switchTab('phase2')">Phase B: Execution (Line-by-Line)</button>
+                    </div>
+
+                    <div id="phase1" class="sim-content active">
+                        <div class="prop-box" style="border-left: 4px solid var(--chai-gold);">
+                            <div class="prop-title" style="color: var(--chai-gold);">The Creation Phase (Memory Allocation)</div>
+                            <div class="prop-item"><span class="p-name">1. Global Object &amp; `this`:</span> Instantiates <code>global</code> in Node.js and binds the base context.</div>
+                            <div class="prop-item"><span class="p-name">2. Function Hoisting:</span> Entire function definitions are loaded into the Memory Heap ready to be invoked.</div>
+                            <div class="prop-item"><span class="p-name">3. `var` Allocation:</span> Variables declared with <code>var</code> are set to <code>undefined</code>.</div>
+                            <div class="prop-item"><span class="p-name">4. `let` &amp; `const` (TDZ):</span> Memory is reserved, but initialized in the Temporal Dead Zone (accessing before assignment throws <code>ReferenceError</code>).</div>
+                        </div>
+                    </div>
+
+                    <div id="phase2" class="sim-content">
+                        <div class="prop-box" style="border-left: 4px solid var(--accent-emerald);">
+                            <div class="prop-title" style="color: var(--accent-emerald);">The Execution Phase (Running Instructions)</div>
+                            <div class="prop-item"><span class="p-name">1. Sequential Execution:</span> Code is evaluated line by line on the Call Stack.</div>
+                            <div class="prop-item"><span class="p-name">2. Value Assignment:</span> Real values overwrite the <code>undefined</code> placeholders in memory.</div>
+                            <div class="prop-item"><span class="p-name">3. Function Invocation:</span> Pushes a new Function Execution Context (FEC) onto the Call Stack.</div>
+                            <div class="prop-item"><span class="p-name">4. Stack Return:</span> When a function finishes, its context is popped off the Call Stack.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Demonstrating Hoisting in Action</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">a</span>); <span class="cs-comm">// Prints 'undefined' (allocated in Creation Phase!)</span><br>
+                    <span class="cs-kw">var</span> <span class="cs-prop">a</span> = <span class="cs-val">10</span>;     <span class="cs-comm">// Assigned 10 in Execution Phase</span><br><br>
+                    <span class="cs-fn">sayHello</span>();      <span class="cs-comm">// Works perfectly! Function is fully hoisted</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">sayHello</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Chai is ready!"</span>);<br>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Concurrency & The Event Loop -->
+        <section id="event-loop">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Concurrency &amp; The Event Loop (libuv Asynchronous Engine)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Microtasks vs Macrotasks • libuv Thread Pool</span>
+                    <span class="tag-badge badge-runtime">Concurrency</span>
+                </div>
+                <p class="desc-text">JavaScript is single-threaded, meaning it has only one Call Stack. How can Node.js serve thousands of simultaneous network requests without locking up? Answer: <strong>The libuv Event Loop</strong>.</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Role</th>
+                                <th>Priority / Ordering</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Call Stack</strong></td>
+                                <td>Executes all synchronous JavaScript code line-by-line.</td>
+                                <td>Runs immediately (blocks while executing).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>libuv Thread Pool</strong></td>
+                                <td>4 background OS threads handling heavy I/O (file system, DNS, crypto).</td>
+                                <td>Offloaded from main thread without blocking JS.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Microtask Queue</strong></td>
+                                <td>Holds <code>process.nextTick()</code> and resolved <code>Promise</code> callbacks (<code>.then</code>).</td>
+                                <td><strong>Highest Priority!</strong> Emptied completely after every stack operation.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Macrotask Queue</strong></td>
+                                <td>Holds <code>setTimeout</code>, <code>setInterval</code>, and I/O callbacks.</td>
+                                <td>Processed in order only when Microtask Queue is empty.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Terminal CLI Flags & V8 Inspection -->
+        <section id="v4-cli">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <h2 class="section-title">Terminal &amp; V8 Engine Inspection Commands</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Node CLI Flags • Bytecode Dumps • REPL</span>
+                    <span class="tag-badge badge-oxide">CLI Power Tools</span>
+                </div>
+                <p class="desc-text">Test these commands directly in your VS Code terminal to inspect how Node.js and the V8 engine handle your code:</p>
+
+                <div class="cli-box">
+                    <div>
+                        <span class="cli-prompt">$</span>
+                        <span class="cli-cmd">node hello.js</span>
+                    </div>
+                    <button class="cli-copy-btn" onclick="navigator.clipboard.writeText('node hello.js')">Copy</button>
+                </div>
+
+                <div class="cli-box">
+                    <div>
+                        <span class="cli-prompt">$</span>
+                        <span class="cli-cmd">node -p "process.versions.v8"</span>
+                    </div>
+                    <button class="cli-copy-btn" onclick="navigator.clipboard.writeText('node -p &quot;process.versions.v8&quot;')">Copy</button>
+                </div>
+
+                <div class="cli-box">
+                    <div>
+                        <span class="cli-prompt">$</span>
+                        <span class="cli-cmd">node --print-bytecode hello.js</span>
+                    </div>
+                    <button class="cli-copy-btn" onclick="navigator.clipboard.writeText('node --print-bytecode hello.js')">Copy</button>
+                </div>
+
+                <div class="cli-box">
+                    <div>
+                        <span class="cli-prompt">$</span>
+                        <span class="cli-cmd">node --trace-opt hello.js</span>
+                    </div>
+                    <button class="cli-copy-btn" onclick="navigator.clipboard.writeText('node --trace-opt hello.js')">Copy</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Printing Methods in Node.js -->
+        <section id="printing-methods">
+            <div class="section-header">
+                <div class="section-number">9</div>
+                <h2 class="section-title">Part 1: Printing Methods in Node.js (printing.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">console.log vs process.stdout.write vs console.table</span>
+                    <span class="tag-badge badge-core">CLI Output</span>
+                </div>
+                <p class="desc-text">In Node.js, there are multiple built-in ways to print data to the terminal, each with distinct newline behavior and formatting:</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Core Output Utilities</div>
+                    <div class="prop-item"><span class="p-name">1. console.log(...data):</span> Prints to standard output with an automatic trailing newline (<code>\n</code>). Each call outputs on a fresh line.</div>
+                    <div class="prop-item"><span class="p-name">2. process.stdout.write(string):</span> Low-level Node stream writing. Does <strong>NOT</strong> append a newline, allowing consecutive calls to print inline on the same terminal line!</div>
+                    <div class="prop-item"><span class="p-name">3. console.table(data):</span> Renders tabular data (arrays of objects or key-value dictionaries) in an ASCII grid table.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part1/printing.js</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Hello"</span>); <span class="cs-comm">// Outputs: Hello (with newline)</span><br><br>
+                    <span class="cs-prop">process</span>.<span class="cs-prop">stdout</span>.<span class="cs-fn">write</span>(<span class="cs-val">"Chai"</span>);<br>
+                    <span class="cs-prop">process</span>.<span class="cs-prop">stdout</span>.<span class="cs-fn">write</span>(<span class="cs-val">"Chai"</span>); <span class="cs-comm">// Outputs: ChaiChai (on the SAME line!)</span><br><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">table</span>({ <span class="cs-prop">city</span>: <span class="cs-val">"Varanasi"</span> }); <span class="cs-comm">// Outputs a formatted index/value table</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Data Types & var vs let vs const -->
+        <section id="data-types-vars">
+            <div class="section-header">
+                <div class="section-number">10</div>
+                <h2 class="section-title">Part 1: Data Types &amp; The var vs let vs const Deep Dive</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">7 Primitives • Call by Value vs Reference • Scope &amp; TDZ</span>
+                    <span class="tag-badge badge-oxide">Foundations</span>
+                </div>
+                <p class="desc-text">JavaScript types are divided into two fundamental memory categories: <strong>Primitives</strong> (stored in Stack memory, call by value) and <strong>Reference Types</strong> (stored in the Memory Heap, call by reference).</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Types</th>
+                                <th>Storage &amp; Assignment Behavior</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Primitive Types (7)</strong></td>
+                                <td><code>String</code>, <code>Number</code>, <code>BigInt</code>, <code>Boolean</code>, <code>undefined</code>, <code>null</code>, <code>Symbol</code></td>
+                                <td>Stored directly in <strong>Stack</strong> memory. Passed by <strong>Value</strong> (creates a separate copy in memory).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reference Types</strong></td>
+                                <td><code>Object</code>, <code>Array</code>, <code>Function</code></td>
+                                <td>Stored in <strong>Heap</strong> memory. Variables only hold a pointer/reference to the heap address.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px;">
+                    <div class="prop-title" style="color: var(--accent-rose);">The typeof null Legacy Bug</div>
+                    <div class="prop-item"><span class="p-name">console.log(typeof null); // "object"</span></div>
+                    <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 6px;">In the initial 1995 JavaScript implementation, values were stored with type tags. The tag <code>000</code> indicated an object, and <code>null</code> was represented as a NULL pointer (<code>0x00</code>). As a result, <code>typeof null</code> incorrectly returns <code>"object"</code>. It remains in JavaScript to avoid breaking backwards compatibility with legacy web applications.</p>
+                </div>
+
+                <div class="section-header" style="margin-top: 28px; margin-bottom: 12px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 1.3rem; color: var(--chai-gold);">The Definitive Comparison: var vs let vs const</h3>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th><code>var</code> (Legacy ES5)</th>
+                                <th><code>let</code> (Modern ES6)</th>
+                                <th><code>const</code> (Modern ES6)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Scope</strong></td>
+                                <td><span style="color: var(--accent-rose); font-weight: 600;">Function-Scoped</span> (Leaks outside <code>{ }</code> blocks!)</td>
+                                <td><span style="color: var(--accent-emerald); font-weight: 600;">Block-Scoped</span> (Confined to <code>{ }</code>)</td>
+                                <td><span style="color: var(--accent-emerald); font-weight: 600;">Block-Scoped</span> (Confined to <code>{ }</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Re-assignment</strong></td>
+                                <td>Allowed anytime</td>
+                                <td>Allowed anytime</td>
+                                <td><span style="color: var(--accent-rose); font-weight: 600;">Forbidden</span> (Throws <code>TypeError</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Re-declaration</strong></td>
+                                <td><span style="color: var(--accent-rose); font-weight: 600;">Allowed</span> (Causes silent collisions)</td>
+                                <td><span style="color: var(--accent-emerald); font-weight: 600;">Forbidden</span> (Throws <code>SyntaxError</code>)</td>
+                                <td><span style="color: var(--accent-emerald); font-weight: 600;">Forbidden</span> (Throws <code>SyntaxError</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Initialization</strong></td>
+                                <td>Optional (Defaults to <code>undefined</code>)</td>
+                                <td>Optional (Defaults to <code>undefined</code>)</td>
+                                <td><span style="color: var(--accent-sky); font-weight: 600;">Mandatory</span> at declaration time</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hoisting &amp; TDZ</strong></td>
+                                <td>Hoisted &amp; initialized to <code>undefined</code></td>
+                                <td>Hoisted into Temporal Dead Zone (TDZ)</td>
+                                <td>Hoisted into Temporal Dead Zone (TDZ)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Object Mutation</strong></td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td><strong>Properties CAN mutate</strong> (only the reference is fixed)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px; border-left: 4px solid var(--accent-emerald);">
+                    <div class="prop-title" style="color: var(--accent-emerald);">Golden Rule in Modern JavaScript</div>
+                    <div class="prop-item"><span class="p-name">1. Always use const by default:</span> Ensures predictable data flow and prevents accidental variable overwrites.</div>
+                    <div class="prop-item"><span class="p-name">2. Use let only when reassignment is needed:</span> For counters, loop iterators, or state accumulators.</div>
+                    <div class="prop-item"><span class="p-name">3. Never use var:</span> Avoids block scope leaks, variable pollution, and hoisting bugs.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part1/datatype.js</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">score</span> = <span class="cs-val">102</span>;<br>
+                    <span class="cs-prop">score</span> = <span class="cs-val">150</span>; <span class="cs-comm">// Valid! 'let' allows reassignment</span><br><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">chaiOrder</span> = { <span class="cs-prop">type</span>: <span class="cs-val">"Masala Chai"</span>, <span class="cs-prop">sugar</span>: <span class="cs-val">true</span> };<br>
+                    <span class="cs-prop">chaiOrder</span>.<span class="cs-prop">sugar</span> = <span class="cs-val">false</span>; <span class="cs-comm">// Valid! Object property mutation</span><br>
+                    <span class="cs-comm">// chaiOrder = {}; // TypeError: Assignment to constant variable</span><br><br>
+                    {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">var</span> <span class="cs-prop">leaked</span> = <span class="cs-val">"I escape blocks!"</span>;<br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">contained</span> = <span class="cs-val">"I stay inside"</span>;<br>
+                    }<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">leaked</span>); <span class="cs-comm">// Works! 'var' leaks outside the block</span><br>
+                    <span class="cs-comm">// console.log(contained); // ReferenceError: contained is not defined</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">11</div>
+                <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Category</th>
+                            <th>Formal Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>ECMAScript</code></td><td>Standard</td><td>The official standard specification (ECMA-262) implemented by JavaScript engines.</td></tr>
+                        <tr><td><code>V8 Engine</code></td><td>Engine</td><td>Google's open-source C++ high-performance JavaScript &amp; WebAssembly execution engine.</td></tr>
+                        <tr><td><code>libuv</code></td><td>Runtime</td><td>Multi-platform C library providing asynchronous I/O, event loop, and thread pool to Node.js.</td></tr>
+                        <tr><td><code>Scanner</code></td><td>Compiler</td><td>Lexical analyzer converting raw source code character streams into tokens.</td></tr>
+                        <tr><td><code>Token</code></td><td>Compiler</td><td>An atomic lexical unit (Keyword, Identifier, Punctuator, StringLiteral).</td></tr>
+                        <tr><td><code>AST</code></td><td>Compiler</td><td>Abstract Syntax Tree: Hierarchical tree representing the grammatical syntax of code.</td></tr>
+                        <tr><td><code>Ignition</code></td><td>V8 Subsystem</td><td>V8's fast interpreter converting AST into register-based Bytecode.</td></tr>
+                        <tr><td><code>TurboFan</code></td><td>V8 Subsystem</td><td>V8's optimizing JIT compiler compiling hot bytecode into native CPU assembly.</td></tr>
+                        <tr><td><code>Deoptimization</code></td><td>Optimization</td><td>Bailout mechanism discarding optimized machine code when runtime types change.</td></tr>
+                        <tr><td><code>Call Stack</code></td><td>Data Structure</td><td>LIFO stack tracking currently executing execution contexts.</td></tr>
+                        <tr><td><code>Memory Heap</code></td><td>Memory</td><td>Unstructured dynamic memory pool storing objects, arrays, and closures.</td></tr>
+                        <tr><td><code>Temporal Dead Zone</code></td><td>Scope</td><td>The period between entering block scope and declaring a <code>let</code>/<code>const</code> variable.</td></tr>
+                        <tr><td><code>Primitive Types</code></td><td>Datatypes</td><td>7 types stored by value in stack memory (string, number, bigint, boolean, undefined, null, symbol).</td></tr>
+                        <tr><td><code>Reference Types</code></td><td>Datatypes</td><td>Objects, arrays, and functions stored in heap memory (accessed by reference pointer).</td></tr>
+                        <tr><td><code>Block Scope</code></td><td>Scope</td><td>Visibility confined strictly within <code>{ }</code> braces (applied to <code>let</code> and <code>const</code>).</td></tr>
+                        <tr><td><code>Function Scope</code></td><td>Scope</td><td>Visibility confined only to the enclosing function body (applied to <code>var</code>).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="doc-footer">
+            <p>Created for Chai Aur Code • JavaScript Foundations &amp; Runtime Architecture • Open with Live Server to explore!</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.sim-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.sim-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
