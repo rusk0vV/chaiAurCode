@@ -423,6 +423,27 @@
             box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
         }
 
+        .tw-btn-violet {
+            background: #8b5cf6;
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 9999px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .tw-btn-violet:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4);
+        }
+        .tw-btn-violet:active {
+            transform: scale(0.96);
+        }
+
         /* Tables */
         .table-wrapper {
             overflow-x: auto;
@@ -497,17 +518,18 @@
                 <a href="#philosophy">1. Utility-First Philosophy</a>
                 <a href="#v4-oxide">2. What's New in v4</a>
                 <a href="#vite-vs-next">3. Vite vs Next.js</a>
-                <a href="#setup-guides">4. Setup Guides (Vite &amp; Next)</a>
+                <a href="#setup-guides">4. Setup Guides</a>
                 <a href="#intellisense">5. VS Code Autocomplete</a>
                 <a href="#spacing-colors">6. Spacing, Sizing &amp; Colors</a>
                 <a href="#typography">7. Typography &amp; Text</a>
                 <a href="#borders">8. Borders &amp; Shadows</a>
-                <a href="#flex-grid">9. Flexbox &amp; Grid</a>
+                <a href="#flex-grid">9. Flexbox &amp; Grid (Axis Flip)</a>
                 <a href="#interactive">10. Interactive States</a>
-                <a href="#responsive">11. Responsive Breakpoints</a>
+                <a href="#responsive">11. Responsive Design</a>
                 <a href="#jsx-gotchas">12. HTML vs JSX</a>
-                <a href="#showcase">13. Component Showcase</a>
-                <a href="#table-ref">14. Quick Reference Table</a>
+                <a href="#custom-classes">13. Custom Classes (@utility)</a>
+                <a href="#showcase">14. Component Showcase</a>
+                <a href="#table-ref">15. Quick Reference Table</a>
             </div>
         </header>
 
@@ -940,10 +962,18 @@
                 <p class="desc-text">Full access to 1D Flexbox and 2D CSS Grid systems without writing boilerplate CSS rules:</p>
 
                 <div class="prop-box">
-                    <div class="prop-title">Common Layout Recipes</div>
-                    <div class="prop-item"><span class="p-name">Centered Fullscreen:</span> <code>className="min-h-screen flex items-center justify-center"</code></div>
-                    <div class="prop-item"><span class="p-name">Space-Between Navbar:</span> <code>className="flex items-center justify-between px-6 py-4"</code></div>
-                    <div class="prop-item"><span class="p-name">3-Column Grid:</span> <code>className="grid grid-cols-1 md:grid-cols-3 gap-6"</code></div>
+                    <div class="prop-title">Common Layout Recipes &amp; Axis Inversion</div>
+                    <div class="prop-item"><span class="p-name">flex vs flex-col:</span> <code>flex</code> defaults to <strong>row</strong> (side-by-side). Add <code>flex-col</code> to stack children vertically top-to-bottom.</div>
+                    <div class="prop-item"><span class="p-name">The Axis Flip:</span> In <code>flex-row</code>, <code>justify-center</code> centers horizontally (X) and <code>items-center</code> centers vertically (Y). In <code>flex-col</code>, <code>justify-center</code> centers vertically (Y) and <code>items-center</code> centers horizontally (X)!</div>
+                    <div class="prop-item"><span class="p-name">gap-12 (48px):</span> <code>gap: calc(var(--spacing) * 12);</code> creates clean separation between stacked heading and button.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">&lt;!-- Centered vertical stack from responsive.html --&gt;</span><br>
+                    <span class="cs-tag">&lt;body</span> <span class="cs-attr">class</span>=<span class="cs-val">"bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen gap-12"</span><span class="cs-tag">&gt;</span><br>
+                    &nbsp;&nbsp;&lt;h1 class="text-sm sm:text-5xl font-bold"&gt;Learn about Responsive design&lt;/h1&gt;<br>
+                    &nbsp;&nbsp;&lt;button class="btn-primary"&gt;Explore Features&lt;/button&gt;<br>
+                    <span class="cs-tag">&lt;/body&gt;</span>
                 </div>
             </div>
         </section>
@@ -964,7 +994,7 @@
 
                 <div class="prop-box">
                     <div class="prop-title">State Prefixes &amp; Micro-Animations</div>
-                    <div class="prop-item"><span class="p-name">hover:</span> <code>hover:bg-blue-600 hover:text-white</code></div>
+                    <div class="prop-item"><span class="p-name">hover:</span> <code>hover:bg-blue-600 hover:text-white hover:bg-violet-700</code></div>
                     <div class="prop-item"><span class="p-name">active:scale-95:</span> Gives a tactile physical "button press" bounce when clicked.</div>
                     <div class="prop-item"><span class="p-name">transition duration-200:</span> Smoothly animates property changes over 200ms.</div>
                 </div>
@@ -996,19 +1026,18 @@
                 <p class="desc-text">Tailwind uses a mobile-first responsive architecture. Unprefixed classes target mobile, while breakpoint prefixes apply progressively as screen size widens:</p>
 
                 <div class="prop-box">
-                    <div class="prop-title">Breakpoint Hierarchy</div>
-                    <div class="prop-item"><span class="p-name">Default (no prefix):</span> Target phones (&lt; 640px).</div>
-                    <div class="prop-item"><span class="p-name">sm: (640px):</span> Large landscape phones and phablets.</div>
-                    <div class="prop-item"><span class="p-name">md: (768px):</span> Tablets and portrait screens.</div>
-                    <div class="prop-item"><span class="p-name">lg: (1024px):</span> Laptops and desktop monitors.</div>
-                    <div class="prop-item"><span class="p-name">xl: (1280px) / 2xl: (1536px):</span> Widescreen and 4K displays.</div>
+                    <div class="prop-title">Breakpoint Hierarchy &amp; Fluid Typography</div>
+                    <div class="prop-item"><span class="p-name">Default (no prefix):</span> Target mobile phones (&lt; 640px). E.g. <code>text-sm</code> (14px).</div>
+                    <div class="prop-item"><span class="p-name">sm: (640px):</span> Tablets &amp; phablets. E.g. <code>sm:text-5xl</code> (48px fluid scaling!).</div>
+                    <div class="prop-item"><span class="p-name">md: (768px) / lg: (1024px):</span> Desktop monitors and widescreen displays.</div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="cs-comm">/* 1 column on mobile ➔ 2 cols on tablet ➔ 4 cols on desktop */</span><br>
-                    <span class="cs-tag">&lt;div</span> <span class="cs-attr">className</span>=<span class="cs-val">"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"</span><span class="cs-tag">&gt;</span><br>
-                    &nbsp;&nbsp;&lt;div&gt;Item 1&lt;/div&gt;&nbsp;&nbsp;&lt;div&gt;Item 2&lt;/div&gt;<br>
-                    <span class="cs-tag">&lt;/div&gt;</span>
+                    <span class="cs-comm">/* Mobile-First Headline (from responsive.html) */</span><br>
+                    <span class="cs-comm">/* Mobile (&lt;640px): text-sm (14px) ➔ Tablet/Desktop (&gt;=640px): text-5xl (48px) */</span><br>
+                    <span class="cs-tag">&lt;h1</span> <span class="cs-attr">class</span>=<span class="cs-val">"text-sm sm:text-5xl font-bold"</span><span class="cs-tag">&gt;</span><br>
+                    &nbsp;&nbsp;Learn about Responsive design<br>
+                    <span class="cs-tag">&lt;/h1&gt;</span>
                 </div>
             </div>
         </section>
@@ -1036,11 +1065,59 @@
             </div>
         </section>
 
-        <!-- 13. Live Component Showcase -->
-        <section id="showcase">
+        <!-- 13. Custom Component Classes (@utility & @layer) -->
+        <section id="custom-classes">
             <div class="section-header">
                 <div class="section-number">13</div>
-                <h2 class="section-title">Live Component Showcase (Vite &amp; Next.js Demos)</h2>
+                <h2 class="section-title">Custom Component Classes (@utility &amp; The Bootstrap Fallacy)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Why .btn-primary Doesn't Exist • @utility vs @layer components</span>
+                    <span class="tag-badge badge-oxide">Tailwind v4</span>
+                </div>
+                <p class="desc-text">Coming from Bootstrap, developers often expect pre-styled component classes like <code>.btn</code> or <code>.btn-primary</code> to work out of the box. In Tailwind CSS, <strong>they do not exist</strong> unless you define them.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Bootstrap vs Tailwind: Architectural Mindset</div>
+                    <div class="prop-item"><span class="p-name">Bootstrap (Component-First):</span> Ships hundreds of opinionated widgets (<code>.btn</code>, <code>.card</code>, <code>.badge</code>). Every site looks identical unless heavily overridden.</div>
+                    <div class="prop-item"><span class="p-name">Tailwind (Utility-First):</span> Ships low-level primitives (<code>px-5</code>, <code>py-2</code>, <code>bg-violet-500</code>). You have complete freedom to craft any design without fighting default styling.</div>
+                </div>
+
+                <div class="prop-box" style="margin-top: 16px;">
+                    <div class="prop-title">How to Define Custom Classes in Tailwind v4 (input.css)</div>
+                    <div class="prop-item"><span class="p-name">Option A: Modern @utility Directive (Recommended):</span> Registered directly into the utility engine. Automatically gains variant support (<code>sm:btn-primary</code>, <code>dark:btn-primary</code>) and can be cleanly overridden by utility classes in HTML.</div>
+                    <div class="prop-item"><span class="p-name">Option B: @layer components:</span> Traditional component layer using native CSS variables (<code>var(--color-violet-500)</code>, <code>var(--shadow-md)</code>, <code>--spacing(5)</code>).</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">/* === Option A: Modern Tailwind v4 @utility Directive (Recommended) === */</span><br>
+                    <span class="cs-kw">@import</span> <span class="cs-val">"tailwindcss"</span><span class="cs-punct">;</span><br><br>
+                    <span class="cs-kw">@utility</span> <span class="cs-sel">btn-primary</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-kw">@apply</span> <span class="cs-val">bg-violet-500 hover:bg-violet-700 active:scale-95 text-white font-semibold px-5 py-2 rounded-full shadow-md transition duration-200 cursor-pointer inline-block</span><span class="cs-punct">;</span><br>
+                    <span class="cs-punct">}</span><br><br>
+                    <span class="cs-comm">/* === Option B: @layer components with Native CSS Variables === */</span><br>
+                    <span class="cs-kw">@layer</span> <span class="cs-sel">components</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;<span class="cs-sel">.btn-primary</span> <span class="cs-punct">{</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">background-color</span><span class="cs-punct">:</span> <span class="cs-val">var(--color-violet-500)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">padding-inline</span><span class="cs-punct">:</span> <span class="cs-val">--spacing(5)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">padding-block</span><span class="cs-punct">:</span> <span class="cs-val">--spacing(2)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">border-radius</span><span class="cs-punct">:</span> <span class="cs-val">var(--radius-full)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">box-shadow</span><span class="cs-punct">:</span> <span class="cs-val">var(--shadow-md)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">font-weight</span><span class="cs-punct">:</span> <span class="cs-val">var(--font-weight-semibold)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">color</span><span class="cs-punct">:</span> <span class="cs-val">var(--color-white)</span><span class="cs-punct">;</span><br>
+                    &nbsp;&nbsp;<span class="cs-punct">}</span><br>
+                    <span class="cs-punct">}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. Live Component Showcase -->
+        <section id="showcase">
+            <div class="section-header">
+                <div class="section-number">14</div>
+                <h2 class="section-title">Live Component Showcase (Vite, Next.js &amp; HTML Demos)</h2>
             </div>
 
             <div class="card">
@@ -1048,7 +1125,7 @@
                     <span class="tag-name">Real-Time Component Outputs</span>
                     <span class="tag-badge badge-interact">Live Lab</span>
                 </div>
-                <p class="desc-text">The exact component outputs currently active across both our Vite and Next.js projects:</p>
+                <p class="desc-text">The exact component outputs currently active across our Vite, Next.js, and standalone HTML projects:</p>
 
                 <!-- Vite Output Demo -->
                 <div class="live-preview" style="background: #0b0f19; margin-bottom: 24px;">
@@ -1067,7 +1144,7 @@
                 </div>
 
                 <!-- Plain HTML Login Card Demo -->
-                <div class="live-preview" style="background: #0b0f19;">
+                <div class="live-preview" style="background: #0b0f19; margin-bottom: 24px;">
                     <span class="preview-label">3. Plain HTML Live Component (login.html • Live Server http://127.0.0.1:5500):<br>&lt;body class="bg-gray-900 flex justify-center items-center min-h-screen"&gt;</span>
                     
                     <div style="display: flex; justify-content: center; padding: 24px 0;">
@@ -1093,13 +1170,27 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Plain HTML Responsive Stack Demo (responsive.html) -->
+                <div class="live-preview" style="background: #0b0f19;">
+                    <span class="preview-label">4. Responsive Layout &amp; Custom .btn-primary (responsive.html • Live Server):<br>&lt;body class="bg-gray-900 text-white flex justify-center items-center min-h-screen flex-col gap-12"&gt;</span>
+                    
+                    <div style="background-color: #111827; border: 1px dashed #374151; border-radius: 0.75rem; padding: 3rem 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3rem;">
+                        <h3 style="font-size: 1.75rem; font-weight: 700; color: #ffffff; text-align: center; margin: 0;">
+                            Learn about Responsive design
+                        </h3>
+                        <button class="tw-btn-violet">
+                            Explore Features
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 14. Quick Reference Table -->
+        <!-- 15. Quick Reference Table -->
         <section id="table-ref">
             <div class="section-header">
-                <div class="section-number">14</div>
+                <div class="section-number">15</div>
                 <h2 class="section-title">One-Liner Quick Reference Table</h2>
             </div>
 
@@ -1115,31 +1206,31 @@
                     </thead>
                     <tbody>
                         <tr><td><code>@import "tailwindcss";</code></td><td>Setup</td><td>Vite, Next &amp; CLI Entry</td><td>Activates Tailwind v4 in CSS entrypoint</td></tr>
+                        <tr><td><code>@utility &lt;name&gt;</code></td><td>v4 Custom</td><td>Tailwind Utility Registration</td><td>Defines reusable classes with auto-generated variants</td></tr>
                         <tr><td><code>@tailwindcss/vite</code></td><td>Tooling</td><td>Vite 6 Plugin</td><td>Plugin configured in <code>vite.config.js</code> for instant HMR</td></tr>
                         <tr><td><code>@tailwindcss/turbopack</code></td><td>Tooling</td><td>Next.js Turbopack Plugin</td><td>Zero-config bundler integration in Next.js 16</td></tr>
                         <tr><td><code>p-4 / p-8 / p-12</code></td><td>Spacing</td><td><code>padding: 1rem / 2rem / 3rem;</code></td><td>All-sides padding scale (used in login card)</td></tr>
-                        <tr><td><code>px-6 / py-2</code></td><td>Spacing</td><td><code>padding-inline / block;</code></td><td>Horizontal and vertical padding</td></tr>
+                        <tr><td><code>px-5 / py-2</code></td><td>Spacing</td><td><code>padding-inline / block;</code></td><td>Balanced horizontal and vertical button padding</td></tr>
                         <tr><td><code>m-4 / mx-auto</code></td><td>Spacing</td><td><code>margin: 1rem / 0 auto;</code></td><td>Outside spacing and horizontal block centering</td></tr>
                         <tr><td><code>w-full / max-w-sm</code></td><td>Sizing</td><td><code>width: 100% / max-w: 24rem;</code></td><td>Responsive card constraint (login container)</td></tr>
                         <tr><td><code>min-h-screen</code></td><td>Sizing</td><td><code>min-height: 100vh;</code></td><td>Guaranteed full-viewport height without clipping</td></tr>
                         <tr><td><code>bg-gray-900 / bg-gray-700</code></td><td>Background</td><td><code>background: #111827 / #374151;</code></td><td>Deep canvas &amp; elevated card contrast</td></tr>
                         <tr><td><code>bg-gray-800</code></td><td>Background</td><td><code>background-color: #1f2937;</code></td><td>Input field surface fill</td></tr>
+                        <tr><td><code>bg-violet-500 / hover:bg-violet-700</code></td><td>Background</td><td><code>background: #8b5cf6 / #6d28d9;</code></td><td>Vibrant custom pill button with hover reaction</td></tr>
                         <tr><td><code>bg-blue-600 / hover:bg-blue-700</code></td><td>Background</td><td><code>background: #2563eb / #1d4ed8;</code></td><td>Primary action button with hover reaction</td></tr>
                         <tr><td><code>bg-amber-300 / bg-blue-500</code></td><td>Background</td><td><code>background: #fcd34d / #3b82f6;</code></td><td>Demo banner backgrounds</td></tr>
                         <tr><td><code>text-white / text-gray-300</code></td><td>Typography</td><td><code>color: #fff / #d1d5db;</code></td><td>High-contrast headline &amp; label text</td></tr>
                         <tr><td><code>placeholder-gray-400</code></td><td>Typography</td><td><code>::placeholder { color: #9ca3af; }</code></td><td>Muted legible input field hint</td></tr>
-                        <tr><td><code>text-3xl / text-4xl</code></td><td>Typography</td><td><code>font-size: 1.875rem / 2.25rem;</code></td><td>Fluid headline typography scale</td></tr>
-                        <tr><td><code>font-bold / font-medium</code></td><td>Typography</td><td><code>font-weight: 700 / 500;</code></td><td>Font weight levels</td></tr>
+                        <tr><td><code>text-sm / sm:text-5xl</code></td><td>Typography</td><td><code>font-size: 0.875rem / @media 3rem;</code></td><td>Mobile-first fluid headline scaling</td></tr>
+                        <tr><td><code>font-bold / font-semibold</code></td><td>Typography</td><td><code>font-weight: 700 / 600;</code></td><td>Heading and button typography weights</td></tr>
                         <tr><td><code>rounded-md / rounded-lg</code></td><td>Borders</td><td><code>border-radius: 0.375rem / 0.5rem;</code></td><td>Smooth input, button, and card corner rounding</td></tr>
-                        <tr><td><code>rounded-full</code></td><td>Borders</td><td><code>border-radius: 9999px;</code></td><td>Pill buttons and circle avatars</td></tr>
-                        <tr><td><code>flex / flex-col</code></td><td>Flexbox</td><td><code>display: flex; flex-direction: col;</code></td><td>1D flexbox direction &amp; context</td></tr>
+                        <tr><td><code>rounded-full</code></td><td>Borders</td><td><code>border-radius: 9999px;</code></td><td>Pill buttons (btn-primary) and circle avatars</td></tr>
+                        <tr><td><code>flex / flex-col</code></td><td>Flexbox</td><td><code>display: flex; flex-direction: column;</code></td><td>Switches main axis to vertical stacking</td></tr>
                         <tr><td><code>items-center / justify-center</code></td><td>Flexbox</td><td><code>align-items: center; justify: center;</code></td><td>Dual-axis absolute viewport centering</td></tr>
-                        <tr><td><code>gap-4 / gap-6</code></td><td>Layout</td><td><code>gap: 1rem / 1.5rem;</code></td><td>Gutters between flex/grid items</td></tr>
-                        <tr><td><code>grid / grid-cols-3</code></td><td>Grid</td><td><code>grid-template-columns: rep(3, 1fr);</code></td><td>2D layout column definition</td></tr>
+                        <tr><td><code>gap-12</code></td><td>Layout</td><td><code>gap: 3rem (48px);</code></td><td>Generous gutter between vertical stacked items</td></tr>
                         <tr><td><code>active:scale-95</code></td><td>State</td><td><code>:active { transform: scale(0.95); }</code></td><td>Tactile button click feedback</td></tr>
                         <tr><td><code>transition duration-200</code></td><td>Animation</td><td><code>transition: all 0.2s ease;</code></td><td>Silky smooth hover interpolation</td></tr>
-                        <tr><td><code>md:grid-cols-2</code></td><td>Responsive</td><td><code>@media (min-width: 768px)</code></td><td>Tablet breakpoint override</td></tr>
-                        <tr><td><code>lg:flex-row</code></td><td>Responsive</td><td><code>@media (min-width: 1024px)</code></td><td>Desktop breakpoint override</td></tr>
+                        <tr><td><code>sm: / md: / lg:</code></td><td>Responsive</td><td><code>@media (min-width: 640px / 768px / 1024px)</code></td><td>Mobile-first breakpoint modifiers</td></tr>
                     </tbody>
                 </table>
             </div>
