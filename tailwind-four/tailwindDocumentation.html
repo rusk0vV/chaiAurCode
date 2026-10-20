@@ -221,12 +221,23 @@
             border-color: var(--border-hover);
         }
 
+        .badge-cli { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .badge-cdn { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+
         .framework-card.vite-accent {
             border-top: 3px solid #a855f7;
         }
 
         .framework-card.next-accent {
             border-top: 3px solid #38bdf8;
+        }
+
+        .framework-card.cli-accent {
+            border-top: 3px solid #10b981;
+        }
+
+        .framework-card.cdn-accent {
+            border-top: 3px solid #f59e0b;
         }
 
         .desc-text {
@@ -732,6 +743,51 @@
                         <span class="cs-punct">}</span>
                     </div>
                 </div>
+
+                <!-- Plain HTML + CLI Setup Card -->
+                <div class="framework-card cli-accent">
+                    <div class="card-header">
+                        <span class="tag-name">Plain HTML + Tailwind CLI</span>
+                        <span class="tag-badge badge-cli">Compiler Workflow (tailwind-four)</span>
+                    </div>
+                    <p class="desc-text">For standalone HTML pages compiled via Tailwind CLI and served with Live Server:</p>
+
+                    <div class="prop-box">
+                        <div class="prop-title">Commands &amp; package.json Configuration</div>
+                        <div class="prop-item"><span class="p-name">1. Install CLI:</span> <code>npm install tailwindcss @tailwindcss/cli</code></div>
+                        <div class="prop-item"><span class="p-name">2. package.json Script:</span> <code>"dev": "npx @tailwindcss/cli -i ./input.css -o ./output.css --watch"</code></div>
+                        <div class="prop-item"><span class="p-name">3. Run Compiler:</span> <code>npm run dev</code> (Keeps CLI watcher active in terminal)</div>
+                        <div class="prop-item"><span class="p-name">4. View Page:</span> Right-click <code>login.html</code> ➔ <strong>Open with Live Server</strong> (<code>http://127.0.0.1:5500</code>)</div>
+                    </div>
+
+                    <div class="code-snippet">
+                        <span class="cs-comm">/* input.css */</span><br>
+                        <span class="cs-kw">@import</span> <span class="cs-val">"tailwindcss"</span><span class="cs-punct">;</span><br><br>
+                        <span class="cs-comm">&lt;!-- login.html --&gt;</span><br>
+                        <span class="cs-tag">&lt;link</span> <span class="cs-attr">rel</span>=<span class="cs-val">"stylesheet"</span> <span class="cs-attr">href</span>=<span class="cs-val">"./output.css"</span><span class="cs-tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- Zero-Terminal Play CDN Card -->
+                <div class="framework-card cdn-accent">
+                    <div class="card-header">
+                        <span class="tag-name">Tailwind v4 Browser Play CDN</span>
+                        <span class="tag-badge badge-cdn">Zero Terminal</span>
+                    </div>
+                    <p class="desc-text">Zero-terminal setup for instant HTML prototyping with pure Live Server:</p>
+
+                    <div class="prop-box">
+                        <div class="prop-title">How It Works (No Terminal Needed!)</div>
+                        <div class="prop-item"><span class="p-name">1. No Build Step:</span> Drop the v4 script directly into your <code>&lt;head&gt;</code>.</div>
+                        <div class="prop-item"><span class="p-name">2. Live Server Only:</span> Right-click <code>login.html</code> ➔ Open with Live Server.</div>
+                        <div class="prop-item"><span class="p-name">3. Dynamic Styles:</span> Tailwind compiles utility classes inside browser memory on the fly.</div>
+                    </div>
+
+                    <div class="code-snippet">
+                        <span class="cs-comm">&lt;!-- Inside login.html &lt;head&gt; (No terminal required!) --&gt;</span><br>
+                        <span class="cs-tag">&lt;script</span> <span class="cs-attr">src</span>=<span class="cs-val">"https://unpkg.com/@tailwindcss/browser@4"</span><span class="cs-tag">&gt;&lt;/script&gt;</span>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -751,19 +807,23 @@
 
                 <div class="prop-box">
                     <div class="prop-title">Why Suggestions Might Not Show &amp; How to Fix</div>
-                    <div class="prop-item"><span class="p-name">1. Missing Extension:</span> Install <strong>Tailwind CSS IntelliSense</strong> by Tailwind Labs (ID: <code>bradlc.vscode-tailwindcss</code>).</div>
-                    <div class="prop-item"><span class="p-name">2. Trigger Setting:</span> By default, VS Code doesn't trigger autocomplete inside string quotes. Enable <code>"editor.quickSuggestions": { "strings": "on" }</code>.</div>
-                    <div class="prop-item"><span class="p-name">3. Manual Trigger:</span> Press <code>Ctrl + Space</code> inside any <code>className="..."</code> to open suggestions anytime.</div>
+                    <div class="prop-item"><span class="p-name">1. Multi-Project Workspaces:</span> Map each subfolder to its CSS entrypoint using <code>tailwindCSS.experimental.configFile</code>.</div>
+                    <div class="prop-item"><span class="p-name">2. Trigger Setting:</span> Enable <code>"editor.quickSuggestions": { "other": "on", "comments": "off", "strings": "on" }</code>.</div>
+                    <div class="prop-item"><span class="p-name">3. Reload Window:</span> Press <code>Ctrl + Shift + P</code> ➔ <strong>Developer: Reload Window</strong> to index all utility classes.</div>
                 </div>
 
                 <div class="code-snippet">
-                    <span class="cs-comm">// .vscode/settings.json</span><br>
+                    <span class="cs-comm">// .vscode/settings.json (Multi-Project Workspace Support)</span><br>
                     <span class="cs-punct">{</span><br>
                     &nbsp;&nbsp;<span class="cs-prop">"editor.quickSuggestions"</span><span class="cs-punct">: {</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"other"</span><span class="cs-punct">:</span> <span class="cs-val">"on"</span><span class="cs-punct">,</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"comments"</span><span class="cs-punct">:</span> <span class="cs-val">"off"</span><span class="cs-punct">,</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"strings"</span><span class="cs-punct">:</span> <span class="cs-val">"on"</span><br>
                     &nbsp;&nbsp;<span class="cs-punct">},</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">"tailwindCSS.includeLanguages"</span><span class="cs-punct">: {</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"javascript"</span><span class="cs-punct">:</span> <span class="cs-val">"javascriptreact"</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">"tailwindCSS.experimental.configFile"</span><span class="cs-punct">: {</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"tailwind-four/input.css"</span><span class="cs-punct">:</span> <span class="cs-val">"tailwind-four/**"</span><span class="cs-punct">,</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"tailfour/src/index.css"</span><span class="cs-punct">:</span> <span class="cs-val">"tailfour/**"</span><span class="cs-punct">,</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">"tailnextfour/app/globals.css"</span><span class="cs-punct">:</span> <span class="cs-val">"tailnextfour/**"</span><br>
                     &nbsp;&nbsp;<span class="cs-punct">}</span><br>
                     <span class="cs-punct">}</span>
                 </div>
@@ -999,10 +1059,38 @@
                 </div>
 
                 <!-- Next.js Output Demo -->
-                <div class="live-preview" style="background: #0b0f19;">
+                <div class="live-preview" style="background: #0b0f19; margin-bottom: 24px;">
                     <span class="preview-label">2. Next.js Live Output (tailnextfour • app/page.js • localhost:3000):<br>className="bg-amber-300 text-4xl text-black p-4 font-bold rounded-lg"</span>
                     <div class="demo-next-banner">
                         Testing Tailwind CSS
+                    </div>
+                </div>
+
+                <!-- Plain HTML Login Card Demo -->
+                <div class="live-preview" style="background: #0b0f19;">
+                    <span class="preview-label">3. Plain HTML Live Component (login.html • Live Server http://127.0.0.1:5500):<br>&lt;body class="bg-gray-900 flex justify-center items-center min-h-screen"&gt;</span>
+                    
+                    <div style="display: flex; justify-content: center; padding: 24px 0;">
+                        <div style="background-color: #374151; border-radius: 0.5rem; padding: 2rem; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); max-width: 384px; width: 100%;">
+                            <h2 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 1.75rem; text-align: center; color: #ffffff;">Login</h2>
+                            <form onsubmit="event.preventDefault();">
+                                <div style="margin-bottom: 1.25rem;">
+                                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #d1d5db; margin-bottom: 0.5rem;">Email
+                                        <input type="email" placeholder="Enter Your Email" style="display: block; width: 100%; margin-top: 0.5rem; padding: 0.5rem 0.75rem; background-color: #1f2937; color: #ffffff; border-radius: 0.375rem; border: 1px solid #4b5563; font-size: 0.875rem; outline: none;">
+                                    </label>
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #d1d5db; margin-bottom: 0.5rem;">Password
+                                        <input type="password" placeholder="Enter Your Password" style="display: block; width: 100%; margin-top: 0.5rem; padding: 0.5rem 0.75rem; background-color: #1f2937; color: #ffffff; border-radius: 0.375rem; border: 1px solid #4b5563; font-size: 0.875rem; outline: none;">
+                                    </label>
+                                </div>
+                                <div style="display: flex; justify-content: center;">
+                                    <button type="submit" class="tw-btn-primary" style="padding: 0.5rem 1.75rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem;">
+                                        Login (Centered &amp; Compact)
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1022,32 +1110,32 @@
                             <th>Tailwind Utility Class</th>
                             <th>Category</th>
                             <th>Vanilla CSS Equivalent</th>
-                            <th>Description</th>
+                            <th>Description / Use Case</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><code>@import "tailwindcss";</code></td><td>Setup</td><td>Vite &amp; Next Compiler Entry</td><td>Activates Tailwind v4 in <code>index.css</code> or <code>globals.css</code></td></tr>
+                        <tr><td><code>@import "tailwindcss";</code></td><td>Setup</td><td>Vite, Next &amp; CLI Entry</td><td>Activates Tailwind v4 in CSS entrypoint</td></tr>
                         <tr><td><code>@tailwindcss/vite</code></td><td>Tooling</td><td>Vite 6 Plugin</td><td>Plugin configured in <code>vite.config.js</code> for instant HMR</td></tr>
                         <tr><td><code>@tailwindcss/turbopack</code></td><td>Tooling</td><td>Next.js Turbopack Plugin</td><td>Zero-config bundler integration in Next.js 16</td></tr>
-                        <tr><td><code>p-4 / p-12</code></td><td>Spacing</td><td><code>padding: 1rem / 3rem;</code></td><td>All-sides padding scale (4px units)</td></tr>
+                        <tr><td><code>p-4 / p-8 / p-12</code></td><td>Spacing</td><td><code>padding: 1rem / 2rem / 3rem;</code></td><td>All-sides padding scale (used in login card)</td></tr>
                         <tr><td><code>px-6 / py-2</code></td><td>Spacing</td><td><code>padding-inline / block;</code></td><td>Horizontal and vertical padding</td></tr>
-                        <tr><td><code>m-4 / mx-auto</code></td><td>Spacing</td><td><code>margin: 1rem / 0 auto;</code></td><td>Outside spacing and centering</td></tr>
-                        <tr><td><code>w-full / w-screen</code></td><td>Sizing</td><td><code>width: 100% / 100vw;</code></td><td>Container width controls</td></tr>
-                        <tr><td><code>min-h-screen</code></td><td>Sizing</td><td><code>min-height: 100vh;</code></td><td>Guaranteed full-viewport height</td></tr>
-                        <tr><td><code>bg-blue-500</code></td><td>Background</td><td><code>background-color: #3b82f6;</code></td><td>Vibrant medium blue background</td></tr>
-                        <tr><td><code>bg-amber-300 / bg-amber-400</code></td><td>Background</td><td><code>background-color: #fcd34d / #fbbf24;</code></td><td>Warm amber/gold background (used in Next.js test banner!)</td></tr>
-                        <tr><td><code>text-white / text-black</code></td><td>Typography</td><td><code>color: #fff / #000;</code></td><td>Solid text color</td></tr>
-                        <tr><td><code>text-red-400</code></td><td>Typography</td><td><code>color: #f87171;</code></td><td>Soft crimson text color</td></tr>
+                        <tr><td><code>m-4 / mx-auto</code></td><td>Spacing</td><td><code>margin: 1rem / 0 auto;</code></td><td>Outside spacing and horizontal block centering</td></tr>
+                        <tr><td><code>w-full / max-w-sm</code></td><td>Sizing</td><td><code>width: 100% / max-w: 24rem;</code></td><td>Responsive card constraint (login container)</td></tr>
+                        <tr><td><code>min-h-screen</code></td><td>Sizing</td><td><code>min-height: 100vh;</code></td><td>Guaranteed full-viewport height without clipping</td></tr>
+                        <tr><td><code>bg-gray-900 / bg-gray-700</code></td><td>Background</td><td><code>background: #111827 / #374151;</code></td><td>Deep canvas &amp; elevated card contrast</td></tr>
+                        <tr><td><code>bg-gray-800</code></td><td>Background</td><td><code>background-color: #1f2937;</code></td><td>Input field surface fill</td></tr>
+                        <tr><td><code>bg-blue-600 / hover:bg-blue-700</code></td><td>Background</td><td><code>background: #2563eb / #1d4ed8;</code></td><td>Primary action button with hover reaction</td></tr>
+                        <tr><td><code>bg-amber-300 / bg-blue-500</code></td><td>Background</td><td><code>background: #fcd34d / #3b82f6;</code></td><td>Demo banner backgrounds</td></tr>
+                        <tr><td><code>text-white / text-gray-300</code></td><td>Typography</td><td><code>color: #fff / #d1d5db;</code></td><td>High-contrast headline &amp; label text</td></tr>
+                        <tr><td><code>placeholder-gray-400</code></td><td>Typography</td><td><code>::placeholder { color: #9ca3af; }</code></td><td>Muted legible input field hint</td></tr>
                         <tr><td><code>text-3xl / text-4xl</code></td><td>Typography</td><td><code>font-size: 1.875rem / 2.25rem;</code></td><td>Fluid headline typography scale</td></tr>
-                        <tr><td><code>font-bold / font-extrabold</code></td><td>Typography</td><td><code>font-weight: 700 / 800;</code></td><td>Font boldness level</td></tr>
-                        <tr><td><code>underline</code></td><td>Typography</td><td><code>text-decoration: underline;</code></td><td>Text underline decoration</td></tr>
-                        <tr><td><code>rounded-lg / rounded-xl</code></td><td>Borders</td><td><code>border-radius: 0.5rem / 0.75rem;</code></td><td>Smooth card and banner corner rounding</td></tr>
+                        <tr><td><code>font-bold / font-medium</code></td><td>Typography</td><td><code>font-weight: 700 / 500;</code></td><td>Font weight levels</td></tr>
+                        <tr><td><code>rounded-md / rounded-lg</code></td><td>Borders</td><td><code>border-radius: 0.375rem / 0.5rem;</code></td><td>Smooth input, button, and card corner rounding</td></tr>
                         <tr><td><code>rounded-full</code></td><td>Borders</td><td><code>border-radius: 9999px;</code></td><td>Pill buttons and circle avatars</td></tr>
                         <tr><td><code>flex / flex-col</code></td><td>Flexbox</td><td><code>display: flex; flex-direction: col;</code></td><td>1D flexbox direction &amp; context</td></tr>
-                        <tr><td><code>items-center / justify-center</code></td><td>Flexbox</td><td><code>align-items: center; justify: center;</code></td><td>Dual-axis absolute centering</td></tr>
+                        <tr><td><code>items-center / justify-center</code></td><td>Flexbox</td><td><code>align-items: center; justify: center;</code></td><td>Dual-axis absolute viewport centering</td></tr>
                         <tr><td><code>gap-4 / gap-6</code></td><td>Layout</td><td><code>gap: 1rem / 1.5rem;</code></td><td>Gutters between flex/grid items</td></tr>
                         <tr><td><code>grid / grid-cols-3</code></td><td>Grid</td><td><code>grid-template-columns: rep(3, 1fr);</code></td><td>2D layout column definition</td></tr>
-                        <tr><td><code>hover:bg-blue-600</code></td><td>State</td><td><code>:hover { background: #2563eb; }</code></td><td>Mouse hover reaction state</td></tr>
                         <tr><td><code>active:scale-95</code></td><td>State</td><td><code>:active { transform: scale(0.95); }</code></td><td>Tactile button click feedback</td></tr>
                         <tr><td><code>transition duration-200</code></td><td>Animation</td><td><code>transition: all 0.2s ease;</code></td><td>Silky smooth hover interpolation</td></tr>
                         <tr><td><code>md:grid-cols-2</code></td><td>Responsive</td><td><code>@media (min-width: 768px)</code></td><td>Tablet breakpoint override</td></tr>

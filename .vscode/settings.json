@@ -5,6 +5,16 @@
     "html": "html"
   },
   "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "off",
     "strings": "on"
+  },
+  "tailwindCSS.experimental.configFile": {
+    "tailwind-four/input.css": "tailwind-four/**",
+    "tailfour/src/index.css": "tailfour/**",
+    "tailnextfour/app/globals.css": "tailnextfour/**"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
   }
 }
