@@ -56,9 +56,9 @@ Store the returned function in a variable named `teaMaker` and call it with `"gr
 
 function createTeaMaker(name) {
     let score = 100
-  return function (teaType) {
-    return `Making ${teaType} ${name} ${score}`;
-  };
+    return function (teaType) {
+      return `Making ${teaType} ${name} ${score}`;
+    };
 }
 
 let teaMaker = createTeaMaker("hitesh");

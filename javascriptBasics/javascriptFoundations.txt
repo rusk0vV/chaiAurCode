@@ -1216,17 +1216,53 @@ and lexical closures.
      * Any statement placed after an unconditional 'return' is DEAD CODE. V8's
        compiler analyzes the AST and eliminates or ignores unreachable instructions.
 
-2. NESTED FUNCTIONS & LEXICAL SCOPING:
-   - Functions can be declared inside other functions:
+2. NESTED FUNCTIONS & LEXICAL SCOPING (ARCHITECTURE & ENCAPSULATION):
+   - Definition: A nested function (inner function) is a function declared inside
+     another enclosing function:
      function orderTea(teaType) {
+         let orderId = 101;
          function confirmOrder() {
-             return `Order confirmed for chai`;
+             let message = `Order confirmed for ${teaType} (ID: ${orderId})`;
+             return message;
          }
          return confirmOrder();
      }
-   - Lexical Scope Chain:
-     The inner function confirmOrder() has access to its own local scope, as well
-     as the outer orderTea scope, and the global scope.
+     let orderConfirmation = orderTea("chai");
+
+   - ARCHITECTURAL PRINCIPLES OF NESTED FUNCTIONS:
+     A. Information Hiding & Encapsulation:
+        - The inner function 'confirmOrder' is completely private to 'orderTea'.
+        - Calling confirmOrder() from the global scope throws:
+          ReferenceError: confirmOrder is not defined
+        - This prevents polluting the global namespace with internal utility logic.
+
+     B. The Lexical Scope Chain (Outward Lookup Rule):
+        - Scope resolution in JavaScript is strictly unidirectional: OUTWARD ONLY.
+        - Lookup Hierarchy:
+          [confirmOrder Scope] ---> [orderTea Scope] ---> [Global Scope]
+        - confirmOrder can access:
+          1. Its own local variables (message).
+          2. Outer orderTea parameters and variables (teaType, orderId).
+          3. Global variables.
+        - HOWEVER, orderTea CANNOT look inward to access confirmOrder's local variables (message).
+
+     C. Variable Shadowing:
+        - If an inner function declares a variable with the exact same identifier
+          as an outer function:
+          function outer() {
+              let tag = "outer-tag";
+              function inner() {
+                  let tag = "inner-tag"; // Shadows outer 'tag'!
+                  console.log(tag);     // "inner-tag"
+              }
+              inner();
+              console.log(tag);         // "outer-tag" (Outer remains untouched)
+          }
+
+     D. Immediate Execution vs. Returning Function Reference:
+        - return confirmOrder(); // Invokes inner function now; returns computed string.
+        - return confirmOrder;   // Returns inner function REFERENCE; creates a Closure!
+
 
 3. ARROW FUNCTIONS (=>) (ES6 MODERN JAVASCRIPT):
    - Arrow functions introduce a compact, expressive syntax for function expressions:
@@ -1247,29 +1283,60 @@ and lexical closures.
      Constructor (new) | Can be instantiated with 'new' | CANNOT be used with 'new' (TypeError)
      .prototype prop   | Present                        | Absent
 
-4. FIRST-CLASS CITIZENS & HIGHER-ORDER FUNCTIONS:
-   - In JavaScript, functions are treated as First-Class Citizens (Values). They can:
-     1. Be assigned to variables: const brew = function() { ... };
-     2. Be stored in arrays or objects.
-     3. Be passed as arguments into other functions (Callbacks).
+
+4. HIGHER-ORDER FUNCTIONS (HOFs) & FIRST-CLASS CITIZENS (THE TWO ARCHETYPES):
+   - First-Class Citizens:
+     In JavaScript, functions are values just like Numbers or Strings. They can:
+     1. Be stored in variables (const fn = () => {}).
+     2. Be stored as object methods or array items.
+     3. Be passed into functions as arguments (Callbacks).
      4. Be returned from other functions.
 
-   - Higher-Order Function (HOF):
-     A function that accepts another function as an argument, or returns a function.
-     
+   - Formal Definition of Higher-Order Function (HOF):
+     A function that does at least ONE of the following:
+     1. Accepts one or more functions as arguments.
+     2. Returns a function as its output.
+
+   - ARCHETYPE 1: HOFs Accepting Functions as Arguments (Callbacks & Inversion of Control)
      function makeTea(typeOfTea) {
          return `maketea: ${typeOfTea}`;
      }
      function processTeaOrder(teaFunction) {
-         return teaFunction("earl grey"); // Invoking the passed callback
+         // teaFunction is a parameter acting as a placeholder for any callable function
+         return teaFunction("earl grey");
      }
      let order = processTeaOrder(makeTea);
      
-   - CRITICAL MISTAKE TO AVOID (Passing by Reference vs Invocation):
-     * RIGHT: processTeaOrder(makeTea);
-       Passes the FUNCTION REFERENCE (pointer) into teaFunction.
-     * WRONG: processTeaOrder(makeTea());
-       Invokes makeTea() immediately and passes its string result into processTeaOrder!
+     * Why This Is Powerful (Dependency Injection & Decoupling):
+       'processTeaOrder' does not need to know HOW tea is brewed. You can pass
+       makeTea, makeIcedTea, or brewEspresso without changing processTeaOrder!
+     * Built-in JavaScript Examples:
+       - Array.prototype.map(fn)
+       - Array.prototype.filter(fn)
+       - Array.prototype.reduce(fn)
+       - Array.prototype.forEach(fn)
+       - setTimeout(fn, delay)
+       - button.addEventListener("click", fn)
+
+     * THE #1 CRITICAL MISTAKE (Passing by Reference vs. Invoking):
+       - RIGHT: processTeaOrder(makeTea);
+         Passes the FUNCTION REFERENCE (memory address pointer).
+       - WRONG: processTeaOrder(makeTea());
+         Invokes makeTea() immediately, passing "maketea: undefined" as the argument!
+         When processTeaOrder runs "maketea: undefined"("earl grey"), JS throws:
+         TypeError: teaFunction is not a function
+
+   - ARCHETYPE 2: HOFs Returning Functions (Function Factories & Currying)
+     Higher-order functions can generate and return customized functions tailored
+     with pre-configured state (see Section 5 below).
+
+   - COMPARATIVE SUMMARY MATRIX:
+     Construct               | Role / Purpose                          | Code Example
+     ------------------------+-----------------------------------------+----------------------------------
+     Regular Function        | Takes primitive/object data, computes   | Math.sqrt(9) -> 3
+     Higher-Order Function   | Accepts functions or returns functions  | processTeaOrder(fn)
+     Callback Function       | The function passed into a HOF          | makeTea inside processTeaOrder
+     Nested Function         | Inner helper scoped inside outer func   | confirmOrder inside orderTea
 
 5. CLOSURES & FUNCTION FACTORIES (THE DEEP V8 PERSPECTIVE):
    - Formal Definition:

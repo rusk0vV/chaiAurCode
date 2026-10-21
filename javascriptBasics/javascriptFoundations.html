@@ -1996,9 +1996,18 @@
                     <div class="prop-item"><span class="p-name">Dead Code Elimination:</span> Any statements placed after an unconditional <code>return</code> statement (e.g. <code>console.log(test)</code> in <code>makeTea</code>) are unreachable. V8's compiler eliminates or ignores these instructions during AST analysis.</div>
                 </div>
 
-                <!-- Prop Box 2: Arrow Functions -->
+                <!-- Prop Box 2: Nested Functions & Lexical Scope -->
                 <div class="prop-box">
-                    <div class="prop-title" style="color: var(--accent-emerald);">2. Arrow Functions (ES6) vs Traditional Functions</div>
+                    <div class="prop-title" style="color: var(--accent-violet);">2. Nested Functions &amp; Lexical Scope Chains (Architecture &amp; Encapsulation)</div>
+                    <div class="prop-item"><span class="p-name">Information Hiding:</span> Declaring <code>confirmOrder()</code> inside <code>orderTea()</code> keeps it completely private. Attempting to call <code>confirmOrder()</code> from the outside results in <code>ReferenceError: confirmOrder is not defined</code>, preventing global namespace pollution.</div>
+                    <div class="prop-item"><span class="p-name">Unidirectional Scope Lookup:</span> JavaScript scope resolution is strictly <strong>outward only</strong>: <code>[confirmOrder Scope] &rarr; [orderTea Scope] &rarr; [Global Scope]</code>. The inner function can read outer variables (like <code>teaType</code>), but the outer function cannot access private variables declared inside the inner function!</div>
+                    <div class="prop-item"><span class="p-name">Variable Shadowing:</span> If an inner function re-declares a variable with the exact same name as an outer variable, the inner declaration "shadows" (masks) the outer one inside its own block scope.</div>
+                    <div class="prop-item"><span class="p-name">Invocation vs Reference:</span> Writing <code>return confirmOrder();</code> immediately executes the inner function and returns its string result. Writing <code>return confirmOrder;</code> returns the function pointer itself, creating a <strong>Closure</strong>!</div>
+                </div>
+
+                <!-- Prop Box 3: Arrow Functions -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-emerald);">3. Arrow Functions (ES6) vs Traditional Functions</div>
                     <div class="prop-item"><span class="p-name">Implicit Return:</span> <code>const calc = (p, q) =&gt; p * q;</code> (omitting curly braces automatically returns the evaluated expression).</div>
                     <div class="prop-item"><span class="p-name">Explicit Return:</span> When curly braces <code>{ }</code> are added, the <code>return</code> keyword is mandatory: <code>const calc = (p, q) =&gt; { return p * q; };</code></div>
                 </div>
@@ -2038,16 +2047,59 @@
                     </table>
                 </div>
 
-                <!-- Prop Box 3: Higher-Order Functions & Callbacks -->
+                <!-- Prop Box 4: Higher-Order Functions & Callbacks -->
                 <div class="prop-box">
-                    <div class="prop-title" style="color: var(--chai-gold);">3. Higher-Order Functions: Callbacks &amp; References</div>
-                    <div class="prop-item"><span class="p-name">Definition:</span> A function that accepts another function as an argument, or returns a function.</div>
-                    <div class="prop-item"><span class="p-name">Passing Reference vs Invoking:</span> Passing <code>processTeaOrder(makeTea)</code> passes the <strong>pointer reference</strong> so the receiver can call it later. Writing <code>processTeaOrder(makeTea())</code> immediately executes <code>makeTea</code> and passes its return string!</div>
+                    <div class="prop-title" style="color: var(--chai-gold);">4. Higher-Order Functions (HOFs) &amp; Callbacks: The Two Archetypes</div>
+                    <div class="prop-item"><span class="p-name">Core Definition:</span> A Higher-Order Function is any function that either (1) takes one or more functions as arguments, or (2) returns a function as its output.</div>
+                    <div class="prop-item"><span class="p-name">Archetype 1 (Taking Callbacks):</span> In <code>processTeaOrder(makeTea)</code>, <code>makeTea</code> is passed as an argument. This enables <strong>Dependency Injection</strong> and <strong>Inversion of Control</strong>, decoupling caller logic from execution details. (Standard in <code>map()</code>, <code>filter()</code>, <code>setTimeout()</code>, and event listeners).</div>
+                    <div class="prop-item"><span class="p-name">Archetype 2 (Returning Functions):</span> Functions returning functions act as specialized <strong>Function Factories</strong> and enable <strong>Currying</strong> (e.g. <code>createTeaMaker("hitesh")</code>).</div>
+                    <div class="prop-item"><span class="p-name">The Reference Trap:</span> Always pass the function reference (<code>processTeaOrder(makeTea)</code>). Writing <code>processTeaOrder(makeTea())</code> executes <code>makeTea</code> upfront and passes its return string, causing <code>TypeError: teaFunction is not a function</code>!</div>
                 </div>
 
-                <!-- Prop Box 4: Closures & Function Factories -->
+                <!-- Function Categories Comparison Table -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Function Paradigms Comparative Summary</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Paradigm Construct</th>
+                                <th>Definition &amp; Role</th>
+                                <th>Code Pattern</th>
+                                <th>Key Advantage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Regular Function</strong></td>
+                                <td>Takes primitive/object values, computes and returns data</td>
+                                <td><code>makeTea("chai")</code></td>
+                                <td>Predictable, modular units of execution</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nested Function</strong></td>
+                                <td>Inner helper function declared inside an outer function</td>
+                                <td><code>confirmOrder</code> inside <code>orderTea</code></td>
+                                <td>Encapsulation; hides private helper logic from global scope</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Callback Function</strong></td>
+                                <td>Function passed by reference into another function to be called later</td>
+                                <td><code>makeTea</code> passed into <code>processTeaOrder</code></td>
+                                <td>Asynchronous execution, flexible custom behaviors</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Higher-Order Function</strong></td>
+                                <td>Function that accepts callbacks or returns new functions</td>
+                                <td><code>processTeaOrder(fn)</code> / <code>createTeaMaker()</code></td>
+                                <td>Code reusability, composition, currying, dependency injection</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Prop Box 5: Closures & Function Factories -->
                 <div class="prop-box" style="border-left: 4px solid var(--accent-violet);">
-                    <div class="prop-title" style="color: var(--accent-violet);">4. Closures &amp; Function Factories (The V8 Heap Perspective)</div>
+                    <div class="prop-title" style="color: var(--accent-violet);">5. Closures &amp; Function Factories (The V8 Heap Perspective)</div>
                     <div class="prop-item"><span class="p-name">What is a Closure?</span> A function bundled together with references to its surrounding lexical environment (variables in outer scopes).</div>
                     <div class="prop-item"><span class="p-name">How V8 Implements Closures:</span> When <code>createTeaMaker("hitesh")</code> returns its inner function, <code>createTeaMaker</code> pops off the Call Stack. Because the inner function still references <code>name</code> and <code>score</code>, V8 allocates a persistent <strong>Context Object in the Memory Heap</strong>.</div>
                     <div class="prop-item"><span class="p-name">Subsequent Execution:</span> When <code>teaMaker("green tea")</code> is called later, it accesses <code>name</code> ("hitesh") and <code>score</code> (100) from the Heap Context via its internal <code>[[Scopes]]</code> chain!</div>
