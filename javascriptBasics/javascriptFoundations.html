@@ -585,7 +585,8 @@
                 <a href="#conditionals-flow">15. Conditionals &amp; Flow (part3)</a>
                 <a href="#arrays-memory">16. Arrays &amp; Memory (part4)</a>
                 <a href="#loops-iteration">17. Loops &amp; Iteration (part4)</a>
-                <a href="#glossary">18. Technical Glossary</a>
+                <a href="#user-input">18. User Input (Browser vs Node.js)</a>
+                <a href="#glossary">19. Technical Glossary</a>
             </div>
         </header>
 
@@ -1807,10 +1808,120 @@
             </div>
         </section>
 
-        <!-- 18. Technical Glossary -->
-        <section id="glossary">
+        <!-- 18. User Input Techniques: Browser vs. Node.js (prompt, DOM, readline, prompt-sync, process.argv) -->
+        <section id="user-input">
             <div class="section-header">
                 <div class="section-number">18</div>
+                <h2 class="section-title">User Input Techniques: Browser vs. Node.js Runtimes</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Runtime Discrepancy • prompt() vs readline • Streams &amp; Stdin</span>
+                    <span class="tag-badge badge-runtime">I/O Mechanics</span>
+                </div>
+                <p class="desc-text">Handling user input is one of the most common points of confusion for developers transitioning between the browser and Node.js. <code>prompt()</code> is a <strong>Browser Web API</strong> attached to the <code>window</code> object. In Node.js, there is no window or DOM, so calling <code>prompt()</code> throws <code>ReferenceError: prompt is not defined</code>.</p>
+
+                <div class="prop-box" style="border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">⚠️ Why prompt() Fails in loopChallenges.js</div>
+                    <div class="prop-item"><span class="p-name">The Cause:</span> In <code>part4/loopChallenges.js</code> line 35, <code>prompt(...)</code> is commented out because running <code>node loopChallenges.js</code> executes in Node.js, which lacks the browser's UI alert/prompt dialog subsystem.</div>
+                    <div class="prop-item"><span class="p-name">The Solution:</span> Use <code>prompt-sync</code> for synchronous terminal scripts, or native <code>readline/promises</code> for event-driven asynchronous command-line tools.</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Environment</th>
+                                <th>Input Technique</th>
+                                <th>Underlying Mechanism</th>
+                                <th>Behavior &amp; Characteristics</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Browser</strong></td>
+                                <td><code>prompt("Message")</code></td>
+                                <td><code>window.prompt()</code> Web API</td>
+                                <td>Synchronous blocking modal dialog; returns input string or <code>null</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Browser</strong></td>
+                                <td><code>&lt;input&gt;.value</code></td>
+                                <td>DOM API + Event Listeners</td>
+                                <td>Non-blocking, event-driven (e.g. <code>input.addEventListener('change', ...)</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Node.js</strong></td>
+                                <td><code>prompt-sync</code></td>
+                                <td>NPM Library (Sync C++ binding)</td>
+                                <td>Mimics synchronous <code>prompt()</code> in terminal; perfect for exercises &amp; loops</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Node.js</strong></td>
+                                <td><code>readline/promises</code></td>
+                                <td>Built-in <code>process.stdin</code> stream</td>
+                                <td>Native, asynchronous, non-blocking; standard for production Node.js CLI apps</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Node.js</strong></td>
+                                <td><code>process.argv</code></td>
+                                <td>Process execution vector</td>
+                                <td>Reads CLI flags &amp; arguments passed at launch (e.g. <code>node app.js arg1 arg2</code>)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Code Demonstrations Across Environments</div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 1. BROWSER: window.prompt()</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">tea</span> = <span class="cs-fn">prompt</span>(<span class="cs-val">"Enter your favourite tea (type 'stop' to finish):"</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">tea</span>); <span class="cs-comm">// Returns user string, or null if Cancel clicked</span><br><br>
+
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 2. NODE.JS (Option A): prompt-sync (Closest drop-in for prompt())</span><br>
+                    <span class="cs-comm">// Install first: npm install prompt-sync</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-fn">prompt</span> = <span class="cs-fn">require</span>(<span class="cs-val">"prompt-sync"</span>)();<br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">teaCollection</span> = [];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">favTea</span>;<br>
+                    <span class="cs-kw">do</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">favTea</span> = <span class="cs-fn">prompt</span>(<span class="cs-val">"Enter your favourite tea (type 'stop' to finish): "</span>);<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">favTea</span> !== <span class="cs-val">"stop"</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">teaCollection</span>.<span class="cs-fn">push</span>(<span class="cs-prop">favTea</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    } <span class="cs-kw">while</span> (<span class="cs-prop">favTea</span> !== <span class="cs-val">"stop"</span>);<br><br>
+
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 3. NODE.JS (Option B): Native readline/promises (No external packages)</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">readline</span> = <span class="cs-fn">require</span>(<span class="cs-val">"readline/promises"</span>);<br>
+                    <span class="cs-kw">const</span> { <span class="cs-prop">stdin</span>: <span class="cs-prop">input</span>, <span class="cs-prop">stdout</span>: <span class="cs-prop">output</span> } = <span class="cs-fn">require</span>(<span class="cs-val">"process"</span>);<br><br>
+                    <span class="cs-kw">async function</span> <span class="cs-fn">askForTea</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">rl</span> = <span class="cs-prop">readline</span>.<span class="cs-fn">createInterface</span>({ <span class="cs-prop">input</span>, <span class="cs-prop">output</span> });<br>
+                    &nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">answer</span> = <span class="cs-kw">await</span> <span class="cs-prop">rl</span>.<span class="cs-fn">question</span>(<span class="cs-val">"Enter your tea: "</span>);<br>
+                    &nbsp;&nbsp;<span class="cs-prop">rl</span>.<span class="cs-fn">close</span>();<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"You entered:"</span>, <span class="cs-prop">answer</span>);<br>
+                    }<br><br>
+
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 4. NODE.JS (Option C): process.argv (CLI launch arguments)</span><br>
+                    <span class="cs-comm">// Run: node app.js "green tea" "masala chai"</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">args</span> = <span class="cs-prop">process</span>.<span class="cs-prop">argv</span>.<span class="cs-fn">slice</span>(<span class="cs-val">2</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">args</span>); <span class="cs-comm">// ["green tea", "masala chai"]</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 19. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">19</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -1857,6 +1968,10 @@
                         <tr><td><code>continue</code></td><td>Control Flow</td><td>Statement skipping the remainder of current iteration and advancing to next cycle.</td></tr>
                         <tr><td><code>for...of</code></td><td>Loops</td><td>Modern loop iterating directly over values of iterable objects (Arrays, Strings, Sets).</td></tr>
                         <tr><td><code>for...in</code></td><td>Loops</td><td>Loop enumerating the enumerable property keys/names of an Object.</td></tr>
+                        <tr><td><code>prompt()</code></td><td>Web API</td><td>Synchronous browser dialog capturing user string (not present in Node.js).</td></tr>
+                        <tr><td><code>readline</code></td><td>Node.js Core</td><td>Built-in module for line-by-line reading of readable streams like <code>stdin</code>.</td></tr>
+                        <tr><td><code>process.stdin</code></td><td>Node.js Core</td><td>Standard input stream delivering terminal user keystrokes to Node.js.</td></tr>
+                        <tr><td><code>process.argv</code></td><td>Node.js Core</td><td>Array containing command-line arguments passed when launching the script.</td></tr>
                     </tbody>
                 </table>
             </div>

@@ -34,7 +34,8 @@ TABLE OF CONTENTS
  15. Part 3: Conditionals & Flow Control (conditon-challenges.js)
  16. Part 4: Array Mastery, Memory References & Methods (arrayChallenges.js)
  17. Part 4: Loops & Iteration Patterns (loopChallenges.js, levelUpChallenges.js)
- 18. Quick Reference Glossary of Terms
+ 18. User Input Techniques: Browser vs. Node.js (prompt, DOM, readline, prompt-sync, process.argv)
+ 19. Quick Reference Glossary of Terms
 ================================================================================
 
 
@@ -985,7 +986,95 @@ structures and control flows:
 
 
 ================================================================================
-18. QUICK REFERENCE GLOSSARY OF TERMS
+18. USER INPUT TECHNIQUES: BROWSER VS. NODE.JS RUNTIMES
+================================================================================
+
+A frequent beginner confusion occurs when attempting to read user input inside
+terminal scripts (such as prompt() in loopChallenges.js). JavaScript input
+handling is strictly tied to the RUNTIME ENVIRONMENT:
+
+1. THE BROWSER ENVIRONMENT:
+   In browsers, the JavaScript engine runs attached to the 'window' global object
+   and Web APIs:
+
+   A. Synchronous Modal Dialog: prompt()
+      let tea = prompt("Enter your favourite tea (type 'stop' to finish):");
+      - Pauses/blocks UI thread execution until user types input or clicks Cancel.
+      - Returns entered String, or null if cancelled.
+      - Useful for quick educational algorithms, but rarely used in modern web UI.
+
+   B. HTML Form Elements (The Production Web Standard):
+      <input type="text" id="teaInput" placeholder="Enter tea name" />
+      <button id="submitBtn">Save Tea</button>
+      
+      const input = document.getElementById("teaInput");
+      const button = document.getElementById("submitBtn");
+      button.addEventListener("click", () => {
+          let value = input.value;
+          console.log(value);
+      });
+
+2. THE NODE.JS RUNTIME ENVIRONMENT:
+   Node.js has NO 'window' object, NO DOM, and NO built-in modal dialogs.
+   Calling prompt() throws:
+   ReferenceError: prompt is not defined
+
+   To capture input in Node.js terminal/CLI applications:
+
+   A. Method 1: Synchronous Input via 'prompt-sync' (Closest to Browser prompt)
+      - Mimics synchronous browser prompt() behavior directly in the terminal.
+      - Setup: npm install prompt-sync
+      - Usage:
+        const prompt = require("prompt-sync")();
+        let teaCollection = [];
+        let tea;
+        do {
+            tea = prompt("Enter your favourite tea (type 'stop' to finish): ");
+            if (tea !== "stop") {
+                teaCollection.push(tea);
+            }
+        } while (tea !== "stop");
+        console.log("Your teas:", teaCollection);
+
+   B. Method 2: Built-in Asynchronous 'readline/promises' (Native Node.js Standard)
+      - Native core module; requires zero third-party packages.
+      - Interfaces with Node.js process.stdin (readable stream) and process.stdout:
+      - Usage:
+        const readline = require("readline/promises");
+        const { stdin: input, stdout: output } = require("process");
+
+        async function collectTeas() {
+            const rl = readline.createInterface({ input, output });
+            let teaCollection = [];
+            while (true) {
+                const tea = await rl.question("Enter your favourite tea (type 'stop'): ");
+                if (tea.toLowerCase() === "stop") break;
+                teaCollection.push(tea);
+            }
+            rl.close();
+            console.log("Collected Teas:", teaCollection);
+        }
+        collectTeas();
+
+   C. Method 3: Command-Line Arguments via 'process.argv'
+      - Reads arguments passed at program invocation:
+        node app.js "green tea" "masala chai"
+      - Usage:
+        const args = process.argv.slice(2);
+        console.log(args); // ["green tea", "masala chai"]
+
+3. RUNTIME COMPARISON MATRIX:
+   Environment | Method               | Mechanism               | Characteristics
+   ------------+----------------------+-------------------------+----------------------------------
+   Browser     | prompt()             | Window Web API modal    | Blocking, sync, returns string/null
+   Browser     | <input>.value        | DOM Element Property    | Asynchronous event-driven, modern
+   Node.js     | prompt-sync          | NPM Library (sync CLI)  | Synchronous terminal read, simplest
+   Node.js     | readline/promises    | Built-in C++ Stream     | Asynchronous, non-blocking, native
+   Node.js     | process.argv         | CLI launch arguments    | Instant, passed at script start
+
+
+================================================================================
+19. QUICK REFERENCE GLOSSARY OF TERMS
 ================================================================================
 
 Term             | Meaning / Definition
@@ -1032,6 +1121,10 @@ for...in         | Loop enumerating KEYS/properties of an Object
 Event Loop       | Coordinator shifting callbacks from queues onto the Call Stack
 Microtasks       | High-priority queue (Promises, process.nextTick)
 Macrotasks       | Standard queue (setTimeout, setInterval, I/O callbacks)
+prompt()         | Browser Web API modal dialog capturing user string (absent in Node.js)
+readline         | Built-in Node.js module for line-by-line reading of readable streams
+process.stdin    | Node.js standard input stream delivering terminal user input to process
+process.argv     | Node.js array containing command-line arguments passed at script launch
 
 ================================================================================
                               End of Foundations Note
