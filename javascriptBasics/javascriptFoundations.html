@@ -584,9 +584,10 @@
                 <a href="#objects-coercion">14. Objects &amp; Coercion (part2)</a>
                 <a href="#conditionals-flow">15. Conditionals &amp; Flow (part3)</a>
                 <a href="#arrays-memory">16. Arrays &amp; Memory (part4)</a>
-                <a href="#loops-iteration">17. Loops &amp; Iteration (part4)</a>
+                <a href="#loops-iteration">17. Deep Dive: For Loops (part4)</a>
                 <a href="#user-input">18. User Input (Browser vs Node.js)</a>
-                <a href="#glossary">19. Technical Glossary</a>
+                <a href="#functions-closures">19. Functions &amp; Closures (part5)</a>
+                <a href="#glossary">20. Technical Glossary</a>
             </div>
         </header>
 
@@ -1708,101 +1709,157 @@
             </div>
         </section>
 
-        <!-- 17. Part 4: Loops & Iteration Patterns (loopChallenges.js, levelUpChallenges.js) -->
+        <!-- 17. Part 4: Deep Dive into For Loops & Iteration Patterns -->
         <section id="loops-iteration">
             <div class="section-header">
                 <div class="section-number">17</div>
-                <h2 class="section-title">Part 4: Loops &amp; Iteration Patterns (loopChallenges.js &amp; levelUpChallenges.js)</h2>
+                <h2 class="section-title">Part 4: Deep Dive into For Loops &amp; Iteration Patterns (loopChallenges.js &amp; levelUpChallenges.js)</h2>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="tag-name">while • do...while • for • for...of • for...in • forEach</span>
+                    <span class="tag-name">Classic for • for...of • for...in • Array.forEach()</span>
                     <span class="tag-badge badge-runtime">Iteration Mechanics</span>
                 </div>
-                <p class="desc-text">Loops repeat code until an exit condition is met. JavaScript provides specialized loops for index counting, iterating over iterable values (<code>for...of</code>), enumerating object property keys (<code>for...in</code>), and functional iterations (<code>forEach</code>).</p>
+                <p class="desc-text">JavaScript provides 4 distinct <code>for</code> loop constructs, each purpose-built for different data structures, memory access patterns, and control flows. Selecting the correct construct prevents subtle bugs like prototype pollution, string index coercion, or unhandled asynchronous executions.</p>
 
+                <!-- Construct 1: Classic for -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-sky);">1. Classic for Loop (Index &amp; Counter Driven)</div>
+                    <div class="prop-item"><span class="p-name">Syntax:</span> <code>for (initialization; condition; final-expression) { ... }</code></div>
+                    <div class="prop-item"><span class="p-name">Capabilities:</span> Complete control over step stride (<code>i += 2</code>), direction (reverse loops <code>i--</code>), and multi-dimensional matrices.</div>
+                    <div class="prop-item"><span class="p-name">The Scoping Trap ('let' vs 'var'):</span> Using <code>var i</code> creates a single function-scoped variable shared across all cycles (causing the famous <code>setTimeout</code> closure bug). Using <code>let i</code> creates a brand new lexical binding for each iteration.</div>
+                </div>
+
+                <!-- Construct 2: for...of -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-emerald);">2. for...of Loop (ES6 Iterable Value Traversal)</div>
+                    <div class="prop-item"><span class="p-name">Syntax:</span> <code>for (const item of iterable) { ... }</code></div>
+                    <div class="prop-item"><span class="p-name">Mechanism:</span> Invokes the object's <code>[Symbol.iterator]</code> protocol and yields <strong>values</strong> directly. Supports Arrays, Strings, Sets, Maps, and NodeLists.</div>
+                    <div class="prop-item"><span class="p-name">The Object Trap:</span> Plain objects are NOT iterable (<code>for...of</code> throws <code>TypeError</code>). To iterate an object, use <code>Object.keys()</code>, <code>Object.values()</code>, or <code>Object.entries()</code>.</div>
+                    <div class="prop-item"><span class="p-name">Destructuring:</span> Access index and value simultaneously via <code>for (const [index, item] of arr.entries())</code>.</div>
+                </div>
+
+                <!-- Construct 3: for...in -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--chai-gold);">3. for...in Loop (Object Property Key Enumeration)</div>
+                    <div class="prop-item"><span class="p-name">Syntax:</span> <code>for (const key in object) { ... }</code></div>
+                    <div class="prop-item"><span class="p-name">Mechanism:</span> Enumerates all string <strong>keys (property names)</strong> of an Object, including inherited prototype properties!</div>
+                    <div class="prop-item"><span class="p-name">Why it is an Anti-Pattern for Arrays:</span> Returns indices as Strings (<code>"0"</code>, <code>"1"</code>), does not guarantee order, and includes custom array prototype methods. Guard plain objects with <code>Object.hasOwn(obj, key)</code>.</div>
+                </div>
+
+                <!-- Construct 4: forEach -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-violet);">4. Array.prototype.forEach() (Functional Callback Iteration)</div>
+                    <div class="prop-item"><span class="p-name">Syntax:</span> <code>arr.forEach((item, index, array) =&gt; { ... })</code></div>
+                    <div class="prop-item"><span class="p-name">Behavior:</span> Higher-order functional method executing a callback per element. Declarative and clean for non-terminating operations.</div>
+                    <div class="prop-item"><span class="p-name">The Early-Exit Myth:</span> You <strong>cannot</strong> <code>break</code> out of <code>forEach</code>. Calling <code>return</code> only exits the current callback execution (acting like <code>continue</code>). Use <code>for...of</code> or <code>.some()</code> for early termination.</div>
+                </div>
+
+                <!-- Definitive Comparison Matrix Table -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">The Definitive For Loop Comparative Matrix</div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>Loop Construct</th>
-                                <th>Type / Target</th>
-                                <th>Control Flow</th>
-                                <th>Best Used For</th>
+                                <th>Dimension</th>
+                                <th>Classic for</th>
+                                <th>for...of (ES6)</th>
+                                <th>for...in</th>
+                                <th>Array.prototype.forEach</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code>while (cond)</code></td>
-                                <td>Entry-controlled</td>
-                                <td>Evaluates condition before entering loop body</td>
-                                <td>Indeterminate loops (running until state changes)</td>
+                                <td><strong>Target Traversed</strong></td>
+                                <td>Index count (manual <code>arr[i]</code>)</td>
+                                <td><code style="color: var(--accent-emerald);">Values</code> directly</td>
+                                <td><code style="color: var(--chai-gold);">Keys / Property Names</code></td>
+                                <td>Value, Index &amp; Array in callback</td>
                             </tr>
                             <tr>
-                                <td><code>do { } while (cond)</code></td>
-                                <td>Exit-controlled</td>
-                                <td>Executes at least once before evaluating condition</td>
-                                <td>Prompts, retries, guaranteed first run</td>
+                                <td><strong>Data Structures</strong></td>
+                                <td>Arrays, Counters, Strings</td>
+                                <td>Iterables (Array, String, Set, Map)</td>
+                                <td>Plain Objects</td>
+                                <td>Arrays only</td>
                             </tr>
                             <tr>
-                                <td><code>for (let i; ...; i++)</code></td>
-                                <td>Index / Counter</td>
-                                <td>Tracks index counter explicitly</td>
-                                <td>Arrays when index position or step size is needed</td>
+                                <td><strong>Supports 'break'?</strong></td>
+                                <td><code style="color: var(--accent-emerald);">YES</code></td>
+                                <td><code style="color: var(--accent-emerald);">YES</code></td>
+                                <td><code style="color: var(--accent-emerald);">YES</code></td>
+                                <td><code style="color: var(--accent-rose);">NO (SyntaxError)</code></td>
                             </tr>
                             <tr>
-                                <td><code>for (const val of iter)</code></td>
-                                <td>Iterable Values</td>
-                                <td>Iterates directly over elements of Arrays, Strings, Sets</td>
-                                <td>Cleanest array element processing; supports <code>break</code> and <code>continue</code></td>
+                                <td><strong>Supports 'continue'?</strong></td>
+                                <td><code style="color: var(--accent-emerald);">YES</code></td>
+                                <td><code style="color: var(--accent-emerald);">YES</code></td>
+                                <td><code style="color: var(--accent-emerald);">YES</code></td>
+                                <td><code style="color: var(--accent-sky);">Simulated by 'return'</code></td>
                             </tr>
                             <tr>
-                                <td><code>for (const key in obj)</code></td>
-                                <td>Object Keys</td>
-                                <td>Enumerates enumerable property names/keys</td>
-                                <td>Inspecting and iterating over Object properties</td>
+                                <td><strong>Prototype Traversal</strong></td>
+                                <td>Ignores</td>
+                                <td>Ignores</td>
+                                <td><code style="color: var(--accent-rose);">Visits Prototype Chain!</code></td>
+                                <td>Ignores</td>
                             </tr>
                             <tr>
-                                <td><code>arr.forEach(fn)</code></td>
-                                <td>Functional Callback</td>
-                                <td>Executes callback for every element</td>
-                                <td>Declarative processing where early exit is NOT required</td>
+                                <td><strong>Async/await Support</strong></td>
+                                <td>Sequential <code>await</code> supported</td>
+                                <td>Sequential <code>await</code> supported</td>
+                                <td>Sequential <code>await</code> supported</td>
+                                <td><code style="color: var(--accent-rose);">Fails to await async loop</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Fastest (V8 JIT optimized)</td>
+                                <td>Near-Native (Very Fast)</td>
+                                <td>Slower (Property lookups)</td>
+                                <td>Minor callback stack overhead</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="prop-box">
-                    <div class="prop-title">Flow Control &amp; The Famous forEach Trap</div>
-                    <div class="prop-item"><span class="p-name">1. break:</span> Instantly terminates and jumps completely out of the enclosing loop.</div>
-                    <div class="prop-item"><span class="p-name">2. continue:</span> Skips the rest of the current iteration and jumps directly to the next loop cycle.</div>
-                    <div class="prop-item"><span class="p-name">3. The forEach 'return' Gotcha:</span> In a traditional loop (<code>for</code>, <code>for...of</code>), you can <code>break</code> early. Inside <code>arr.forEach()</code>, calling <code>return</code> <strong>does not stop the loop</strong>! It only returns from the individual callback invocation (behaving like <code>continue</code>). If early exit is needed, use <code>for...of</code> or array methods like <code>.some()</code> or <code>.find()</code>.</div>
-                </div>
-
+                <!-- Code Demonstrations -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Patterns in Action (levelUpChallenges.js &amp; loopChallenges.js)</div>
                 <div class="code-snippet">
-                    <span class="cs-comm">// Code from loopChallenges.js &amp; levelUpChallenges.js</span><br>
-                    <span class="cs-comm">// 1. for...of with break (exits on condition)</span><br>
-                    <span class="cs-kw">let</span> <span class="cs-prop">teaCollection</span> = [<span class="cs-val">"green tea"</span>, <span class="cs-val">"black tea"</span>, <span class="cs-val">"chai"</span>, <span class="cs-val">"oolong tea"</span>];<br>
+                    <span class="cs-comm">// 1. Classic for with break (Stop on "chai")</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">teas</span> = [<span class="cs-val">"green tea"</span>, <span class="cs-val">"black tea"</span>, <span class="cs-val">"chai"</span>, <span class="cs-val">"oolong tea"</span>];<br>
                     <span class="cs-kw">let</span> <span class="cs-prop">selectedTeas</span> = [];<br>
-                    <span class="cs-kw">for</span> (<span class="cs-kw">const</span> <span class="cs-prop">tea</span> <span class="cs-kw">of</span> <span class="cs-prop">teaCollection</span>) {<br>
-                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">tea</span> === <span class="cs-val">"chai"</span>) {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">break</span>; <span class="cs-comm">// Halts loop; does not include chai or subsequent teas</span><br>
-                    &nbsp;&nbsp;}<br>
-                    &nbsp;&nbsp;<span class="cs-prop">selectedTeas</span>.<span class="cs-fn">push</span>(<span class="cs-prop">tea</span>);<br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">let</span> <span class="cs-prop">i</span> = <span class="cs-val">0</span>; <span class="cs-prop">i</span> &lt; <span class="cs-prop">teas</span>.<span class="cs-prop">length</span>; <span class="cs-prop">i</span>++) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">teas</span>[<span class="cs-prop">i</span>] === <span class="cs-val">"chai"</span>) <span class="cs-kw">break</span>; <span class="cs-comm">// Halts loop</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">selectedTeas</span>.<span class="cs-fn">push</span>(<span class="cs-prop">teas</span>[<span class="cs-prop">i</span>]);<br>
                     }<br><br>
-                    <span class="cs-comm">// 2. for...in (Iterating object properties)</span><br>
-                    <span class="cs-kw">let</span> <span class="cs-prop">citiesPopulation</span> = { <span class="cs-prop">London</span>: <span class="cs-val">8900000</span>, <span class="cs-prop">Paris</span>: <span class="cs-val">2200000</span>, <span class="cs-prop">Berlin</span>: <span class="cs-val">3700000</span> };<br>
-                    <span class="cs-kw">for</span> (<span class="cs-kw">const</span> <span class="cs-prop">city</span> <span class="cs-kw">in</span> <span class="cs-prop">citiesPopulation</span>) {<br>
-                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">city</span> + <span class="cs-val">": "</span> + <span class="cs-prop">citiesPopulation</span>[<span class="cs-prop">city</span>]); <span class="cs-comm">// city is the key</span><br>
-                    }<br><br>
-                    <span class="cs-comm">// 3. forEach with skip (simulating continue via return)</span><br>
+                    <span class="cs-comm">// 2. Classic for with continue (Skip "Paris")</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">cities</span> = [<span class="cs-val">"London"</span>, <span class="cs-val">"New York"</span>, <span class="cs-val">"Paris"</span>, <span class="cs-val">"Berlin"</span>];<br>
                     <span class="cs-kw">let</span> <span class="cs-prop">visitedCities</span> = [];<br>
-                    [<span class="cs-val">"London"</span>, <span class="cs-val">"Sydney"</span>, <span class="cs-val">"Paris"</span>, <span class="cs-val">"Berlin"</span>].<span class="cs-fn">forEach</span>(<span class="cs-kw">function</span> (<span class="cs-prop">city</span>) {<br>
-                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">city</span> === <span class="cs-val">"Sydney"</span>) {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span>; <span class="cs-comm">// Returns from callback; acts like continue, NOT break!</span><br>
-                    &nbsp;&nbsp;}<br>
-                    &nbsp;&nbsp;<span class="cs-prop">visitedCities</span>.<span class="cs-fn">push</span>(<span class="cs-prop">city</span>);<br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">let</span> <span class="cs-prop">i</span> = <span class="cs-val">0</span>; <span class="cs-prop">i</span> &lt; <span class="cs-prop">cities</span>.<span class="cs-prop">length</span>; <span class="cs-prop">i</span>++) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">cities</span>[<span class="cs-prop">i</span>].<span class="cs-fn">toLowerCase</span>() === <span class="cs-val">"paris"</span>) <span class="cs-kw">continue</span>; <span class="cs-comm">// Skips Paris</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">visitedCities</span>.<span class="cs-fn">push</span>(<span class="cs-prop">cities</span>[<span class="cs-prop">i</span>]);<br>
+                    }<br><br>
+                    <span class="cs-comm">// 3. for...of with length condition</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">myTeas</span> = [<span class="cs-val">"chai"</span>, <span class="cs-val">"green tea"</span>, <span class="cs-val">"black tea"</span>, <span class="cs-val">"jasmine tea"</span>, <span class="cs-val">"herbal tea"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">shortTeas</span> = [];<br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">const</span> <span class="cs-prop">tea</span> <span class="cs-kw">of</span> <span class="cs-prop">myTeas</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">tea</span>.<span class="cs-prop">length</span> &gt; <span class="cs-val">10</span>) <span class="cs-kw">break</span>; <span class="cs-comm">// Halts when string length exceeds 10</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">shortTeas</span>.<span class="cs-fn">push</span>(<span class="cs-prop">tea</span>);<br>
+                    }<br><br>
+                    <span class="cs-comm">// 4. for...in object population filtering</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">worldCities</span> = { <span class="cs-prop">Sydney</span>: <span class="cs-val">5000000</span>, <span class="cs-prop">Tokyo</span>: <span class="cs-val">9000000</span>, <span class="cs-prop">Berlin</span>: <span class="cs-val">3500000</span>, <span class="cs-prop">Paris</span>: <span class="cs-val">2200000</span> };<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">largeCities</span> = {};<br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">const</span> <span class="cs-prop">city</span> <span class="cs-kw">in</span> <span class="cs-prop">worldCities</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">worldCities</span>[<span class="cs-prop">city</span>] &lt; <span class="cs-val">3000000</span>) <span class="cs-kw">continue</span>; <span class="cs-comm">// Skip cities under 3M</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">largeCities</span>[<span class="cs-prop">city</span>] = <span class="cs-prop">worldCities</span>[<span class="cs-prop">city</span>];<br>
+                    }<br><br>
+                    <span class="cs-comm">// 5. forEach skip simulation via return</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">myWorldCities</span> = [<span class="cs-val">"Berlin"</span>, <span class="cs-val">"Tokyo"</span>, <span class="cs-val">"Sydney"</span>, <span class="cs-val">"Paris"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">traveledCities</span> = [];<br>
+                    <span class="cs-prop">myWorldCities</span>.<span class="cs-fn">forEach</span>(<span class="cs-kw">function</span> (<span class="cs-prop">city</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">city</span> === <span class="cs-val">"Sydney"</span>) <span class="cs-kw">return</span>; <span class="cs-comm">// Only skips Sydney (behaves like continue)</span><br>
+                    &nbsp;&nbsp;<span class="cs-prop">traveledCities</span>.<span class="cs-fn">push</span>(<span class="cs-prop">city</span>);<br>
                     });
                 </div>
             </div>
@@ -1918,10 +1975,130 @@
             </div>
         </section>
 
-        <!-- 19. Technical Glossary -->
-        <section id="glossary">
+        <!-- 19. Part 5: Functions, First-Class Citizens, Arrow Functions & Closures (functions.js) -->
+        <section id="functions-closures">
             <div class="section-header">
                 <div class="section-number">19</div>
+                <h2 class="section-title">Part 5: Functions, First-Class Citizens, Arrow Functions &amp; Closures (functions.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Function Declarations • Arrow Syntax • Higher-Order Callbacks • V8 Heap Closures</span>
+                    <span class="tag-badge badge-core">Core Logic</span>
+                </div>
+                <p class="desc-text">In JavaScript, functions are <strong>First-Class Citizens</strong> (first-class values). They can be stored in variables, passed into callbacks, and returned from other functions. When functions are returned, they preserve their surrounding lexical scope through persistent Heap allocations known as <strong>Closures</strong>.</p>
+
+                <!-- Prop Box 1: Return & Dead Code -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-sky);">1. Execution Control &amp; Unreachable "Dead Code"</div>
+                    <div class="prop-item"><span class="p-name">return Statement:</span> Immediately stops function execution, computes the resulting value, and pops the current frame off the Call Stack.</div>
+                    <div class="prop-item"><span class="p-name">Dead Code Elimination:</span> Any statements placed after an unconditional <code>return</code> statement (e.g. <code>console.log(test)</code> in <code>makeTea</code>) are unreachable. V8's compiler eliminates or ignores these instructions during AST analysis.</div>
+                </div>
+
+                <!-- Prop Box 2: Arrow Functions -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-emerald);">2. Arrow Functions (ES6) vs Traditional Functions</div>
+                    <div class="prop-item"><span class="p-name">Implicit Return:</span> <code>const calc = (p, q) =&gt; p * q;</code> (omitting curly braces automatically returns the evaluated expression).</div>
+                    <div class="prop-item"><span class="p-name">Explicit Return:</span> When curly braces <code>{ }</code> are added, the <code>return</code> keyword is mandatory: <code>const calc = (p, q) =&gt; { return p * q; };</code></div>
+                </div>
+
+                <!-- Comparison Table: Traditional vs Arrow -->
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature / Behavior</th>
+                                <th>Traditional Function: <code>function() {}</code></th>
+                                <th>Arrow Function: <code>() =&gt; {}</code></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong><code>this</code> Context Binding</strong></td>
+                                <td>Dynamic (bound at call-time depending on how invoked)</td>
+                                <td><code style="color: var(--accent-emerald);">Lexical</code> (inherits <code>this</code> from surrounding scope)</td>
+                            </tr>
+                            <tr>
+                                <td><strong><code>arguments</code> Object</strong></td>
+                                <td>Built-in array-like <code>arguments</code> object available</td>
+                                <td><code style="color: var(--accent-rose);">None</code> (use rest parameters: <code>(...args)</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Constructor Usage (<code>new</code>)</strong></td>
+                                <td>Can be called with <code>new</code> (creates instances)</td>
+                                <td><code style="color: var(--accent-rose);">TypeError</code> (cannot be used with <code>new</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Prototype Property</strong></td>
+                                <td>Has <code>.prototype</code> property</td>
+                                <td>Lacks <code>.prototype</code> property</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Prop Box 3: Higher-Order Functions & Callbacks -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--chai-gold);">3. Higher-Order Functions: Callbacks &amp; References</div>
+                    <div class="prop-item"><span class="p-name">Definition:</span> A function that accepts another function as an argument, or returns a function.</div>
+                    <div class="prop-item"><span class="p-name">Passing Reference vs Invoking:</span> Passing <code>processTeaOrder(makeTea)</code> passes the <strong>pointer reference</strong> so the receiver can call it later. Writing <code>processTeaOrder(makeTea())</code> immediately executes <code>makeTea</code> and passes its return string!</div>
+                </div>
+
+                <!-- Prop Box 4: Closures & Function Factories -->
+                <div class="prop-box" style="border-left: 4px solid var(--accent-violet);">
+                    <div class="prop-title" style="color: var(--accent-violet);">4. Closures &amp; Function Factories (The V8 Heap Perspective)</div>
+                    <div class="prop-item"><span class="p-name">What is a Closure?</span> A function bundled together with references to its surrounding lexical environment (variables in outer scopes).</div>
+                    <div class="prop-item"><span class="p-name">How V8 Implements Closures:</span> When <code>createTeaMaker("hitesh")</code> returns its inner function, <code>createTeaMaker</code> pops off the Call Stack. Because the inner function still references <code>name</code> and <code>score</code>, V8 allocates a persistent <strong>Context Object in the Memory Heap</strong>.</div>
+                    <div class="prop-item"><span class="p-name">Subsequent Execution:</span> When <code>teaMaker("green tea")</code> is called later, it accesses <code>name</code> ("hitesh") and <code>score</code> (100) from the Heap Context via its internal <code>[[Scopes]]</code> chain!</div>
+                </div>
+
+                <!-- Code Snippet -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Code Challenges from part5/functions.js</div>
+                <div class="code-snippet">
+                    <span class="cs-comm">// 1. Basic Function Declaration &amp; Dead Code</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">makeTea</span>(<span class="cs-prop">typeOfTea</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-val">`Making ${typeOfTea}`</span>;<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">test</span>); <span class="cs-comm">// DEAD CODE: Unreachable statement after return</span><br>
+                    }<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">teaOrder</span> = <span class="cs-fn">makeTea</span>(<span class="cs-val">"lemon tea"</span>);<br><br>
+
+                    <span class="cs-comm">// 2. Nested Function &amp; Lexical Scope</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">orderTea</span>(<span class="cs-prop">teaType</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">function</span> <span class="cs-fn">confirmOrder</span>() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-val">`Order confirmed for chai`</span>;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-fn">confirmOrder</span>();<br>
+                    }<br><br>
+
+                    <span class="cs-comm">// 3. Arrow Function with Implicit Return</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-fn">calculateTotal</span> = (<span class="cs-prop">price</span>, <span class="cs-prop">quantity</span>) =&gt; <span class="cs-prop">price</span> * <span class="cs-prop">quantity</span>;<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">totalCost</span> = <span class="cs-fn">calculateTotal</span>(<span class="cs-val">499</span>, <span class="cs-val">100</span>);<br><br>
+
+                    <span class="cs-comm">// 4. Higher-Order Function (Passing Callback by Reference)</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">processTeaOrder</span>(<span class="cs-prop">teaFunction</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-prop">teaFunction</span>(<span class="cs-val">"earl grey"</span>);<br>
+                    }<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">order</span> = <span class="cs-fn">processTeaOrder</span>(<span class="cs-prop">makeTea</span>); <span class="cs-comm">// Passed as reference (no parentheses!)</span><br><br>
+
+                    <span class="cs-comm">// 5. Closure &amp; Function Factory (Preserving Lexical State in Heap)</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">createTeaMaker</span>(<span class="cs-prop">name</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">score</span> = <span class="cs-val">100</span>;<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return function</span> (<span class="cs-prop">teaType</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-comm">// Retains access to name and score via V8 Heap Context</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-val">`Making ${teaType} ${name} ${score}`</span>;<br>
+                    &nbsp;&nbsp;};<br>
+                    }<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">teaMaker</span> = <span class="cs-fn">createTeaMaker</span>(<span class="cs-val">"hitesh"</span>);<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">result</span> = <span class="cs-fn">teaMaker</span>(<span class="cs-val">"green tea"</span>); <span class="cs-comm">// "Making green tea hitesh 100"</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 20. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">20</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -1972,6 +2149,14 @@
                         <tr><td><code>readline</code></td><td>Node.js Core</td><td>Built-in module for line-by-line reading of readable streams like <code>stdin</code>.</td></tr>
                         <tr><td><code>process.stdin</code></td><td>Node.js Core</td><td>Standard input stream delivering terminal user keystrokes to Node.js.</td></tr>
                         <tr><td><code>process.argv</code></td><td>Node.js Core</td><td>Array containing command-line arguments passed when launching the script.</td></tr>
+                        <tr><td><code>Function Declaration</code></td><td>Functions</td><td>Traditional named function statement hoisted during creation phase.</td></tr>
+                        <tr><td><code>Arrow Function</code></td><td>Functions</td><td>Modern ES6 function syntax (<code>=&gt;</code>) with lexical <code>this</code> and implicit return.</td></tr>
+                        <tr><td><code>Higher-Order Function</code></td><td>Functions</td><td>Function that takes another function as an argument or returns a function.</td></tr>
+                        <tr><td><code>Callback Function</code></td><td>Functions</td><td>Function passed by reference into another function to be invoked at a later time.</td></tr>
+                        <tr><td><code>Lexical Scope</code></td><td>Scope</td><td>Scope determined by the physical placement of variables and functions in source code.</td></tr>
+                        <tr><td><code>Closure</code></td><td>Memory / Scope</td><td>Function bundled with references to its surrounding lexical state preserved in Heap Context.</td></tr>
+                        <tr><td><code>Function Factory</code></td><td>Architecture</td><td>Higher-order function that generates and returns specialized functions.</td></tr>
+                        <tr><td><code>Dead Code</code></td><td>Optimization</td><td>Unreachable code placed after unconditional <code>return</code> statements.</td></tr>
                     </tbody>
                 </table>
             </div>
