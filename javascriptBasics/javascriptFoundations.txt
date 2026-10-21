@@ -31,7 +31,10 @@ TABLE OF CONTENTS
  12. Part 1: Assignment, Logical Operators & Precedence (assignment.js, logical.js, operatorprecedence.js)
  13. Part 2: Primitives vs Object Wrappers & Autoboxing (primitives.js)
  14. Part 2: Non-Primitives, Object Access & Type Coercion (nonPrimitives.js)
- 15. Quick Reference Glossary of Terms
+ 15. Part 3: Conditionals & Flow Control (conditon-challenges.js)
+ 16. Part 4: Array Mastery, Memory References & Methods (arrayChallenges.js)
+ 17. Part 4: Loops & Iteration Patterns (loopChallenges.js, levelUpChallenges.js)
+ 18. Quick Reference Glossary of Terms
 ================================================================================
 
 
@@ -795,7 +798,194 @@ and their object wrapper counterparts:
 
 
 ================================================================================
-15. QUICK REFERENCE GLOSSARY OF TERMS
+15. PART 3: CONDITIONALS & FLOW CONTROL (conditon-challenges.js)
+================================================================================
+
+Conditionals drive decision branches and control program execution flow:
+
+1. THE IF-ELSE ANATOMY:
+   if (condition) {
+       // Executes when condition evaluates to truthy
+   } else {
+       // Executes when condition evaluates to falsy
+   }
+
+2. PRACTICAL PATTERNS (from part3/conditon-challenges.js):
+
+   A. Numeric Comparison:
+      let num1 = 5, num2 = 8;
+      if (num1 > num2) {
+          console.log("num1 is greater");
+      } else {
+          console.log("Nope, num1 is NOT greater");
+      }
+
+   B. String Equivalence:
+      let username = "chai", anotherUsername = "chai";
+      if (username == anotherUsername) {
+          console.log("Pick another username"); // Username already taken!
+      } else {
+          console.log("You can pick this username");
+      }
+
+   C. Type Verification Guard:
+      let score = "44";
+      if (typeof score === "number") {
+          console.log("Yep, this is a number");
+      } else {
+          console.log("No that is not a number"); // Prevents math bugs!
+      }
+
+   D. Boolean Flag Checking:
+      let isTeaReady = false;
+      if (isTeaReady) {
+          console.log("Tea is Ready");
+      } else {
+          console.log("Tea is NOT ready");
+      }
+      * BEST PRACTICE: Write 'if (isTeaReady)', avoid redundant 'if (isTeaReady === true)'.
+
+   E. The Array Emptiness Gotcha:
+      let items = [];
+      // WRONG: if (items) -> ALWAYS TRUE! In JS, empty arrays '[]' are truthy objects!
+      // RIGHT: Check the length property:
+      if (items.length === 0) {
+          console.log("Array is empty");
+      } else {
+          console.log("Array is NOT empty");
+      }
+
+
+================================================================================
+16. PART 4: ARRAY MASTERY, MEMORY REFERENCES & METHODS (arrayChallenges.js)
+================================================================================
+
+An Array in JavaScript is an ordered, zero-indexed collection of values stored in
+Heap memory.
+
+1. ACCESSING & MUTATING ELEMENTS (0-Indexed):
+   let teaFlavors = ["green tea", "black tea", "oolong tea"];
+   const firstTea = teaFlavors[0]; // "green tea" (Index starts at 0)
+   teaFlavors[1] = "jasmine tea";  // Mutates "black tea" -> "jasmine tea"
+
+2. CORE ARRAY MUTATION METHODS:
+   - push(item): Appends item to the END of array; returns new length.
+     let citiesVisited = ["Mumbai", "Sydney"];
+     citiesVisited.push("Berlin"); // ["Mumbai", "Sydney", "Berlin"]
+
+   - pop(): Removes and returns the LAST item of the array.
+     let teaOrders = ["chai", "iced tea", "matcha", "earl grey"];
+     const lastOrder = teaOrders.pop(); // Returns "earl grey"; array length is now 3.
+
+3. MEMORY REFERENCE: SOFT COPY VS HARD COPY (CRITICAL CONCEPT):
+
+   A. Soft Copy (Reference Copy):
+      let popularTeas = ["green tea", "oolong tea", "chai"];
+      let softCopyTeas = popularTeas; // Copies ONLY the heap memory pointer!
+      popularTeas.pop();              // Removes "chai"
+      console.log(softCopyTeas);      // ["green tea", "oolong tea"]!
+      * Modifying one modifies both because both variables point to the exact same array in the Heap.
+
+   B. Hard Copy (Cloning / Shallow Copy):
+      let topCities = ["Berlin", "Singapore", "New York"];
+      // Technique 1: Modern ES6 Spread Operator (Recommended)
+      let hardCopyCities = [...topCities];
+      // Technique 2: Array slice method
+      // let hardCopyCities = topCities.slice();
+      
+      topCities.pop(); // Removes "New York" from original
+      console.log(hardCopyCities); // ["Berlin", "Singapore", "New York"] intact!
+      * Creates an independent, cloned memory allocation in the Heap.
+
+4. ARRAY UTILITIES & MERGING:
+   - concat(): Merges two or more arrays without mutating originals:
+     let europeanCities = ["Paris", "Rome"];
+     let asianCities = ["Tokyo", "Bangkok"];
+     let worldCities = europeanCities.concat(asianCities);
+     // ["Paris", "Rome", "Tokyo", "Bangkok"]
+
+   - length: Property returning the count of elements in the array:
+     let menuLength = teaMenu.length;
+
+   - includes(value): Returns boolean true if value exists in array:
+     cityBucketList.includes("London"); // true
+
+
+================================================================================
+17. PART 4: LOOPS & ITERATION PATTERNS (loopChallenges.js, levelUpChallenges.js)
+================================================================================
+
+JavaScript provides multiple iteration constructs designed for different data
+structures and control flows:
+
+1. THE 5 LOOPS OF JAVASCRIPT:
+
+   A. while Loop (Entry-Controlled):
+      - Checks condition BEFORE entering the loop body.
+      let sum = 0, i = 1;
+      while (i <= 5) {
+          sum += i;
+          i++;
+      } // sum = 15
+
+   B. do...while Loop (Exit-Controlled):
+      - Guarantees AT LEAST ONE execution before checking the condition.
+      let total = 0, k = 1;
+      do {
+          total += k;
+          k++;
+      } while (k <= 3); // total = 6
+
+   C. Classic for Loop (Index-Based):
+      - Standard counter loop with initializer, condition, and incrementer.
+      for (let i = 0; i < cities.length; i++) {
+          console.log(cities[i]);
+      }
+
+   D. for...of Loop (Iterable Value Iteration):
+      - Cleanest syntax for iterating VALUES of Arrays, Strings, Sets, and Maps.
+      for (const tea of teaTypes) {
+          console.log(tea); // Yields actual elements directly
+      }
+
+   E. for...in Loop (Object Property Enumeration):
+      - Iterates over the enumerable KEYS (property names) of an Object.
+      let citiesPopulation = { London: 8900000, Paris: 2200000 };
+      for (const city in citiesPopulation) {
+          console.log(city);                    // "London", "Paris" (keys)
+          console.log(citiesPopulation[city]);  // 8900000, 2200000 (values)
+      }
+
+   F. Array forEach Method:
+      - Higher-order method executing a callback function for each element:
+      cities.forEach(function (city) {
+          console.log(city);
+      });
+
+2. LOOP CONTROL STATEMENTS:
+   - break: Immediately halts and exits the enclosing loop entirely.
+     for (const num of [1, 2, 3, 4, 5]) {
+         if (num === 4) break; // Exits loop; does not process 4 or 5
+     }
+
+   - continue: Skips the rest of the current iteration and jumps to the next cycle.
+     for (const tea of ["chai", "green tea", "herbal tea"]) {
+         if (tea === "herbal tea") continue; // Skips herbal tea!
+         preferredTeas.push(tea);
+     }
+
+3. THE forEach 'return' GOTCHA (CRITICAL INTERVIEW QUESTION):
+   In a standard loop, you can 'break' out. But inside a 'forEach' callback:
+   array.forEach(function (item) {
+       if (item === "target") return; // DOES NOT STOP THE LOOP!
+   });
+   * Explanation: 'return' inside forEach only exits the current callback function
+     invocation (acting like 'continue'). It does NOT break the outer loop!
+     If you need to break early, use a 'for', 'for...of', or '.some()' / '.every()' loop.
+
+
+================================================================================
+18. QUICK REFERENCE GLOSSARY OF TERMS
 ================================================================================
 
 Term             | Meaning / Definition
@@ -833,6 +1023,12 @@ Logical AND (&&) | Evaluates true only if all operands are truthy; short-circuit
 Logical OR (||)  | Evaluates true if any operand is truthy; short-circuits on truthy
 Short-Circuiting | Skipping remaining operand evaluations once the boolean result is settled
 Precedence       | Order in which operators are evaluated (parentheses have highest precedence)
+Soft Copy        | Copying only the memory reference pointer (mutating one mutates both)
+Hard Copy        | Creating a new independent clone in heap memory ([...arr], slice())
+break            | Immediately terminates the loop
+continue         | Skips the rest of current cycle and proceeds to next iteration
+for...of         | Loop iterating over VALUES of an iterable (Arrays, Strings)
+for...in         | Loop enumerating KEYS/properties of an Object
 Event Loop       | Coordinator shifting callbacks from queues onto the Call Stack
 Microtasks       | High-priority queue (Promises, process.nextTick)
 Macrotasks       | Standard queue (setTimeout, setInterval, I/O callbacks)

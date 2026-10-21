@@ -582,7 +582,10 @@
                 <a href="#assignment-logical-precedence">12. Assignment, Logical &amp; Precedence</a>
                 <a href="#primitives-wrappers">13. Primitives &amp; Wrappers (part2)</a>
                 <a href="#objects-coercion">14. Objects &amp; Coercion (part2)</a>
-                <a href="#glossary">15. Technical Glossary</a>
+                <a href="#conditionals-flow">15. Conditionals &amp; Flow (part3)</a>
+                <a href="#arrays-memory">16. Arrays &amp; Memory (part4)</a>
+                <a href="#loops-iteration">17. Loops &amp; Iteration (part4)</a>
+                <a href="#glossary">18. Technical Glossary</a>
             </div>
         </header>
 
@@ -1538,10 +1541,276 @@
             </div>
         </section>
 
-        <!-- 15. Technical Glossary -->
-        <section id="glossary">
+        <!-- 15. Part 3: Conditionals & Flow Control (conditon-challenges.js) -->
+        <section id="conditionals-flow">
             <div class="section-header">
                 <div class="section-number">15</div>
+                <h2 class="section-title">Part 3: Conditionals &amp; Flow Control (conditon-challenges.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Decision Branching • Truthy/Falsy Evaluation • Guard Clauses</span>
+                    <span class="tag-badge badge-core">Control Flow</span>
+                </div>
+                <p class="desc-text">Conditionals allow programs to branch and execute specific code paths based on Boolean evaluations. In JavaScript, expressions inside <code>if (...)</code> are evaluated for truthiness. Understanding type guards and object truthiness is critical to avoid silent logic bugs.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Core Conditional Patterns &amp; Best Practices</div>
+                    <div class="prop-item"><span class="p-name">1. Numeric &amp; String Comparison:</span> Compare values cleanly with <code>&gt;</code>, <code>&lt;</code>, or strict equality <code>===</code>.</div>
+                    <div class="prop-item"><span class="p-name">2. Type Verification Guard:</span> Use <code>typeof variable === "type"</code> before performing type-specific calculations.</div>
+                    <div class="prop-item"><span class="p-name">3. Direct Boolean Evaluation:</span> Write <code>if (isReady)</code> instead of redundant <code>if (isReady === true)</code>.</div>
+                    <div class="prop-item"><span class="p-name">4. The Array Emptiness Trap:</span> In JS, an empty array <code>[]</code> is an object and always evaluates to <strong>truthy</strong>! Never check <code>if (arr)</code> to test if an array has items; always check <code>if (arr.length === 0)</code>.</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pattern / Condition</th>
+                                <th>Syntax Example</th>
+                                <th>Evaluation Mechanism</th>
+                                <th>Trap / Best Practice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Numeric Branching</td>
+                                <td><code>if (num1 &gt; num2) { ... }</code></td>
+                                <td>Evaluates relative values as numbers</td>
+                                <td>Ensure operands are coerced numbers, not numeric strings</td>
+                            </tr>
+                            <tr>
+                                <td>String Matching</td>
+                                <td><code>if (user === anotherUser)</code></td>
+                                <td>Compares lexicographical UTF-16 code units</td>
+                                <td>Use <code>===</code> to prevent unintended type coercion</td>
+                            </tr>
+                            <tr>
+                                <td>Type Guard</td>
+                                <td><code>if (typeof score === "number")</code></td>
+                                <td>Guards code path using string primitive type check</td>
+                                <td>Remember <code>typeof NaN === "number"</code> and <code>typeof null === "object"</code></td>
+                            </tr>
+                            <tr>
+                                <td>Empty Array Check</td>
+                                <td><code>if (items.length === 0)</code></td>
+                                <td>Checks element count property</td>
+                                <td><strong>Critical:</strong> <code>if ([])</code> evaluates to <code>true</code>! Always check <code>.length</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part3/conditon-challenges.js</span><br>
+                    <span class="cs-comm">// 1. String comparison</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">username</span> = <span class="cs-val">"chai"</span>;<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">anotherUsername</span> = <span class="cs-val">"chai"</span>;<br>
+                    <span class="cs-kw">if</span> (<span class="cs-prop">username</span> == <span class="cs-prop">anotherUsername</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Pick another username"</span>);<br>
+                    } <span class="cs-kw">else</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"You can pick this username"</span>);<br>
+                    }<br><br>
+                    <span class="cs-comm">// 2. Type Checking guard</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">score</span> = <span class="cs-val">"44"</span>;<br>
+                    <span class="cs-kw">if</span> (<span class="cs-kw">typeof</span> <span class="cs-prop">score</span> === <span class="cs-val">"number"</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Yep, this is a number"</span>);<br>
+                    } <span class="cs-kw">else</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"No that is not a number"</span>);<br>
+                    }<br><br>
+                    <span class="cs-comm">// 3. Array emptiness check (Testing length)</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">items</span> = [];<br>
+                    <span class="cs-kw">if</span> (<span class="cs-prop">items</span>.<span class="cs-prop">length</span> === <span class="cs-val">0</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Array is empty"</span>);<br>
+                    } <span class="cs-kw">else</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Array is NOT empty"</span>);<br>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- 16. Part 4: Array Mastery, Memory References & Methods (arrayChallenges.js) -->
+        <section id="arrays-memory">
+            <div class="section-header">
+                <div class="section-number">16</div>
+                <h2 class="section-title">Part 4: Array Mastery, Memory References &amp; Methods (arrayChallenges.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Heap Memory References • Shallow vs Deep Copy • Mutation Methods</span>
+                    <span class="tag-badge badge-v8">Data Structures</span>
+                </div>
+                <p class="desc-text">In JavaScript, Arrays are reference objects stored in Heap memory. When an array is assigned to a new variable, only its pointer is copied (Soft Copy). Modifying either variable mutates the shared heap object. To create an independent copy (Hard Copy), you must clone it using the spread operator <code>[...arr]</code> or <code>.slice()</code>.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Core Array Operations &amp; Memory Allocation</div>
+                    <div class="prop-item"><span class="p-name">1. Zero-Based Indexing:</span> Arrays start indexing at 0 (e.g. <code>arr[0]</code> is the 1st element, <code>arr[arr.length - 1]</code> is the last).</div>
+                    <div class="prop-item"><span class="p-name">2. Mutation Methods:</span> <code>push(item)</code> appends to the end; <code>pop()</code> removes and returns the last element.</div>
+                    <div class="prop-item"><span class="p-name">3. Non-Mutating Methods:</span> <code>concat()</code> merges arrays returning a new array; <code>includes(val)</code> checks existence.</div>
+                    <div class="prop-item"><span class="p-name">4. Soft Copy (Reference Copy):</span> <code>let b = a</code> copies the memory address. <code>a.pop()</code> modifies <code>b</code> as well!</div>
+                    <div class="prop-item"><span class="p-name">5. Hard Copy (Cloning):</span> <code>let b = [...a]</code> allocates a new array in Heap memory. Mutating <code>a</code> leaves <code>b</code> untouched.</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Copy Type</th>
+                                <th>Syntax</th>
+                                <th>Heap Allocation</th>
+                                <th>Impact of Mutating Original</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Soft Copy</strong> (Reference)</td>
+                                <td><code>let copy = original;</code></td>
+                                <td>No new memory allocated (Shared Pointer)</td>
+                                <td><code style="color: var(--accent-rose);">Mutates Both!</code> Both point to identical heap address</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hard Copy</strong> (Spread Clone)</td>
+                                <td><code>let copy = [...original];</code></td>
+                                <td>New Heap Array created (Independent clone)</td>
+                                <td><code style="color: var(--accent-emerald);">Safe!</code> Copy remains completely unaffected</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hard Copy</strong> (Slice)</td>
+                                <td><code>let copy = original.slice();</code></td>
+                                <td>New Heap Array created (Shallow clone)</td>
+                                <td><code style="color: var(--accent-emerald);">Safe!</code> Copy remains completely unaffected</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part4/arrayChallenges.js</span><br>
+                    <span class="cs-comm">// 1. Soft Copy (Reference Copying) - Modifies both!</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">popularTeas</span> = [<span class="cs-val">"green tea"</span>, <span class="cs-val">"oolong tea"</span>, <span class="cs-val">"chai"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">softCopyTeas</span> = <span class="cs-prop">popularTeas</span>; <span class="cs-comm">// Soft Copy (Shared Reference)</span><br>
+                    <span class="cs-prop">popularTeas</span>.<span class="cs-fn">pop</span>(); <span class="cs-comm">// Removes "chai"</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">softCopyTeas</span>); <span class="cs-comm">// ["green tea", "oolong tea"] (Mutated!)</span><br><br>
+                    <span class="cs-comm">// 2. Hard Copy (Spread Clone) - Independent memory allocation</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">topCities</span> = [<span class="cs-val">"Berlin"</span>, <span class="cs-val">"Singapore"</span>, <span class="cs-val">"New York"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">hardCopyCities</span> = [...<span class="cs-prop">topCities</span>]; <span class="cs-comm">// Hard Copy (Independent Clone)</span><br>
+                    <span class="cs-prop">topCities</span>.<span class="cs-fn">pop</span>(); <span class="cs-comm">// Removes "New York" from original</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">hardCopyCities</span>); <span class="cs-comm">// ["Berlin", "Singapore", "New York"] (Intact!)</span><br><br>
+                    <span class="cs-comm">// 3. Merging with concat &amp; checking with includes</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">europeanCities</span> = [<span class="cs-val">"Paris"</span>, <span class="cs-val">"Rome"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">asianCities</span> = [<span class="cs-val">"Tokyo"</span>, <span class="cs-val">"Bangkok"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">worldCities</span> = <span class="cs-prop">europeanCities</span>.<span class="cs-fn">concat</span>(<span class="cs-prop">asianCities</span>); <span class="cs-comm">// Non-mutating merge</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">isLondonInList</span> = <span class="cs-prop">worldCities</span>.<span class="cs-fn">includes</span>(<span class="cs-val">"London"</span>); <span class="cs-comm">// false</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 17. Part 4: Loops & Iteration Patterns (loopChallenges.js, levelUpChallenges.js) -->
+        <section id="loops-iteration">
+            <div class="section-header">
+                <div class="section-number">17</div>
+                <h2 class="section-title">Part 4: Loops &amp; Iteration Patterns (loopChallenges.js &amp; levelUpChallenges.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">while • do...while • for • for...of • for...in • forEach</span>
+                    <span class="tag-badge badge-runtime">Iteration Mechanics</span>
+                </div>
+                <p class="desc-text">Loops repeat code until an exit condition is met. JavaScript provides specialized loops for index counting, iterating over iterable values (<code>for...of</code>), enumerating object property keys (<code>for...in</code>), and functional iterations (<code>forEach</code>).</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Loop Construct</th>
+                                <th>Type / Target</th>
+                                <th>Control Flow</th>
+                                <th>Best Used For</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>while (cond)</code></td>
+                                <td>Entry-controlled</td>
+                                <td>Evaluates condition before entering loop body</td>
+                                <td>Indeterminate loops (running until state changes)</td>
+                            </tr>
+                            <tr>
+                                <td><code>do { } while (cond)</code></td>
+                                <td>Exit-controlled</td>
+                                <td>Executes at least once before evaluating condition</td>
+                                <td>Prompts, retries, guaranteed first run</td>
+                            </tr>
+                            <tr>
+                                <td><code>for (let i; ...; i++)</code></td>
+                                <td>Index / Counter</td>
+                                <td>Tracks index counter explicitly</td>
+                                <td>Arrays when index position or step size is needed</td>
+                            </tr>
+                            <tr>
+                                <td><code>for (const val of iter)</code></td>
+                                <td>Iterable Values</td>
+                                <td>Iterates directly over elements of Arrays, Strings, Sets</td>
+                                <td>Cleanest array element processing; supports <code>break</code> and <code>continue</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>for (const key in obj)</code></td>
+                                <td>Object Keys</td>
+                                <td>Enumerates enumerable property names/keys</td>
+                                <td>Inspecting and iterating over Object properties</td>
+                            </tr>
+                            <tr>
+                                <td><code>arr.forEach(fn)</code></td>
+                                <td>Functional Callback</td>
+                                <td>Executes callback for every element</td>
+                                <td>Declarative processing where early exit is NOT required</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-box">
+                    <div class="prop-title">Flow Control &amp; The Famous forEach Trap</div>
+                    <div class="prop-item"><span class="p-name">1. break:</span> Instantly terminates and jumps completely out of the enclosing loop.</div>
+                    <div class="prop-item"><span class="p-name">2. continue:</span> Skips the rest of the current iteration and jumps directly to the next loop cycle.</div>
+                    <div class="prop-item"><span class="p-name">3. The forEach 'return' Gotcha:</span> In a traditional loop (<code>for</code>, <code>for...of</code>), you can <code>break</code> early. Inside <code>arr.forEach()</code>, calling <code>return</code> <strong>does not stop the loop</strong>! It only returns from the individual callback invocation (behaving like <code>continue</code>). If early exit is needed, use <code>for...of</code> or array methods like <code>.some()</code> or <code>.find()</code>.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from loopChallenges.js &amp; levelUpChallenges.js</span><br>
+                    <span class="cs-comm">// 1. for...of with break (exits on condition)</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">teaCollection</span> = [<span class="cs-val">"green tea"</span>, <span class="cs-val">"black tea"</span>, <span class="cs-val">"chai"</span>, <span class="cs-val">"oolong tea"</span>];<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">selectedTeas</span> = [];<br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">const</span> <span class="cs-prop">tea</span> <span class="cs-kw">of</span> <span class="cs-prop">teaCollection</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">tea</span> === <span class="cs-val">"chai"</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">break</span>; <span class="cs-comm">// Halts loop; does not include chai or subsequent teas</span><br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="cs-prop">selectedTeas</span>.<span class="cs-fn">push</span>(<span class="cs-prop">tea</span>);<br>
+                    }<br><br>
+                    <span class="cs-comm">// 2. for...in (Iterating object properties)</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">citiesPopulation</span> = { <span class="cs-prop">London</span>: <span class="cs-val">8900000</span>, <span class="cs-prop">Paris</span>: <span class="cs-val">2200000</span>, <span class="cs-prop">Berlin</span>: <span class="cs-val">3700000</span> };<br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">const</span> <span class="cs-prop">city</span> <span class="cs-kw">in</span> <span class="cs-prop">citiesPopulation</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">city</span> + <span class="cs-val">": "</span> + <span class="cs-prop">citiesPopulation</span>[<span class="cs-prop">city</span>]); <span class="cs-comm">// city is the key</span><br>
+                    }<br><br>
+                    <span class="cs-comm">// 3. forEach with skip (simulating continue via return)</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">visitedCities</span> = [];<br>
+                    [<span class="cs-val">"London"</span>, <span class="cs-val">"Sydney"</span>, <span class="cs-val">"Paris"</span>, <span class="cs-val">"Berlin"</span>].<span class="cs-fn">forEach</span>(<span class="cs-kw">function</span> (<span class="cs-prop">city</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">city</span> === <span class="cs-val">"Sydney"</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span>; <span class="cs-comm">// Returns from callback; acts like continue, NOT break!</span><br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="cs-prop">visitedCities</span>.<span class="cs-fn">push</span>(<span class="cs-prop">city</span>);<br>
+                    });
+                </div>
+            </div>
+        </section>
+
+        <!-- 18. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">18</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -1582,6 +1851,12 @@
                         <tr><td><code>Operator Precedence</code></td><td>Operators</td><td>Parsing and execution hierarchy (parentheses <code>( )</code> have highest priority 18).</td></tr>
                         <tr><td><code>Block Scope</code></td><td>Scope</td><td>Visibility confined strictly within <code>{ }</code> braces (applied to <code>let</code> and <code>const</code>).</td></tr>
                         <tr><td><code>Function Scope</code></td><td>Scope</td><td>Visibility confined only to the enclosing function body (applied to <code>var</code>).</td></tr>
+                        <tr><td><code>Soft Copy</code></td><td>Memory</td><td>Reference copy pointing to the same Heap allocation; mutations affect both variables.</td></tr>
+                        <tr><td><code>Hard Copy</code></td><td>Memory</td><td>Independent clone created in Heap memory via spread <code>[...arr]</code> or <code>.slice()</code>.</td></tr>
+                        <tr><td><code>break</code></td><td>Control Flow</td><td>Statement immediately terminating the enclosing loop or switch construct.</td></tr>
+                        <tr><td><code>continue</code></td><td>Control Flow</td><td>Statement skipping the remainder of current iteration and advancing to next cycle.</td></tr>
+                        <tr><td><code>for...of</code></td><td>Loops</td><td>Modern loop iterating directly over values of iterable objects (Arrays, Strings, Sets).</td></tr>
+                        <tr><td><code>for...in</code></td><td>Loops</td><td>Loop enumerating the enumerable property keys/names of an Object.</td></tr>
                     </tbody>
                 </table>
             </div>
