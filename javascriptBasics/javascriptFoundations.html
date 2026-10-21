@@ -580,7 +580,9 @@
                 <a href="#data-types-vars">10. Datatypes &amp; var/let/const</a>
                 <a href="#operations-expressions">11. Operations &amp; Comparisons</a>
                 <a href="#assignment-logical-precedence">12. Assignment, Logical &amp; Precedence</a>
-                <a href="#glossary">13. Technical Glossary</a>
+                <a href="#primitives-wrappers">13. Primitives &amp; Wrappers (part2)</a>
+                <a href="#objects-coercion">14. Objects &amp; Coercion (part2)</a>
+                <a href="#glossary">15. Technical Glossary</a>
             </div>
         </header>
 
@@ -1378,10 +1380,168 @@
             </div>
         </section>
 
-        <!-- 13. Technical Glossary -->
-        <section id="glossary">
+        <!-- 13. Primitives vs Object Wrappers & Autoboxing -->
+        <section id="primitives-wrappers">
             <div class="section-header">
                 <div class="section-number">13</div>
+                <h2 class="section-title">Part 2: Primitives vs. Object Wrappers &amp; Autoboxing (primitives.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Literal vs new Number() • Autoboxing • String Interpolation</span>
+                    <span class="tag-badge badge-oxide">Core Primitives</span>
+                </div>
+                <p class="desc-text">In JavaScript, every primitive has a corresponding built-in Object Wrapper. Understanding the difference is crucial for avoiding subtle equality and memory bugs:</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Declaration</th>
+                                <th>Code Syntax</th>
+                                <th><code>typeof</code> Output</th>
+                                <th>Memory Location</th>
+                                <th>Equality Check (<code>===</code>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Primitive Literal</strong></td>
+                                <td><code>let balance = 120;</code></td>
+                                <td><code>"number"</code></td>
+                                <td>Stack Memory (by value)</td>
+                                <td rowspan="2" style="vertical-align: middle;"><code style="color: var(--accent-rose);">balance === anotherBalance ➔ false!</code><br><span style="font-size: 0.8rem; color: #94a3b8;">(Primitive value !== Heap Object reference)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Object Wrapper</strong></td>
+                                <td><code>let anotherBalance = new Number(120);</code></td>
+                                <td><code style="color: var(--chai-gold);">"object"</code></td>
+                                <td>Heap Memory (by reference)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px; border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">The 'new Boolean()' Trap</div>
+                    <div class="prop-item"><span class="p-name">let isReallyActive = new Boolean(false);</span></div>
+                    <p style="font-size: 0.88rem; color: #cbd5e1; margin-top: 6px;">In JavaScript, <strong>ANY object instance is truthy</strong>, even if it wraps the boolean value <code>false</code>! An <code>if (isReallyActive)</code> statement will evaluate to <code>true</code> and execute! Never use <code>new Boolean()</code>, <code>new Number()</code>, or <code>new String()</code>.</p>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px;">
+                    <div class="prop-title" style="color: var(--accent-sky);">What is Autoboxing? (How Primitives Call Methods)</div>
+                    <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 6px;">Primitives are not objects and have no properties. Yet, you can run <code>"hello".toUpperCase()</code> or <code>(120.456).toFixed(2)</code>. How?</p>
+                    <div class="prop-item"><span class="p-name">1. Temporary Wrap:</span> V8 temporarily creates a transient wrapper object: <code>new String("hello")</code>.</div>
+                    <div class="prop-item"><span class="p-name">2. Method Execution:</span> It calls the method from <code>String.prototype</code>.</div>
+                    <div class="prop-item"><span class="p-name">3. Immediate Garbage Collection:</span> The temporary wrapper is discarded instantly. You get the raw speed of primitives with the convenience of object methods!</div>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px;">
+                    <div class="prop-title" style="color: var(--accent-emerald);">Template Literals vs String Concatenation</div>
+                    <div class="prop-item"><span class="p-name">Old Concatenation (+):</span> <code>myString + " " + myName;</code> (Cumbersome, error-prone with spacing)</div>
+                    <div class="prop-item"><span class="p-name">Modern ES6 (`...`):</span> <code>`${myString} ${myName}`;</code> (Interpolates variables and embedded expressions directly!)</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part2/primitives.js</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">balance</span> = <span class="cs-val">120</span>;<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">anotherBalance</span> = <span class="cs-kw">new</span> <span class="cs-fn">Number</span>(<span class="cs-val">120</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-kw">typeof</span> <span class="cs-prop">balance</span>);        <span class="cs-comm">// "number"</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-kw">typeof</span> <span class="cs-prop">anotherBalance</span>); <span class="cs-comm">// "object"</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">anotherBalance</span>.<span class="cs-fn">valueOf</span>()); <span class="cs-comm">// 120 (unwraps primitive)</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">balance</span> === <span class="cs-prop">anotherBalance</span>); <span class="cs-comm">// false!</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">sm1</span> = <span class="cs-fn">Symbol</span>(<span class="cs-val">"Ali"</span>);<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">sm2</span> = <span class="cs-fn">Symbol</span>(<span class="cs-val">"Ali"</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">sm1</span> === <span class="cs-prop">sm2</span>); <span class="cs-comm">// false (Symbols are guaranteed unique!)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. Non-Primitives & Type Coercion -->
+        <section id="objects-coercion">
+            <div class="section-header">
+                <div class="section-number">14</div>
+                <h2 class="section-title">Part 2: Non-Primitives, Object Access &amp; Type Coercion (nonPrimitives.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Dot vs Bracket Notation • Dates &amp; Arrays • Number() Castings</span>
+                    <span class="tag-badge badge-jit">Objects &amp; Types</span>
+                </div>
+                <p class="desc-text">Non-primitive objects store collections of properties in Heap memory. Access notation and explicit type casting have subtle edge cases:</p>
+
+                <!-- Dot vs Bracket Notation -->
+                <div class="prop-title" style="margin-top: 10px; color: var(--chai-gold);">1. Property Access: Dot vs. Bracket Notation</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Access Notation</th>
+                                <th>Syntax Example</th>
+                                <th>When to Use / Limitations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Dot Notation</strong></td>
+                                <td><code>username.lastname</code></td>
+                                <td>Standard, clean access for valid identifier names without spaces or dashes.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bracket Notation</strong></td>
+                                <td><code>username["first name"]</code></td>
+                                <td><strong>Mandatory</strong> when keys have spaces, hyphens, start with numbers, or when the key is evaluated dynamically from a variable: <code>username[dynamicKey]</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Number() Coercion Matrix -->
+                <div class="prop-title" style="margin-top: 26px; color: var(--accent-rose);">2. Explicit Type Conversion: Number() Matrix &amp; NaN</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Input Value</th>
+                                <th>Conversion: <code>Number(Input)</code></th>
+                                <th><code>typeof Number(Input)</code></th>
+                                <th>Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>"123"</code></td><td><code>123</code></td><td><code>"number"</code></td><td>Clean numeric string parsed</td></tr>
+                            <tr><td><code>"2abc"</code></td><td><code style="color: var(--accent-rose);">NaN</code></td><td><code style="color: var(--accent-emerald);">"number"</code></td><td>Fails numeric parsing; produces <code>NaN</code> (whose typeof is still <code>"number"</code>!)</td></tr>
+                            <tr><td><code>null</code></td><td><code>0</code></td><td><code>"number"</code></td><td><code>null</code> coerces directly to numeric zero</td></tr>
+                            <tr><td><code>undefined</code></td><td><code>NaN</code></td><td><code>"number"</code></td><td><code>undefined</code> has no numeric representation</td></tr>
+                            <tr><td><code>true / false</code></td><td><code>1 / 0</code></td><td><code>"number"</code></td><td>Boolean flags map to binary 1 and 0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-snippet" style="margin-top: 18px;">
+                    <span class="cs-comm">// Code from part2/nonPrimitives.js</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">username</span> = {<br>
+                    &nbsp;&nbsp;<span class="cs-val">"first name"</span>: <span class="cs-val">"Hitesh"</span>,<br>
+                    &nbsp;&nbsp;<span class="cs-prop">isLoggedin</span>: <span class="cs-val">true</span><br>
+                    };<br>
+                    <span class="cs-prop">username</span>.<span class="cs-prop">lastname</span> = <span class="cs-val">"Choudhary"</span>; <span class="cs-comm">// Mutating 'const' object properties is allowed</span><br><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">username</span>[<span class="cs-val">"first name"</span>]); <span class="cs-comm">// "Hitesh" (Bracket notation required for spaces)</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">username</span>.<span class="cs-prop">lastname</span>);     <span class="cs-comm">// "Choudhary"</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">today</span> = <span class="cs-kw">new</span> <span class="cs-fn">Date</span>();<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">today</span>.<span class="cs-fn">getDate</span>()); <span class="cs-comm">// Returns current day (1-31)</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">isValue</span> = <span class="cs-val">"2abc"</span>;<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-kw">typeof</span> <span class="cs-fn">Number</span>(<span class="cs-prop">isValue</span>)); <span class="cs-comm">// "number" (Value is NaN, but typeof is "number"!)</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-fn">Number</span>(<span class="cs-val">null</span>));            <span class="cs-comm">// 0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 15. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">15</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -1409,6 +1569,12 @@
                         <tr><td><code>Temporal Dead Zone</code></td><td>Scope</td><td>The period between entering block scope and declaring a <code>let</code>/<code>const</code> variable.</td></tr>
                         <tr><td><code>Primitive Types</code></td><td>Datatypes</td><td>7 types stored by value in stack memory (string, number, bigint, boolean, undefined, null, symbol).</td></tr>
                         <tr><td><code>Reference Types</code></td><td>Datatypes</td><td>Objects, arrays, and functions stored in heap memory (accessed by reference pointer).</td></tr>
+                        <tr><td><code>Object Wrapper</code></td><td>Datatypes</td><td>Heap object instance (<code>new Number</code>, <code>new Boolean</code>) wrapping a raw primitive.</td></tr>
+                        <tr><td><code>Autoboxing</code></td><td>Engine</td><td>Automatic transient wrapping of primitives into objects to execute prototype methods.</td></tr>
+                        <tr><td><code>Bracket Notation</code></td><td>Objects</td><td>Accessing object keys via brackets <code>['prop']</code> for spaces, hyphens, and dynamic keys.</td></tr>
+                        <tr><td><code>Dot Notation</code></td><td>Objects</td><td>Accessing object keys via dot <code>.prop</code> for standard alphanumeric identifiers.</td></tr>
+                        <tr><td><code>Symbol</code></td><td>Datatypes</td><td>Guaranteed unique, immutable primitive used for collision-free object keys.</td></tr>
+                        <tr><td><code>NaN</code></td><td>Datatypes</td><td>Not-a-Number: Special numeric failure value whose <code>typeof</code> is <code>"number"</code>.</td></tr>
                         <tr><td><code>Strict Equality</code></td><td>Operators</td><td><code>===</code> operator evaluating both value and data type without coercion.</td></tr>
                         <tr><td><code>Loose Equality</code></td><td>Operators</td><td><code>==</code> operator evaluating values after implicit type coercion.</td></tr>
                         <tr><td><code>Compound Assignment</code></td><td>Operators</td><td>Shorthand operator updating and assigning a variable in one step (<code>+=</code>, <code>/=</code>).</td></tr>

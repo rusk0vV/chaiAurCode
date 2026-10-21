@@ -29,7 +29,9 @@ TABLE OF CONTENTS
  10. Part 1: Data Types & The var vs let vs const Deep Dive
  11. Part 1: Operations, Expressions & Comparisons (operations.js)
  12. Part 1: Assignment, Logical Operators & Precedence (assignment.js, logical.js, operatorprecedence.js)
- 13. Quick Reference Glossary of Terms
+ 13. Part 2: Primitives vs Object Wrappers & Autoboxing (primitives.js)
+ 14. Part 2: Non-Primitives, Object Access & Type Coercion (nonPrimitives.js)
+ 15. Quick Reference Glossary of Terms
 ================================================================================
 
 
@@ -671,7 +673,129 @@ This module covers the core building blocks from:
 
 
 ================================================================================
-13. QUICK REFERENCE GLOSSARY OF TERMS
+13. PART 2: PRIMITIVES VS OBJECT WRAPPERS & AUTOBOXING (primitives.js)
+================================================================================
+
+In JavaScript, there is a fundamental distinction between raw primitive values
+and their object wrapper counterparts:
+
+1. PRIMITIVE LITERALS VS OBJECT WRAPPERS:
+   - Literal declaration (Standard & Recommended):
+     let balance = 120;
+     console.log(typeof balance); // "number"
+
+   - Object Wrapper constructor (NOT recommended):
+     let anotherBalance = new Number(120);
+     console.log(typeof anotherBalance); // "object"!
+
+   A. Why 'balance === anotherBalance' is FALSE:
+      - 'balance' is a raw primitive number stored in stack memory.
+      - 'anotherBalance' is an instance of the Number object stored in the heap.
+      - Because strict equality (===) compares both type and memory identity,
+        a primitive number will never equal an object wrapper!
+
+   B. The '.valueOf()' Method:
+      - Extracts the raw primitive value from an object wrapper:
+      anotherBalance.valueOf(); // 120 (returns raw primitive number)
+
+   C. The 'new Boolean()' Trap:
+      let isActive = true;
+      let isReallyActive = new Boolean(false); // Dangerous!
+      // In JavaScript, ANY object (even an empty object or new Boolean(false))
+      // is TRUTHY when evaluated in an if-statement!
+      if (isReallyActive) {
+          // This code RUNS even though it wrapped 'false'!
+      }
+
+2. AUTOBOXING (HOW PRIMITIVES CALL METHODS):
+   - If primitives are not objects, why can we write:
+     "hello".toUpperCase();
+     (120.456).toFixed(2);
+   - Behind the scenes, the V8 engine performs AUTOBOXING:
+     1. It temporarily wraps the primitive in a transient Object wrapper (new String / new Number).
+     2. It executes the prototype method.
+     3. It immediately discards and garbage-collects the temporary wrapper object.
+   - Result: You get the performance and memory efficiency of raw primitives with
+     the convenience of object methods!
+
+3. TEMPLATE LITERALS VS STRING CONCATENATION:
+   - Old style (plus operator):
+     let oldGreet = myString + " " + myName; // Error-prone, noisy with spaces
+
+   - Modern ES6 Template Literals (Backticks `...`):
+     let newGreet = `${myString} ${myName}`;
+     * Supports embedded expressions: `${2 + 2}` -> `4`
+     * Supports multiline strings without `\n` escape sequences.
+
+4. SYMBOLS (UNIQUE IDENTIFIERS):
+   - let sm1 = Symbol("Ali");
+   - let sm2 = Symbol("Ali");
+   - console.log(sm1 === sm2); // false!
+   - Every Symbol is guaranteed to be globally unique and immutable, commonly used
+     as non-colliding object keys or library metadata.
+
+
+================================================================================
+14. PART 2: NON-PRIMITIVES, OBJECT ACCESS & TYPE COERCION (nonPrimitives.js)
+================================================================================
+
+1. OBJECTS & PROPERTY ACCESS:
+   const username = {
+       "first name": "Hitesh",
+       isLoggedin: true
+   };
+
+   A. Dot Notation:
+      - username.isLoggedin (Standard, clean access)
+      - CANNOT be used when the key contains spaces, dashes, starts with numbers,
+        or is stored in a dynamic variable:
+        // username.first name -> SyntaxError!
+
+   B. Bracket Notation:
+      - username["first name"] (Mandatory for keys with spaces/special characters)
+      - Also required when the key name is evaluated dynamically from a variable:
+        let key = "first name";
+        console.log(username[key]); // "Hitesh"
+
+   C. Adding / Modifying Properties on 'const' Objects:
+      username.lastname = "Choudhary";
+      // Works perfectly! 'const' prevents reassignment of the variable reference,
+      // but does NOT freeze internal object property mutations.
+
+2. BUILT-IN REFERENCE OBJECTS:
+   - Date Object:
+     let today = new Date();
+     console.log(today.getDate()); // Returns current calendar day of month (1-31)
+   
+   - Arrays:
+     let anotherUser = ["Ali", true];
+     console.log(anotherUser[0]); // "Ali" (0-indexed heterogeneous collection)
+
+3. EXPLICIT TYPE CONVERSION & COERCION TRAPS:
+   JavaScript provides constructor functions (without 'new') for explicit type casting:
+
+   A. Number("2abc") -> NaN:
+      let isValue = "2abc";
+      let converted = Number(isValue); // NaN (Not a Number)
+      console.log(typeof converted);   // "number"
+      * FAMOUS INTERVIEW QUESTION: What is typeof NaN?
+        Answer: "number"! In JavaScript, NaN is a numeric value representing an
+        unrepresentable or failed mathematical operation.
+
+   B. Conversion Matrix for Number():
+      Input Value          | Number(Input) Result
+      ---------------------+---------------------
+      "123"                | 123
+      "2abc"               | NaN
+      null                 | 0
+      undefined            | NaN
+      true                 | 1
+      false                | 0
+      "" (empty string)    | 0
+
+
+================================================================================
+15. QUICK REFERENCE GLOSSARY OF TERMS
 ================================================================================
 
 Term             | Meaning / Definition
@@ -696,8 +820,12 @@ Hoisting         | Moving variable/function declarations to memory in creation p
 Temporal Dead Zon| Zone between block start and 'let/const' declaration (TDZ)
 Primitive Types  | 7 basic types (string, number, bigint, boolean, undefined, null, symbol)
 Reference Types  | Objects, arrays, functions stored in heap memory (call by reference)
-Block Scope      | Visibility limited to the surrounding { } brackets (let and const)
-Function Scope   | Visibility limited to the enclosing function (var)
+Object Wrapper   | Heap object instance (new Number, new Boolean) wrapping a primitive
+Autoboxing       | Automatic transient wrapping of primitives to execute prototype methods
+Bracket Notation | Accessing object keys via brackets ['prop'] for spaces and dynamic keys
+Dot Notation     | Accessing object keys via dot .prop
+Symbol           | Guaranteed unique and immutable primitive used for safe object keys
+NaN              | Not-a-Number: Special numeric value representing a failed calculation
 Strict Equality  | '===' operator checking both value and data type without coercion
 Loose Equality   | '==' operator checking values with implicit type coercion
 Compound Assign  | Shorthand updating and assigning a variable in one step (+=, /=)
