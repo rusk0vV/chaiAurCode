@@ -579,7 +579,8 @@
                 <a href="#printing-methods">9. Printing Methods (part1)</a>
                 <a href="#data-types-vars">10. Datatypes &amp; var/let/const</a>
                 <a href="#operations-expressions">11. Operations &amp; Comparisons</a>
-                <a href="#glossary">12. Technical Glossary</a>
+                <a href="#assignment-logical-precedence">12. Assignment, Logical &amp; Precedence</a>
+                <a href="#glossary">13. Technical Glossary</a>
             </div>
         </header>
 
@@ -1266,10 +1267,121 @@
             </div>
         </section>
 
-        <!-- 12. Technical Glossary -->
-        <section id="glossary">
+        <!-- 12. Assignment, Logical Operators & Precedence -->
+        <section id="assignment-logical-precedence">
             <div class="section-header">
                 <div class="section-number">12</div>
+                <h2 class="section-title">Part 1: Assignment, Logical Operators &amp; Precedence</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">assignment.js • logical.js • operatorprecedence.js</span>
+                    <span class="tag-badge badge-oxide">Logic &amp; Math</span>
+                </div>
+                <p class="desc-text">This section breaks down variable mutation, boolean control gates, short-circuiting, and operator hierarchy in JavaScript:</p>
+
+                <!-- 1. Assignment Operators -->
+                <div class="prop-title" style="margin-top: 10px; color: var(--chai-gold);">1. Compound Assignment Operators (assignment.js)</div>
+                <p class="desc-text">Shorthand operators that perform an operation and update the variable in a single instruction:</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Shorthand</th>
+                                <th>Equivalent Expansion</th>
+                                <th>Example Execution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>=</code></td><td><code>x = 10</code></td><td>Direct assignment</td><td><code>num1 = 10;</code> (10)</td></tr>
+                            <tr><td><code>+=</code></td><td><code>x += 5</code></td><td><code>x = x + 5</code></td><td><code>num1 = 10 + 5;</code> (15)</td></tr>
+                            <tr><td><code>-=</code></td><td><code>x -= 3</code></td><td><code>x = x - 3</code></td><td><code>num1 = 15 - 3;</code> (12)</td></tr>
+                            <tr><td><code>*=</code></td><td><code>x *= 2</code></td><td><code>x = x * 2</code></td><td><code>num1 = 12 * 2;</code> (24)</td></tr>
+                            <tr><td><code>/=</code></td><td><code>x /= 5</code></td><td><code>x = x / 5</code></td><td><code>num1 = 15 / 5;</code> (<span style="color: var(--accent-emerald); font-weight: 700;">3</span>)</td></tr>
+                            <tr><td><code>%=</code></td><td><code>x %= 2</code></td><td><code>x = x % 2</code></td><td><code>num1 = 3 % 2;</code> (1)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 2. Logical Operators -->
+                <div class="prop-title" style="margin-top: 26px; color: var(--accent-sky);">2. Logical Operators &amp; Short-Circuit Gates (logical.js)</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Name</th>
+                                <th>Rule</th>
+                                <th>Use Case / Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>&amp;&amp;</code></td>
+                                <td>Logical AND</td>
+                                <td>Returns <code>true</code> <strong>only if both</strong> operands are true. Short-circuits on first falsy value.</td>
+                                <td><code>isLoggedin &amp;&amp; ispaid</code> (Auth &amp; subscription paywall gate)</td>
+                            </tr>
+                            <tr>
+                                <td><code>||</code></td>
+                                <td>Logical OR</td>
+                                <td>Returns <code>true</code> if <strong>at least one</strong> operand is true. Short-circuits on first truthy value.</td>
+                                <td><code>isEmailuser || isGoogleuser</code> (Multi-provider login gate)</td>
+                            </tr>
+                            <tr>
+                                <td><code>!</code></td>
+                                <td>Logical NOT</td>
+                                <td>Inverts truthiness (<code>!true ➔ false</code>).</td>
+                                <td><code>!isLoggedin</code> (Redirect unauthenticated guest)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-box" style="margin-top: 16px; border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">The 8 Falsy Values in JavaScript</div>
+                    <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 8px;">In JavaScript, every value is considered <strong>truthy</strong> in a boolean context EXCEPT these 8 specific falsy values:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">false</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">0</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">-0</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">0n (BigInt)</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">"" (empty string)</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">null</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">undefined</code>
+                        <code style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 4px 8px; border-radius: 6px;">NaN</code>
+                    </div>
+                </div>
+
+                <!-- 3. Operator Precedence -->
+                <div class="prop-title" style="margin-top: 26px; color: var(--accent-violet);">3. Operator Precedence &amp; Parentheses (operatorprecedence.js)</div>
+                <div class="prop-box">
+                    <div class="prop-title">Evaluation Breakdown of: <code>let score = ((2 * (3 + 2)) - 1);</code></div>
+                    <div class="prop-item"><span class="p-name">Step 1: Inner Grouping:</span> <code>(3 + 2)</code> evaluates first ➔ <code>5</code>.</div>
+                    <div class="prop-item"><span class="p-name">Step 2: Outer Multiplication:</span> <code>(2 * 5)</code> evaluates next ➔ <code>10</code>.</div>
+                    <div class="prop-item"><span class="p-name">Step 3: Subtraction &amp; Assignment:</span> <code>(10 - 1)</code> evaluates ➔ <span style="color: var(--accent-emerald); font-weight: 700;">9</span>, then stored in <code>score</code>.</div>
+                    <div class="prop-item"><span class="p-name">Production Golden Rule:</span> Never rely on teammates memorizing all 18 levels of operator precedence. Always use explicit grouping parentheses <code>( )</code> to make logic crystal clear!</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part1/assignment.js, logical.js, and operatorprecedence.js</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">num1</span> = <span class="cs-val">10</span>;<br>
+                    <span class="cs-prop">num1</span> = <span class="cs-prop">num1</span> + <span class="cs-val">5</span>; <span class="cs-comm">// 15</span><br>
+                    <span class="cs-prop">num1</span> /= <span class="cs-val">5</span>;          <span class="cs-comm">// 3</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">isLoggedin</span> = <span class="cs-val">true</span>, <span class="cs-prop">ispaid</span> = <span class="cs-val">true</span>;<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">isLoggedin</span> &amp;&amp; <span class="cs-prop">ispaid</span>); <span class="cs-comm">// true</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">score</span> = ((<span class="cs-val">2</span> * (<span class="cs-val">3</span> + <span class="cs-val">2</span>)) - <span class="cs-val">1</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">score</span>); <span class="cs-comm">// 9</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">13</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -1299,6 +1411,9 @@
                         <tr><td><code>Reference Types</code></td><td>Datatypes</td><td>Objects, arrays, and functions stored in heap memory (accessed by reference pointer).</td></tr>
                         <tr><td><code>Strict Equality</code></td><td>Operators</td><td><code>===</code> operator evaluating both value and data type without coercion.</td></tr>
                         <tr><td><code>Loose Equality</code></td><td>Operators</td><td><code>==</code> operator evaluating values after implicit type coercion.</td></tr>
+                        <tr><td><code>Compound Assignment</code></td><td>Operators</td><td>Shorthand operator updating and assigning a variable in one step (<code>+=</code>, <code>/=</code>).</td></tr>
+                        <tr><td><code>Logical AND / OR</code></td><td>Operators</td><td>Boolean control operators (<code>&amp;&amp;</code>, <code>||</code>) with short-circuit evaluation.</td></tr>
+                        <tr><td><code>Operator Precedence</code></td><td>Operators</td><td>Parsing and execution hierarchy (parentheses <code>( )</code> have highest priority 18).</td></tr>
                         <tr><td><code>Block Scope</code></td><td>Scope</td><td>Visibility confined strictly within <code>{ }</code> braces (applied to <code>let</code> and <code>const</code>).</td></tr>
                         <tr><td><code>Function Scope</code></td><td>Scope</td><td>Visibility confined only to the enclosing function body (applied to <code>var</code>).</td></tr>
                     </tbody>

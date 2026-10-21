@@ -28,7 +28,8 @@ TABLE OF CONTENTS
  9. Part 1: Printing Methods in JS (console.log, process.stdout.write, console.table)
  10. Part 1: Data Types & The var vs let vs const Deep Dive
  11. Part 1: Operations, Expressions & Comparisons (operations.js)
- 12. Quick Reference Glossary of Terms
+ 12. Part 1: Assignment, Logical Operators & Precedence (assignment.js, logical.js, operatorprecedence.js)
+ 13. Quick Reference Glossary of Terms
 ================================================================================
 
 
@@ -574,7 +575,103 @@ and evaluate boolean logic:
 
 
 ================================================================================
-12. QUICK REFERENCE GLOSSARY OF TERMS
+12. PART 1: ASSIGNMENT, LOGICAL OPERATORS & PRECEDENCE
+================================================================================
+
+This module covers the core building blocks from:
+- assignment.js
+- logical.js
+- operatorprecedence.js
+
+
+1. ASSIGNMENT OPERATORS (assignment.js):
+   Assignment operators store and update values in memory variables.
+
+   Operator | Name                  | Equivalent Expansion   | Example
+   ---------+-----------------------+------------------------+--------------------
+   =        | Simple Assignment     | x = y                  | let num1 = 10;
+   +=       | Addition Assignment   | x = x + y              | num1 += 5; (15)
+   -=       | Subtraction Assign    | x = x - y              | num1 -= 2; (13)
+   *=       | Multiplication Assign | x = x * y              | num1 *= 2; (26)
+   /=       | Division Assignment   | x = x / y              | num1 /= 5; (3)
+   %=       | Modulo Assignment     | x = x % y              | num1 %= 2; (1)
+   **=      | Exponentiation Assign | x = x ** y             | num1 **= 3; (8)
+
+   Walkthrough of 'assignment.js':
+   let score = 10 + 11; // score = 21
+   let num1 = 10;
+   num1 = num1 + 5;     // num1 becomes 15
+   num1 /= 5;           // Equivalent to: num1 = num1 / 5 (15 / 5 = 3)
+   console.log(num1);   // Outputs: 3
+
+
+2. LOGICAL OPERATORS (logical.js):
+   Used to combine or invert boolean evaluations in control flow and decision gates:
+
+   Operator | Name        | Behavior
+   ---------+-------------+-------------------------------------------------------------
+   &&       | Logical AND | Returns true ONLY if BOTH left and right operands are true.
+   ||       | Logical OR  | Returns true if AT LEAST ONE operand is true.
+   !        | Logical NOT | Inverts truthiness: !true -> false, !false -> true.
+
+   A. Logical AND (&&) - Authentication & Permission Gate:
+      let isLoggedin = true;
+      let ispaid = true;
+      console.log(isLoggedin && ispaid); // true
+      // If either is false, access is denied (evaluates to false).
+
+   B. Logical OR (||) - Multi-Provider Sign-In Gate:
+      let isEmailuser = true;
+      let isGoogleuser = false;
+      console.log(isEmailuser || isGoogleuser); // true
+      // As long as the user logs in via at least ONE provider, entry is allowed.
+
+   C. Short-Circuit Evaluation:
+      In JavaScript, logical operators stop evaluating as soon as the result is determined:
+      - '&&' short-circuits on the FIRST falsy value (stops immediately).
+      - '||' short-circuits on the FIRST truthy value (stops immediately).
+
+   D. The 8 Falsy Values in JavaScript:
+      Every value in JS is "truthy" EXCEPT these 8 falsy values:
+      1. false
+      2. 0
+      3. -0
+      4. 0n (BigInt zero)
+      5. "" (empty string)
+      6. null
+      7. undefined
+      8. NaN (Not a Number)
+
+
+3. OPERATOR PRECEDENCE & GROUPING (operatorprecedence.js):
+   Operator precedence determines the order in which operators are parsed and evaluated.
+
+   Common Precedence Order (Higher runs first):
+   Precedence | Operator Category | Operators
+   -----------+-------------------+----------------------------
+   18 (Highest| Grouping          | ( ... )
+   13         | Multiplication/Div| * , / , %
+   12         | Addition/Subtract | + , -
+   9          | Relational        | < , <= , > , >=
+   8          | Equality          | == , != , === , !==
+   4          | Logical AND       | &&
+   3          | Logical OR        | ||
+   2 (Lowest) | Assignment        | = , += , -= , /= , *=
+
+   Walkthrough of 'operatorprecedence.js':
+   let score = ((2 * (3 + 2)) - 1);
+   Step 1: Inner parentheses evaluated first: (3 + 2) -> 5
+   Step 2: Multiplication inside next parentheses: (2 * 5) -> 10
+   Step 3: Subtraction evaluated: (10 - 1) -> 9
+   console.log(score); // Outputs: 9
+
+   PROFESSIONAL CLEAN CODE RULE:
+   Do NOT rely on teammates memorizing the 18 levels of operator precedence.
+   Always use explicit parentheses '( )' to make calculation intent completely clear.
+
+
+================================================================================
+13. QUICK REFERENCE GLOSSARY OF TERMS
 ================================================================================
 
 Term             | Meaning / Definition
@@ -603,6 +700,11 @@ Block Scope      | Visibility limited to the surrounding { } brackets (let and c
 Function Scope   | Visibility limited to the enclosing function (var)
 Strict Equality  | '===' operator checking both value and data type without coercion
 Loose Equality   | '==' operator checking values with implicit type coercion
+Compound Assign  | Shorthand updating and assigning a variable in one step (+=, /=)
+Logical AND (&&) | Evaluates true only if all operands are truthy; short-circuits on falsy
+Logical OR (||)  | Evaluates true if any operand is truthy; short-circuits on truthy
+Short-Circuiting | Skipping remaining operand evaluations once the boolean result is settled
+Precedence       | Order in which operators are evaluated (parentheses have highest precedence)
 Event Loop       | Coordinator shifting callbacks from queues onto the Call Stack
 Microtasks       | High-priority queue (Promises, process.nextTick)
 Macrotasks       | Standard queue (setTimeout, setInterval, I/O callbacks)
