@@ -27,7 +27,8 @@ TABLE OF CONTENTS
  8. Useful Node.js CLI Flags & V8 Inspection Commands
  9. Part 1: Printing Methods in JS (console.log, process.stdout.write, console.table)
  10. Part 1: Data Types & The var vs let vs const Deep Dive
- 11. Quick Reference Glossary of Terms
+ 11. Part 1: Operations, Expressions & Comparisons (operations.js)
+ 12. Quick Reference Glossary of Terms
 ================================================================================
 
 
@@ -499,7 +500,81 @@ MODERN BEST PRACTICE GUIDELINES:
 
 
 ================================================================================
-11. QUICK REFERENCE GLOSSARY OF TERMS
+11. PART 1: OPERATIONS, EXPRESSIONS & COMPARISONS (operations.js)
+================================================================================
+
+JavaScript provides a complete set of operators to manipulate numbers, strings,
+and evaluate boolean logic:
+
+1. ARITHMETIC OPERATORS:
+   Operator | Name           | Example     | Result
+   ---------+----------------+-------------+--------
+   +        | Addition       | 4 + 5       | 9
+   -        | Subtraction    | 9 - 3       | 6
+   *        | Multiplication | 3 * 5       | 15
+   /        | Division       | 8 / 2       | 4
+   %        | Modulo/Remainder| 9 % 2      | 1  (9 divided by 2 gives remainder 1)
+   **       | Exponentiation | 2 ** 3      | 8  (2 to the power of 3: 2 * 2 * 2)
+
+2. INCREMENT (++) & DECREMENT (--) OPERATORS:
+   - Modifies the variable directly by adding or subtracting 1.
+   
+   A. Postfix (x++ / x--):
+      - Evaluates the CURRENT value first, then increments/decrements.
+      let a = 5;
+      let b = a++; // b = 5, then a becomes 6!
+
+   B. Prefix (++x / --x):
+      - Increments/decrements FIRST, then evaluates the updated value.
+      let x = 5;
+      let y = ++x; // x becomes 6, then y = 6!
+
+   In operations.js:
+   let myscore = 110;
+   myscore++; // myscore is now 111
+   let credits = 56;
+   credits--; // credits is now 55
+
+3. COMPARISON OPERATORS:
+   Used in decision-making and conditionals. Always returns a Boolean (true or false).
+
+   Operator | Meaning                  | Example (num1=3, num2=3, num3=6) | Result
+   ---------+--------------------------+-----------------------------------+--------
+   ==       | Loose Equality (coercion)| num1 == num2  (3 == 3)            | true
+   !=       | Loose Inequality         | num1 != num3  (3 != 6)            | true
+   >        | Greater Than             | num1 > num3   (3 > 6)             | false
+   <        | Less Than                | num1 < num3   (3 < 6)             | true
+   >=       | Greater Than or Equal To | num1 >= num2  (3 >= 3)            | true
+   <=       | Less Than or Equal To    | num1 <= num3  (3 <= 6)            | true
+
+   CRITICAL INTERVIEW CONCEPT: == (Loose) vs === (Strict)
+   - '==' (Loose Equality): Compares values ONLY after performing implicit type coercion.
+     console.log("3" == 3);      // true! (String "3" is converted to Number 3)
+     console.log(null == undefined); // true!
+     console.log(false == 0);    // true!
+
+   - '===' (Strict Equality): Compares BOTH value AND data type without coercion.
+     console.log("3" === 3);     // false! (String !== Number)
+     console.log(null === undefined); // false!
+     console.log(false === 0);   // false!
+
+   * GOLDEN RULE: Always prefer '===' and '!==' to avoid subtle type coercion bugs!
+
+4. TYPE COERCION & OPERATOR PRECEDENCE GOTCHAS:
+   In JavaScript, the '+' operator serves double duty for both numeric addition
+   AND string concatenation. When strings and numbers are mixed:
+   
+   console.log("1" + 2);       // "12"   (number 2 coerced to string)
+   console.log(1 + "2");       // "12"   (number 1 coerced to string)
+   console.log(1 + 2 + "3");   // "33"   (1 + 2 executes first -> 3 + "3" -> "33")
+   console.log("1" + 2 + 3);   // "123"  ("1" + 2 -> "12" + 3 -> "123")
+   
+   Rule of Thumb: Write explicit conversion methods (e.g. Number(str) or String(num))
+   or use parentheses ( ) to make calculation intent completely unambiguous.
+
+
+================================================================================
+12. QUICK REFERENCE GLOSSARY OF TERMS
 ================================================================================
 
 Term             | Meaning / Definition
@@ -526,6 +601,8 @@ Primitive Types  | 7 basic types (string, number, bigint, boolean, undefined, nu
 Reference Types  | Objects, arrays, functions stored in heap memory (call by reference)
 Block Scope      | Visibility limited to the surrounding { } brackets (let and const)
 Function Scope   | Visibility limited to the enclosing function (var)
+Strict Equality  | '===' operator checking both value and data type without coercion
+Loose Equality   | '==' operator checking values with implicit type coercion
 Event Loop       | Coordinator shifting callbacks from queues onto the Call Stack
 Microtasks       | High-priority queue (Promises, process.nextTick)
 Macrotasks       | Standard queue (setTimeout, setInterval, I/O callbacks)

@@ -578,7 +578,8 @@
                 <a href="#v4-cli">8. Terminal &amp; V8 Flags</a>
                 <a href="#printing-methods">9. Printing Methods (part1)</a>
                 <a href="#data-types-vars">10. Datatypes &amp; var/let/const</a>
-                <a href="#glossary">11. Technical Glossary</a>
+                <a href="#operations-expressions">11. Operations &amp; Comparisons</a>
+                <a href="#glossary">12. Technical Glossary</a>
             </div>
         </header>
 
@@ -1165,10 +1166,110 @@
             </div>
         </section>
 
-        <!-- 11. Technical Glossary -->
-        <section id="glossary">
+        <!-- 11. Operations & Expressions -->
+        <section id="operations-expressions">
             <div class="section-header">
                 <div class="section-number">11</div>
+                <h2 class="section-title">Part 1: Operations, Expressions &amp; Comparisons (operations.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Arithmetic • Postfix vs Prefix • Loose (==) vs Strict (===)</span>
+                    <span class="tag-badge badge-jit">Operators</span>
+                </div>
+                <p class="desc-text">JavaScript provides a complete set of mathematical, increment/decrement, and logical comparison operators for evaluating expressions and driving program logic:</p>
+
+                <!-- Arithmetic Operators Table -->
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Name / Operation</th>
+                                <th>Expression Example</th>
+                                <th>Result / Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>+</code></td><td>Addition</td><td><code>4 + 5</code></td><td><code>9</code></td></tr>
+                            <tr><td><code>-</code></td><td>Subtraction</td><td><code>9 - 3</code></td><td><code>6</code></td></tr>
+                            <tr><td><code>*</code></td><td>Multiplication</td><td><code>3 * 5</code></td><td><code>15</code></td></tr>
+                            <tr><td><code>/</code></td><td>Division</td><td><code>8 / 2</code></td><td><code>4</code></td></tr>
+                            <tr><td><code>%</code></td><td>Modulo (Remainder)</td><td><code>9 % 2</code></td><td><code>1</code> (Remainder of 9 divided by 2)</td></tr>
+                            <tr><td><code>**</code></td><td>Exponentiation</td><td><code>2 ** 3</code></td><td><code>8</code> (2 raised to power of 3: 2 * 2 * 2)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Postfix vs Prefix Increment -->
+                <div class="prop-box" style="margin-top: 20px;">
+                    <div class="prop-title" style="color: var(--accent-sky);">Increment (++) &amp; Decrement (--) Mechanics</div>
+                    <div class="prop-item"><span class="p-name">Postfix (x++ / x--):</span> Evaluates and returns the <strong>current</strong> value first, then increments/decrements in memory.</div>
+                    <div class="prop-item"><span class="p-name">Prefix (++x / --x):</span> Increments/decrements in memory <strong>first</strong>, then evaluates and returns the updated value.</div>
+                </div>
+
+                <!-- Comparison & Equality Matrix -->
+                <div class="section-header" style="margin-top: 28px; margin-bottom: 12px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 1.3rem; color: var(--chai-gold);">Comparison Operators &amp; The Equality Traps</h3>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Description</th>
+                                <th>Example (num1=3, num2=3, num3=6)</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>==</code></td><td>Loose Equality (Type Coercion)</td><td><code>num1 == num2</code> (3 == 3)</td><td><span style="color: var(--accent-emerald); font-weight: 600;">true</span></td></tr>
+                            <tr><td><code>!=</code></td><td>Loose Inequality</td><td><code>num1 != num3</code> (3 != 6)</td><td><span style="color: var(--accent-emerald); font-weight: 600;">true</span></td></tr>
+                            <tr><td><code>&gt;</code></td><td>Greater Than</td><td><code>num1 &gt; num3</code> (3 &gt; 6)</td><td><span style="color: var(--accent-rose); font-weight: 600;">false</span></td></tr>
+                            <tr><td><code>&lt;</code></td><td>Less Than</td><td><code>num1 &lt; num3</code> (3 &lt; 6)</td><td><span style="color: var(--accent-emerald); font-weight: 600;">true</span></td></tr>
+                            <tr><td><code>&gt;=</code></td><td>Greater Than or Equal</td><td><code>num1 &gt;= num2</code> (3 &gt;= 3)</td><td><span style="color: var(--accent-emerald); font-weight: 600;">true</span></td></tr>
+                            <tr><td><code>&lt;=</code></td><td>Less Than or Equal</td><td><code>num1 &lt;= num3</code> (3 &lt;= 6)</td><td><span style="color: var(--accent-emerald); font-weight: 600;">true</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px; border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">Crucial Concept: == (Loose) vs === (Strict)</div>
+                    <div class="prop-item"><span class="p-name">== (Loose Equality):</span> Compares values only after performing implicit type conversion. <code>"3" == 3</code> is <code>true</code>! <code>false == 0</code> is <code>true</code>!</div>
+                    <div class="prop-item"><span class="p-name">=== (Strict Equality):</span> Compares <strong>both value AND data type</strong> without coercion. <code>"3" === 3</code> is <code>false</code>!</div>
+                    <div class="prop-item"><span class="p-name">Golden Rule:</span> Always use <code>===</code> and <code>!==</code> to avoid implicit coercion bugs in production code.</div>
+                </div>
+
+                <div class="prop-box" style="margin-top: 18px;">
+                    <div class="prop-title" style="color: var(--chai-gold);">Type Coercion with the '+' Operator</div>
+                    <div class="prop-item"><span class="p-name">console.log("1" + 2); // "12"</span> (Number coerced to string)</div>
+                    <div class="prop-item"><span class="p-name">console.log(1 + "2"); // "12"</span> (Number coerced to string)</div>
+                    <div class="prop-item"><span class="p-name">console.log(1 + 2 + "3"); // "33"</span> (1 + 2 evaluates first to 3, then 3 + "3" becomes "33")</div>
+                    <div class="prop-item"><span class="p-name">console.log("1" + 2 + 3); // "123"</span> ("1" + 2 becomes "12", then "12" + 3 becomes "123")</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Code from part1/operations.js</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">score</span> = <span class="cs-val">102</span>;<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">bonus</span> = <span class="cs-val">25</span>;<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">totalScore</span> = <span class="cs-prop">score</span> + <span class="cs-prop">bonus</span>; <span class="cs-comm">// 127</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">myscore</span> = <span class="cs-val">110</span>;<br>
+                    <span class="cs-prop">myscore</span>++; <span class="cs-comm">// 111</span><br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">num1</span> = <span class="cs-val">3</span>, <span class="cs-prop">num2</span> = <span class="cs-val">3</span>, <span class="cs-prop">num3</span> = <span class="cs-val">6</span>;<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">num1</span> == <span class="cs-prop">num2</span>); <span class="cs-comm">// true</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">num1</span> != <span class="cs-prop">num3</span>); <span class="cs-comm">// true</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">num1</span> &gt; <span class="cs-prop">num3</span>);  <span class="cs-comm">// false (3 &gt; 6 is false!)</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">num1</span> &lt; <span class="cs-prop">num3</span>);  <span class="cs-comm">// true (3 &lt; 6 is true)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">12</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -1196,6 +1297,8 @@
                         <tr><td><code>Temporal Dead Zone</code></td><td>Scope</td><td>The period between entering block scope and declaring a <code>let</code>/<code>const</code> variable.</td></tr>
                         <tr><td><code>Primitive Types</code></td><td>Datatypes</td><td>7 types stored by value in stack memory (string, number, bigint, boolean, undefined, null, symbol).</td></tr>
                         <tr><td><code>Reference Types</code></td><td>Datatypes</td><td>Objects, arrays, and functions stored in heap memory (accessed by reference pointer).</td></tr>
+                        <tr><td><code>Strict Equality</code></td><td>Operators</td><td><code>===</code> operator evaluating both value and data type without coercion.</td></tr>
+                        <tr><td><code>Loose Equality</code></td><td>Operators</td><td><code>==</code> operator evaluating values after implicit type coercion.</td></tr>
                         <tr><td><code>Block Scope</code></td><td>Scope</td><td>Visibility confined strictly within <code>{ }</code> braces (applied to <code>let</code> and <code>const</code>).</td></tr>
                         <tr><td><code>Function Scope</code></td><td>Scope</td><td>Visibility confined only to the enclosing function body (applied to <code>var</code>).</td></tr>
                     </tbody>
