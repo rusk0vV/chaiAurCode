@@ -35,6 +35,11 @@
             padding: 0;
         }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             background-color: var(--bg-primary);
             background-image: 
@@ -51,6 +56,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* Header */
@@ -97,31 +103,98 @@
             line-height: 1.7;
         }
 
-        /* Quick Navigation */
+        /* Quick Navigation Panel */
+        .quick-nav-panel {
+            background: rgba(11, 15, 25, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 28px;
+            text-align: left;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .quick-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(55, 65, 81, 0.45);
+        }
+
+        .quick-nav-title {
+            font-family: var(--font-heading);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--chai-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-nav-count {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-sky);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 3px 10px;
+            border-radius: 9999px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
         .quick-nav {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
+            align-items: center;
             gap: 8px;
-            margin-top: 20px;
+            margin-top: 0;
+            text-align: left;
         }
 
         .quick-nav a {
             color: #94a3b8;
             text-decoration: none;
             font-size: 0.82rem;
-            padding: 6px 14px;
-            background: rgba(15, 23, 42, 0.8);
+            font-weight: 500;
+            padding: 6px 13px;
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .quick-nav a .nav-num {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--chai-gold);
+            background: rgba(245, 158, 11, 0.12);
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.25);
         }
 
         .quick-nav a:hover {
-            color: var(--chai-gold);
+            color: #ffffff;
             border-color: var(--chai-gold);
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(245, 158, 11, 0.12);
             transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+        }
+
+        .quick-nav a:hover .nav-num {
+            background: var(--chai-gold);
+            color: #030712;
+            border-color: var(--chai-gold);
         }
 
         /* Section Containers */
@@ -170,6 +243,10 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             margin-bottom: 24px;
             transition: border-color 0.25s ease, transform 0.2s ease;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .card:hover {
@@ -220,6 +297,10 @@
             border-radius: 12px;
             padding: 18px;
             margin-bottom: 18px;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .prop-title {
@@ -237,10 +318,11 @@
         .prop-item {
             color: #e2e8f0;
             font-size: 0.92rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            margin-bottom: 10px;
+            line-height: 1.65;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            display: block;
         }
 
         .prop-item:last-child {
@@ -251,7 +333,8 @@
             font-family: var(--font-mono);
             color: var(--chai-gold);
             font-weight: 600;
-            white-space: nowrap;
+            margin-right: 6px;
+            display: inline;
         }
 
         /* Code Snippet Display */
@@ -266,6 +349,8 @@
             color: #e2e8f0;
             overflow-x: auto;
             position: relative;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .cs-kw { color: #f43f5e; font-weight: 600; }
@@ -293,6 +378,9 @@
             padding: 18px;
             position: relative;
             transition: all 0.3s ease;
+            min-width: 0;
+            overflow: hidden;
+            word-break: break-word;
         }
 
         .pipe-step:hover {
@@ -383,6 +471,9 @@
             font-size: 0.86rem;
             line-height: 1.8;
             color: #e2e8f0;
+            overflow-x: auto;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .ast-node {
@@ -567,28 +658,35 @@
             <h1 class="main-title">JavaScript Foundations &amp; V8 Engine Architecture</h1>
             <p class="subtitle">An exhaustive, interactive visual guide covering the core mechanics of JavaScript, the Node.js runtime environment, and the step-by-step lifecycle of code execution from raw text to CPU silicon.</p>
             
-            <div class="quick-nav">
-                <a href="#what-is-js">1. What is JavaScript?</a>
-                <a href="#what-is-node">2. What is Node.js?</a>
-                <a href="#runtime-comparison">3. Browser vs Node.js</a>
-                <a href="#execution-pipeline">4. Engine Execution Pipeline</a>
-                <a href="#ast-breakdown">5. Scanner &amp; AST Analysis</a>
-                <a href="#memory-stack">6. Memory Heap &amp; Call Stack</a>
-                <a href="#event-loop">7. Concurrency &amp; Event Loop</a>
-                <a href="#v4-cli">8. Terminal &amp; V8 Flags</a>
-                <a href="#printing-methods">9. Printing Methods (part1)</a>
-                <a href="#data-types-vars">10. Datatypes &amp; var/let/const</a>
-                <a href="#operations-expressions">11. Operations &amp; Comparisons</a>
-                <a href="#assignment-logical-precedence">12. Assignment, Logical &amp; Precedence</a>
-                <a href="#primitives-wrappers">13. Primitives &amp; Wrappers (part2)</a>
-                <a href="#objects-coercion">14. Objects &amp; Coercion (part2)</a>
-                <a href="#conditionals-flow">15. Conditionals &amp; Flow (part3)</a>
-                <a href="#arrays-memory">16. Arrays &amp; Memory (part4)</a>
-                <a href="#loops-iteration">17. Deep Dive: For Loops (part4)</a>
-                <a href="#user-input">18. User Input (Browser vs Node.js)</a>
-                <a href="#functions-closures">19. Functions &amp; Closures (part5)</a>
-                <a href="#prototypes-oop">20. Prototypes &amp; OOP (part6)</a>
-                <a href="#glossary">21. Technical Glossary</a>
+            <!-- Quick Navigation Panel -->
+            <div class="quick-nav-panel">
+                <div class="quick-nav-header">
+                    <span class="quick-nav-title">⚡ Section Index &amp; Quick Jump</span>
+                    <span class="quick-nav-count">21 Topics</span>
+                </div>
+                <div class="quick-nav">
+                    <a href="#what-is-js"><span class="nav-num">01</span> What is JavaScript?</a>
+                    <a href="#what-is-node"><span class="nav-num">02</span> What is Node.js?</a>
+                    <a href="#runtime-comparison"><span class="nav-num">03</span> Browser vs Node.js</a>
+                    <a href="#execution-pipeline"><span class="nav-num">04</span> Engine Execution Pipeline</a>
+                    <a href="#ast-breakdown"><span class="nav-num">05</span> Scanner &amp; AST Analysis</a>
+                    <a href="#memory-stack"><span class="nav-num">06</span> Memory Heap &amp; Call Stack</a>
+                    <a href="#event-loop"><span class="nav-num">07</span> Concurrency &amp; Event Loop</a>
+                    <a href="#v4-cli"><span class="nav-num">08</span> Terminal &amp; V8 Flags</a>
+                    <a href="#printing-methods"><span class="nav-num">09</span> Printing Methods (part1)</a>
+                    <a href="#data-types-vars"><span class="nav-num">10</span> Datatypes &amp; var/let/const</a>
+                    <a href="#operations-expressions"><span class="nav-num">11</span> Operations &amp; Comparisons</a>
+                    <a href="#assignment-logical-precedence"><span class="nav-num">12</span> Assignment, Logical &amp; Precedence</a>
+                    <a href="#primitives-wrappers"><span class="nav-num">13</span> Primitives &amp; Wrappers (part2)</a>
+                    <a href="#objects-coercion"><span class="nav-num">14</span> Objects &amp; Coercion (part2)</a>
+                    <a href="#conditionals-flow"><span class="nav-num">15</span> Conditionals &amp; Flow (part3)</a>
+                    <a href="#arrays-memory"><span class="nav-num">16</span> Arrays &amp; Memory (part4)</a>
+                    <a href="#loops-iteration"><span class="nav-num">17</span> Deep Dive: For Loops (part4)</a>
+                    <a href="#user-input"><span class="nav-num">18</span> User Input (Browser vs Node.js)</a>
+                    <a href="#functions-closures"><span class="nav-num">19</span> Functions &amp; Closures (part5)</a>
+                    <a href="#prototypes-oop"><span class="nav-num">20</span> Prototypes &amp; OOP (part6)</a>
+                    <a href="#glossary"><span class="nav-num">21</span> Technical Glossary</a>
+                </div>
             </div>
         </header>
 
