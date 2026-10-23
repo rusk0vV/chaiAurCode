@@ -40,6 +40,16 @@
             padding: 0;
         }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        img, video, iframe, canvas, svg {
+            max-width: 100%;
+            height: auto;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-primary);
@@ -55,6 +65,7 @@
         .container {
             max-width: 1040px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* Header */
@@ -98,35 +109,104 @@
             margin: 0 auto;
         }
 
-        /* Nav chips */
+        /* Quick Navigation Panel */
+        .quick-nav-panel {
+            background: rgba(11, 15, 25, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 28px;
+            text-align: left;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .quick-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .quick-nav-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent-chai);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-nav-count {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            padding: 3px 10px;
+            border-radius: 9999px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+        }
+
         .quick-nav {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
             gap: 8px;
-            margin-top: 25px;
+            margin-top: 0;
+            text-align: left;
         }
 
         .quick-nav a {
-            color: var(--text-muted);
+            color: #94a3b8;
             text-decoration: none;
-            background: var(--bg-secondary);
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid var(--border-color);
-            padding: 6px 12px;
+            padding: 6px 13px;
             border-radius: 8px;
             font-size: 0.82rem;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .quick-nav a .nav-num {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent-chai);
+            background: rgba(245, 158, 11, 0.12);
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.25);
         }
 
         .quick-nav a:hover {
             color: #ffffff;
-            border-color: var(--accent-indigo);
-            background: rgba(99, 102, 241, 0.15);
-            transform: translateY(-1px);
+            border-color: var(--accent-chai);
+            background: rgba(245, 158, 11, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+        }
+
+        .quick-nav a:hover .nav-num {
+            background: var(--accent-chai);
+            color: #030712;
+            border-color: var(--accent-chai);
         }
 
         /* Section Headings */
+        section {
+            scroll-margin-top: 24px;
+        }
+
         .section-header {
             display: flex;
             align-items: center;
@@ -163,6 +243,10 @@
             padding: 24px;
             margin-bottom: 22px;
             transition: all 0.25s ease;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .card:hover {
@@ -230,10 +314,13 @@
             border: 1px solid rgba(168, 85, 247, 0.3);
         }
 
+        .card p,
         .desc-text {
             color: var(--text-main);
             margin-bottom: 14px;
             font-size: 0.98rem;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         /* Attribute List */
@@ -243,6 +330,10 @@
             padding: 12px 16px;
             border-radius: 0 8px 8px 0;
             margin: 14px 0;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .attr-title {
@@ -255,16 +346,25 @@
         }
 
         .attr-item {
+            display: block;
             margin-bottom: 8px;
             font-size: 0.92rem;
             color: var(--text-muted);
+            line-height: 1.6;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .attr-item:last-child {
             margin-bottom: 0;
         }
 
+        .attr-item .attr-name,
         .attr-name {
+            display: inline;
+            margin-right: 6px;
             font-family: 'Fira Code', monospace;
             color: var(--code-attr);
             font-weight: 600;
@@ -284,8 +384,11 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.88rem;
             overflow-x: auto;
+            max-width: 100%;
             margin-top: 12px;
             position: relative;
+            word-break: normal;
+            line-height: 1.6;
         }
 
         /* Syntax colors */
@@ -307,6 +410,13 @@
             border: 1px dashed rgba(99, 102, 241, 0.25);
             padding: 10px 14px;
             border-radius: 8px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .tip-card p {
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .use-case-icon {
@@ -455,6 +565,7 @@
             padding: 14px;
             display: inline-block;
             margin: 10px 0;
+            max-width: 100%;
         }
 
         figure.doc-figure figcaption {
@@ -467,10 +578,12 @@
         /* Reference Table */
         .table-wrapper {
             overflow-x: auto;
+            max-width: 100%;
             border-radius: 12px;
             border: 1px solid var(--border-color);
             background: var(--bg-card);
             margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
@@ -492,6 +605,7 @@
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 0.7px;
+            word-break: break-word;
         }
 
         td {
@@ -499,6 +613,7 @@
             border-bottom: 1px solid var(--border-color);
             color: var(--text-muted);
             vertical-align: middle;
+            word-break: break-word;
         }
 
         tr:last-child td {
@@ -589,19 +704,27 @@
             <h1 class="main-title">HTML Study Documentation</h1>
             <p class="subtitle">A visual, color-coded reference for every HTML tag, attribute, semantic layout element, media, forms, and developer shortcut studied.</p>
             
-            <div class="quick-nav">
-                <a href="#boilerplate">1. Boilerplate</a>
-                <a href="#headings">2. Headings (h1–h6)</a>
-                <a href="#semantics">3. Semantic HTML5</a>
-                <a href="#containers">4. Containers (div)</a>
-                <a href="#text">5. Text &amp; Formatting</a>
-                <a href="#lists">6. Lists (ul, li)</a>
-                <a href="#tables">7. Tables</a>
-                <a href="#forms">8. Forms &amp; Inputs</a>
-                <a href="#media">9. Media &amp; Video</a>
-                <a href="#links">10. Links &amp; Anchors</a>
-                <a href="#table-ref">11. Quick Reference</a>
-                <a href="#workflow">12. Shortcuts &amp; Git</a>
+            <div class="quick-nav-panel">
+                <div class="quick-nav-header">
+                    <div class="quick-nav-title">
+                        <span>⚡ Quick Jump to Section</span>
+                    </div>
+                    <div class="quick-nav-count">12 Sections</div>
+                </div>
+                <nav class="quick-nav">
+                    <a href="#boilerplate"><span class="nav-num">01</span> Boilerplate</a>
+                    <a href="#headings"><span class="nav-num">02</span> Headings (h1–h6)</a>
+                    <a href="#semantics"><span class="nav-num">03</span> Semantic HTML5</a>
+                    <a href="#containers"><span class="nav-num">04</span> Containers (div)</a>
+                    <a href="#text"><span class="nav-num">05</span> Text &amp; Formatting</a>
+                    <a href="#lists"><span class="nav-num">06</span> Lists (ul, li)</a>
+                    <a href="#tables"><span class="nav-num">07</span> Tables</a>
+                    <a href="#forms"><span class="nav-num">08</span> Forms &amp; Inputs</a>
+                    <a href="#media"><span class="nav-num">09</span> Media &amp; Video</a>
+                    <a href="#links"><span class="nav-num">10</span> Links &amp; Anchors</a>
+                    <a href="#table-ref"><span class="nav-num">11</span> Quick Reference</a>
+                    <a href="#workflow"><span class="nav-num">12</span> Shortcuts &amp; Git</a>
+                </nav>
             </div>
         </header>
 

@@ -41,6 +41,16 @@
             padding: 0;
         }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        img, video, iframe, canvas, svg {
+            max-width: 100%;
+            height: auto;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-primary);
@@ -56,6 +66,7 @@
         .container {
             max-width: 1040px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* Header */
@@ -99,35 +110,104 @@
             margin: 0 auto;
         }
 
-        /* Nav chips */
+        /* Quick Navigation Panel */
+        .quick-nav-panel {
+            background: rgba(11, 15, 25, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 28px;
+            text-align: left;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .quick-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .quick-nav-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-nav-count {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            padding: 3px 10px;
+            border-radius: 9999px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+        }
+
         .quick-nav {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
             gap: 8px;
-            margin-top: 25px;
+            margin-top: 0;
+            text-align: left;
         }
 
         .quick-nav a {
-            color: var(--text-muted);
+            color: #94a3b8;
             text-decoration: none;
-            background: var(--bg-secondary);
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid var(--border-color);
             padding: 6px 13px;
             border-radius: 8px;
             font-size: 0.82rem;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .quick-nav a .nav-num {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
         }
 
         .quick-nav a:hover {
             color: #ffffff;
             border-color: var(--accent-cyan);
             background: rgba(6, 182, 212, 0.15);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(6, 182, 212, 0.2);
+        }
+
+        .quick-nav a:hover .nav-num {
+            background: var(--accent-cyan);
+            color: #030712;
+            border-color: var(--accent-cyan);
         }
 
         /* Section Headings */
+        section {
+            scroll-margin-top: 24px;
+        }
+
         .section-header {
             display: flex;
             align-items: center;
@@ -164,6 +244,10 @@
             padding: 24px;
             margin-bottom: 22px;
             transition: all 0.25s ease;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .card:hover {
@@ -210,10 +294,13 @@
         .badge-attr { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
         .badge-elem { background: rgba(236, 72, 153, 0.15); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3); }
 
+        .card p,
         .desc-text {
             color: var(--text-main);
             margin-bottom: 14px;
             font-size: 0.98rem;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         /* Attribute / Properties Box */
@@ -223,6 +310,10 @@
             padding: 12px 16px;
             border-radius: 0 8px 8px 0;
             margin: 14px 0;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .prop-title {
@@ -235,16 +326,25 @@
         }
 
         .prop-item {
+            display: block;
             margin-bottom: 8px;
             font-size: 0.92rem;
             color: var(--text-muted);
+            line-height: 1.6;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .prop-item:last-child {
             margin-bottom: 0;
         }
 
+        .prop-item .p-name,
         .p-name {
+            display: inline;
+            margin-right: 6px;
             font-family: 'Fira Code', monospace;
             color: var(--code-prop);
             font-weight: 600;
@@ -264,8 +364,10 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.88rem;
             overflow-x: auto;
+            max-width: 100%;
             margin-top: 12px;
             line-height: 1.6;
+            word-break: normal;
         }
 
         /* CSS Syntax highlight colors */
@@ -288,6 +390,8 @@
             border: 1px dashed rgba(99, 102, 241, 0.25);
             padding: 10px 14px;
             border-radius: 8px;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .use-case-icon {
@@ -530,6 +634,8 @@
             color: var(--text-dim);
             line-height: 1.4;
             margin: 0;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .flex-box-stage {
@@ -612,6 +718,8 @@
             color: var(--text-dim);
             line-height: 1.4;
             margin: 0;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .grid-box-stage {
@@ -935,10 +1043,12 @@
         /* Table */
         .table-wrapper {
             overflow-x: auto;
+            max-width: 100%;
             border-radius: 12px;
             border: 1px solid var(--border-color);
             background: var(--bg-card);
             margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
@@ -960,6 +1070,7 @@
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 0.7px;
+            word-break: break-word;
         }
 
         td {
@@ -967,6 +1078,7 @@
             border-bottom: 1px solid var(--border-color);
             color: var(--text-muted);
             vertical-align: middle;
+            word-break: break-word;
         }
 
         tr:last-child td { border-bottom: none; }
@@ -1629,20 +1741,28 @@
             <h1 class="main-title">CSS Basics Documentation</h1>
             <p class="subtitle">A visual, color-coded reference for CSS inclusion methods, 12 selectors &amp; combinators, Box Model, display modes, Flexbox 1D &amp; Grid 2D masterclasses, Responsive Web Design &amp; media queries, Bootstrap 5 UI framework &amp; buttons, navigation bar patterns, Coming Soon hero landing UI, colors, and typography.</p>
             
-            <div class="quick-nav">
-                <a href="#methods">1. 3 Ways to Apply CSS</a>
-                <a href="#selectors">2. Selectors &amp; Combinators</a>
-                <a href="#box-model">3. Box Model &amp; Display</a>
-                <a href="#flexbox">4. Flexbox Layout</a>
-                <a href="#grid">5. CSS Grid Layout</a>
-                <a href="#responsive">6. Responsive Design &amp; Queries</a>
-                <a href="#typography">7. Colors &amp; Gradients</a>
-                <a href="#pseudo">8. Interactive States</a>
-                <a href="#units">9. CSS Units (px, rem, vh)</a>
-                <a href="#navbars">10. Navigation Bar Patterns</a>
-                <a href="#hero-landing">11. Hero Landing UI</a>
-                <a href="#bootstrap">12. Bootstrap 5 Framework</a>
-                <a href="#table-ref">13. Quick Reference Table</a>
+            <div class="quick-nav-panel">
+                <div class="quick-nav-header">
+                    <div class="quick-nav-title">
+                        <span>⚡ Quick Jump to Section</span>
+                    </div>
+                    <div class="quick-nav-count">13 Sections</div>
+                </div>
+                <nav class="quick-nav">
+                    <a href="#methods"><span class="nav-num">01</span> 3 Ways to Apply CSS</a>
+                    <a href="#selectors"><span class="nav-num">02</span> Selectors &amp; Combinators</a>
+                    <a href="#box-model"><span class="nav-num">03</span> Box Model &amp; Display</a>
+                    <a href="#flexbox"><span class="nav-num">04</span> Flexbox Layout</a>
+                    <a href="#grid"><span class="nav-num">05</span> CSS Grid Layout</a>
+                    <a href="#responsive"><span class="nav-num">06</span> Responsive Design &amp; Queries</a>
+                    <a href="#typography"><span class="nav-num">07</span> Colors &amp; Gradients</a>
+                    <a href="#pseudo"><span class="nav-num">08</span> Interactive States</a>
+                    <a href="#units"><span class="nav-num">09</span> CSS Units (px, rem, vh)</a>
+                    <a href="#navbars"><span class="nav-num">10</span> Navigation Bar Patterns</a>
+                    <a href="#hero-landing"><span class="nav-num">11</span> Hero Landing UI</a>
+                    <a href="#bootstrap"><span class="nav-num">12</span> Bootstrap 5 Framework</a>
+                    <a href="#table-ref"><span class="nav-num">13</span> Quick Reference Table</a>
+                </nav>
             </div>
         </header>
 
