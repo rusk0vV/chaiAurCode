@@ -36,7 +36,8 @@ TABLE OF CONTENTS
  17. Part 4: Deep Dive into For Loops & Iteration (Classic for, for...of, for...in, forEach)
  18. User Input Techniques: Browser vs. Node.js (prompt, DOM, readline, prompt-sync, process.argv)
  19. Part 5: Functions, First-Class Citizens, Arrow Functions & Closures (functions.js)
- 20. Quick Reference Glossary of Terms
+ 20. Part 6: Prototypes, Constructor Functions & OOP (prototypes.js, contructorFunction.js, oop-master.js)
+ 21. Quick Reference Glossary of Terms
 ================================================================================
 
 
@@ -1368,7 +1369,75 @@ and lexical closures.
 
 
 ================================================================================
-20. QUICK REFERENCE GLOSSARY OF TERMS
+20. PART 6: PROTOTYPES, CONSTRUCTOR FUNCTIONS & OBJECT-ORIENTED PROGRAMMING (OOP)
+================================================================================
+Files: prototypes.js, contructorFunction.js, oop-master.js
+
+1. PROTOTYPES & PROTOTYPAL INHERITANCE (prototypes.js):
+   - JavaScript is fundamentally prototype-based, not classical class-based.
+   - Every object has an internal [[Prototype]] link pointing to another object or null.
+   - Property Lookup (Prototype Chain Walk):
+       obj.prop -> checks obj's own properties
+                -> walks up obj.__proto__
+                -> walks up Object.prototype
+                -> terminates at null (returns undefined if property not found)
+   - Legacy: `lenovo.__proto__ = computer;` (dunder proto accessor).
+   - Modern Standard APIs:
+       Object.setPrototypeOf(tesla, genericCar);
+       Object.getPrototypeOf(tesla);
+
+2. CONSTRUCTOR FUNCTIONS & THE 4-STEP "new" OPERATOR LIFECYCLE (contructorFunction.js):
+   - Convention: Function capitalized by convention (e.g. function Animal(species)).
+   - The 4-Step Lifecycle of `new`:
+       1. Allocation: Brand new blank object `{}` allocated in Heap Memory.
+       2. Prototype Linkage: `newInstance.__proto__ = Constructor.prototype`.
+       3. Execution & Context: Constructor runs with `this` bound to new instance.
+       4. Return: If no custom object is explicitly returned, returns `this`.
+   - "Forgot new" Hazard: Calling `Car("Tata", "Safari")` runs normal function execution,
+     binding `this` to global/undefined and returning undefined!
+   - Defensive Guard with `new.target`:
+       function Drink(name) {
+           if (!new.target) {
+               throw new Error("Drink must be called with new keyword");
+           }
+           this.name = name;
+       }
+   - Memory Optimization: Methods inside constructor (`this.describe = function()`)
+     are duplicated in heap for EVERY instance. Attaching to prototype
+     (`Animal.prototype.sound = function()`) stores ONE function instance in memory,
+     shared across all instances via prototype delegation.
+
+3. PROTOTYPE MONKEY PATCHING (oop-master.js):
+   - Extending native built-in prototypes:
+       Array.prototype.hitesh = function () { return `Custom method ${this}`; };
+   - Accessible by all arrays in runtime memory.
+   - Architectural Risk: High risk of naming collisions with future ECMAScript
+     standards, unexpected library breaks, and iteration pollution.
+
+4. THE 4 PILLARS OF OOP IN JAVASCRIPT (oop-master.js):
+   - (A) Encapsulation: Bundling data and behavior, restricting direct outside access.
+         Demonstrated via ES2022 Private Class Fields (`#balance = 0` in BankAccount).
+         External access `account.#balance` throws a compile-time SyntaxError.
+   - (B) Abstraction: Hiding internal complexity and exposing clean interface.
+         In CoffeeMachine: `start()` and `brewCoffee()` are combined and concealed
+         behind a single public method `pressStartButton()`.
+   - (C) Inheritance: Subclasses inheriting properties and methods from parent
+         classes via `class Car extends Vehicle`.
+   - (D) Polymorphism: Subclasses overriding parent methods with custom behavior.
+         `Bird.fly()` returns "Flying....", while `Penguin.fly()` overrides it to
+         return "Penguins can't fly".
+
+5. STATIC METHODS, GETTERS & SETTERS (oop-master.js):
+   - Static Methods (`static add(a, b)`): Bound directly to class constructor function
+     (`Calculator.add(2, 3)`), not instance prototypes. Cannot be called on instances.
+   - Getters (`get salary()`): Intercept read operations, allowing computed values
+     or access control/masking.
+   - Setters (`set salary(val)`): Intercept write operations, validating data before
+     updating backing/private fields (`this.#salary` or `this._salary`).
+
+
+================================================================================
+21. QUICK REFERENCE GLOSSARY OF TERMS
 ================================================================================
 
 Term             | Meaning / Definition
@@ -1427,6 +1496,22 @@ Lexical Scope    | Scope determined by the physical placement of variables in so
 Closure          | Function bundled with references to its surrounding lexical state (Heap Context)
 Function Factory | Higher-order function that generates and returns specialized functions
 Dead Code        | Unreachable statements placed after unconditional return statements
+Prototype        | Object template from which other objects inherit properties/methods
+[[Prototype]]    | Internal hidden engine slot pointing to an object's prototype
+__proto__        | Legacy accessor exposing an object's internal [[Prototype]] link
+setPrototypeOf() | Modern ECMAScript method setting the prototype of an object
+getPrototypeOf() | Modern ECMAScript method inspecting the prototype of an object
+Constructor Fn   | Capitalized function designed to instantiate objects via 'new'
+new Operator     | Allocates object in heap, binds 'this', links prototype, returns instance
+new.target       | Meta-property detecting whether a function was invoked with 'new'
+ES6 Class        | Syntactic sugar over prototype delegation for structured OOP
+Encapsulation    | Protecting internal state from outside access (via # private fields)
+Abstraction      | Hiding complex internal workflows behind a simple public method
+Inheritance      | Subclasses acquiring properties/methods from parent classes (extends)
+Polymorphism     | Subclasses overriding parent methods to provide specialized behavior
+Static Method    | Method attached directly to class constructor rather than prototype
+Getter / Setter  | Accessor methods intercepting property read/write with custom logic
+Monkey Patching  | Dynamically altering or adding methods to runtime native prototypes
 
 ================================================================================
                               End of Foundations Note

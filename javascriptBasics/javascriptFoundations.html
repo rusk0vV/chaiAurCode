@@ -587,7 +587,8 @@
                 <a href="#loops-iteration">17. Deep Dive: For Loops (part4)</a>
                 <a href="#user-input">18. User Input (Browser vs Node.js)</a>
                 <a href="#functions-closures">19. Functions &amp; Closures (part5)</a>
-                <a href="#glossary">20. Technical Glossary</a>
+                <a href="#prototypes-oop">20. Prototypes &amp; OOP (part6)</a>
+                <a href="#glossary">21. Technical Glossary</a>
             </div>
         </header>
 
@@ -2147,10 +2148,240 @@
             </div>
         </section>
 
-        <!-- 20. Technical Glossary -->
-        <section id="glossary">
+        <!-- 20. Part 6: Prototypes, Constructor Functions & Object-Oriented Programming (OOP) -->
+        <section id="prototypes-oop">
             <div class="section-header">
                 <div class="section-number">20</div>
+                <h2 class="section-title">Part 6: Prototypes, Constructor Functions &amp; OOP (oop-master.js, prototypes.js, contructorFunction.js)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Prototype Chains • Constructor Functions • new Lifecycle • ES6 Classes • 4 Pillars of OOP</span>
+                    <span class="tag-badge badge-jit">OOP &amp; Architecture</span>
+                </div>
+                <p class="desc-text">JavaScript is fundamentally a <strong>prototype-based object-oriented language</strong>. Unlike traditional class-based languages (Java, C++) where classes act as rigid blueprints and objects are isolated copies, JavaScript objects inherit state and behavior directly from other objects via live internal prototype links. The modern ES6 <code>class</code> syntax is an ergonomic abstraction layered seamlessly over this prototype delegation engine.</p>
+
+                <!-- Prop Box 1: Prototypes & Prototypal Inheritance -->
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-sky);">1. Prototypal Inheritance &amp; The Prototype Chain (prototypes.js)</div>
+                    <div class="prop-item"><span class="p-name">The [[Prototype]] Internal Slot:</span> Every object in JavaScript possesses a hidden internal pointer (specification slot) named <code>[[Prototype]]</code> pointing either to another object or to <code>null</code>.</div>
+                    <div class="prop-item"><span class="p-name">Dynamic Property Delegation:</span> When reading <code>obj.prop</code>, V8 first inspects the instance's own properties. If absent, the engine walks up the prototype chain: <code>obj &rarr; obj.__proto__ &rarr; Object.prototype &rarr; null</code>. The first matching property encountered is returned; if <code>null</code> is reached without a match, evaluation yields <code>undefined</code>.</div>
+                    <div class="prop-item"><span class="p-name">Legacy __proto__ (Dunder Proto):</span> Historical accessor property exposing the internal <code>[[Prototype]]</code> (e.g. <code>lenovo.__proto__ = computer</code>). While functional for quick inspection, mutating <code>__proto__</code> in performance-critical code destroys V8's hidden class (Shape/Map) optimizations.</div>
+                    <div class="prop-item"><span class="p-name">Standard ECMAScript APIs:</span> Modern code uses standardized methods: <code>Object.setPrototypeOf(tesla, genericCar)</code> to establish prototype linkages dynamically, and <code>Object.getPrototypeOf(tesla)</code> to safely inspect prototype references.</div>
+                </div>
+
+                <!-- Pipeline / Flow: 4-Step Lifecycle of new Keyword -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">The 4-Step Lifecycle of the "new" Operator</div>
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 1 • Allocation</div>
+                        <div class="pipe-title">Empty Object Creation</div>
+                        <div class="pipe-desc">A brand new, plain JavaScript object <code>{}</code> is allocated in dynamic <strong>Heap Memory</strong>.</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 2 • Prototype Link</div>
+                        <div class="pipe-title">Prototype Wire-up</div>
+                        <div class="pipe-desc">The newly allocated object's internal <code>[[Prototype]]</code> is bound directly to <code>Constructor.prototype</code>.</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 3 • Execution</div>
+                        <div class="pipe-title">Context Binding &amp; Call</div>
+                        <div class="pipe-desc">The constructor function executes with its execution context's <code>this</code> bound strictly to the newly created object.</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 4 • Return</div>
+                        <div class="pipe-title">Instance Return</div>
+                        <div class="pipe-desc">If the constructor does not explicitly return a non-primitive object, the initialized <code>this</code> instance is returned automatically.</div>
+                    </div>
+                </div>
+
+                <!-- Prop Box 2: Constructor Functions & new.target -->
+                <div class="prop-box" style="border-left: 4px solid var(--chai-gold);">
+                    <div class="prop-title" style="color: var(--chai-gold);">2. Constructor Functions, Method Allocation &amp; new.target (contructorFunction.js)</div>
+                    <div class="prop-item"><span class="p-name">Constructor Convention:</span> Regular functions capitalized by convention (e.g. <code>function Car(make, model)</code>) intended exclusively for instantiation via <code>new</code>.</div>
+                    <div class="prop-item"><span class="p-name">The "Forgot new" Catastrophe:</span> Invoking <code>let myCar = Car("Tata", "Safari")</code> without <code>new</code> runs the function in normal execution mode. <code>this</code> binds to the global object (<code>global</code> in Node.js, <code>window</code> in browsers) or evaluates to <code>undefined</code> in strict mode, polluting global variables and assigning <code>undefined</code> to <code>myCar</code>!</div>
+                    <div class="prop-item"><span class="p-name">Defensive Guard with new.target:</span> ES6 introduced the meta-property <code>new.target</code>. When invoked with <code>new</code>, <code>new.target</code> references the constructor itself; when invoked as a normal function, it is <code>undefined</code>. Guarding constructors with <code>if (!new.target) throw new Error("Must be called with new keyword");</code> stops accidental invocation at runtime.</div>
+                    <div class="prop-item"><span class="p-name">Instance vs Prototype Methods (Heap Impact):</span> Defining methods inside constructor bodies (<code>this.describe = function() {...}</code>) allocates a duplicate function closure in Heap memory for <em>every instance created</em>. Attaching methods to prototype (<code>Animal.prototype.sound = function() {...}</code>) allocates the function <strong>once in memory</strong>, shared by millions of instances via prototype delegation.</div>
+                </div>
+
+                <!-- Prop Box 3: Prototype Monkey Patching -->
+                <div class="prop-box" style="border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">3. Prototype Monkey Patching &amp; Global Built-in Extensions (oop-master.js)</div>
+                    <div class="prop-item"><span class="p-name">Extending Core Prototypes:</span> Because all JavaScript arrays delegate to <code>Array.prototype</code>, defining <code>Array.prototype.hitesh = function() { return `Custom method ${this}`; }</code> instantly exposes <code>.hitesh()</code> on every existing and future array literal across the application.</div>
+                    <div class="prop-item"><span class="p-name">The Architectural Risk:</span> Extending native prototypes in production application code is widely considered an anti-pattern. It risks namespace collisions with future ECMAScript language specs, pollutes <code>for...in</code> loops if non-enumerable descriptor flags are neglected, and can trigger unpredictable breaking changes in third-party libraries.</div>
+                </div>
+
+                <!-- Prop Box 4: The 4 Pillars of OOP -->
+                <div class="prop-box" style="border-left: 4px solid var(--accent-emerald);">
+                    <div class="prop-title" style="color: var(--accent-emerald);">4. The 4 Pillars of Object-Oriented Programming (OOP) in JavaScript</div>
+                    <div class="prop-item"><span class="p-name">1. Encapsulation:</span> Bundling state and related behavior into cohesive units while safeguarding internal state against unrestricted external access. Implemented cleanly via <strong>ES2022 Private Class Fields</strong> (<code>#balance = 0</code> in <code>BankAccount</code>). Accessing <code>account.#balance</code> triggers a compile-time <code>SyntaxError</code>. Internal state can only be accessed via authorized public methods (<code>deposit()</code>, <code>getBalance()</code>).</div>
+                    <div class="prop-item"><span class="p-name">2. Abstraction:</span> Hiding complex internal workflows and implementation mechanics while presenting a clear, minimal, high-level interface. In <code>CoffeeMachine</code>, intricate internal operations (database checks, calibration, brewing math in <code>start()</code> and <code>brewCoffee()</code>) are kept hidden behind a single intuitive action (<code>pressStartButton()</code>).</div>
+                    <div class="prop-item"><span class="p-name">3. Inheritance:</span> Deriving specialized subclasses from base classes using <code>class Car extends Vehicle</code>. Child classes automatically inherit parent properties and methods while eliminating boilerplate repetition.</div>
+                    <div class="prop-item"><span class="p-name">4. Polymorphism:</span> ("Many Forms") The capability of derived child classes to override inherited base methods and supply specialized behaviors while preserving identical method signatures. Demonstrated by <code>Bird.fly()</code> returning <code>"Flying...."</code> while <code>Penguin.fly()</code> overrides it to return <code>"Penguins can't fly"</code>.</div>
+                </div>
+
+                <!-- Prop Box 5: Static Methods, Getters & Setters -->
+                <div class="prop-box" style="border-left: 4px solid var(--accent-violet);">
+                    <div class="prop-title" style="color: var(--accent-violet);">5. Static Members &amp; Accessor Properties (Getters / Setters)</div>
+                    <div class="prop-item"><span class="p-name">Static Methods (Calculator.add):</span> Prefixed with the <code>static</code> keyword. Bound directly to the constructor function/class object itself (<code>Calculator.add(2, 3)</code>), rather than to prototype or instance objects. Calling <code>new Calculator().add()</code> throws <code>TypeError</code>. Ideal for utility helpers and factory creators.</div>
+                    <div class="prop-item"><span class="p-name">Getters (get salary()):</span> Accessor methods that compute or guard property access dynamically when referenced as regular properties (<code>emp.salary</code>). Allows selective redaction or calculated derivations.</div>
+                    <div class="prop-item"><span class="p-name">Setters (set salary(val)):</span> Accessor methods that intercept assignment operations (<code>emp.salary = 60000</code>), enforcing data integrity rules (e.g. rejecting negative values) before assigning to private backing fields (<code>this.#salary</code> or <code>this._salary</code>).</div>
+                </div>
+
+                <!-- Comparison Table: OOP Paradigms in JS -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Comparative Paradigm: Object Literals vs Constructor Functions vs ES6 Classes</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Object Literal (<code>{}</code>)</th>
+                                <th>Constructor Function (<code>function C()</code>)</th>
+                                <th>ES6 Class (<code>class C</code>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Primary Use Case</strong></td>
+                                <td>Single one-off entities, config objects, static dictionaries</td>
+                                <td>Reusable instance blueprints (ES5 standard)</td>
+                                <td>Modern enterprise domain modeling &amp; component hierarchies</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Prototype Link</strong></td>
+                                <td>Direct to <code>Object.prototype</code> or via <code>Object.setPrototypeOf()</code></td>
+                                <td><code>instance.__proto__ === Constructor.prototype</code></td>
+                                <td><code>instance.__proto__ === Class.prototype</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Invocation without <code>new</code></strong></td>
+                                <td>N/A (already an object instance)</td>
+                                <td>Pollutes outer scope / returns <code>undefined</code> (unless guarded by <code>new.target</code>)</td>
+                                <td><code style="color: var(--accent-rose);">TypeError: Class constructor cannot be invoked without 'new'</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Private Fields Support</strong></td>
+                                <td>Closures / symbols only</td>
+                                <td>Closures only (local variables inside body)</td>
+                                <td><code style="color: var(--accent-emerald);">Native ES2022 private fields</code> (<code>#field</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Static Members</strong></td>
+                                <td>Direct object properties</td>
+                                <td>Manual assignment: <code>Func.myStatic = ...</code></td>
+                                <td><code style="color: var(--accent-emerald);">First-class keyword</code>: <code>static method() {}</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Method Memory Footprint</strong></td>
+                                <td>Methods duplicated per literal instance</td>
+                                <td>Shared if on <code>.prototype</code>; duplicated if in body</td>
+                                <td><code style="color: var(--accent-emerald);">Optimal</code> (all body methods placed on prototype automatically)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Code Snippet Display -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Annotated Code Implementations from part6</div>
+                <div class="code-snippet">
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 1. PROTOTYPES &amp; PROTOTYPAL INHERITANCE (prototypes.js)</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">computer</span> = { <span class="cs-prop">cpu</span>: <span class="cs-val">12</span> };<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">lenovo</span> = {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">screen</span>: <span class="cs-val">"HD"</span>,<br>
+                    &nbsp;&nbsp;<span class="cs-prop">__proto__</span>: <span class="cs-prop">computer</span>, <span class="cs-comm">// Legacy prototype linkage</span><br>
+                    };<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">`lenovo `</span>, <span class="cs-prop">lenovo</span>.<span class="cs-prop">__proto__</span>); <span class="cs-comm">// { cpu: 12 }</span><br><br>
+                    <span class="cs-comm">// Modern standard approach: Object.setPrototypeOf &amp; Object.getPrototypeOf</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">genericCar</span> = { <span class="cs-prop">tyres</span>: <span class="cs-val">4</span> };<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">tesla</span> = { <span class="cs-prop">driver</span>: <span class="cs-val">"AI"</span> };<br>
+                    <span class="cs-prop">Object</span>.<span class="cs-fn">setPrototypeOf</span>(<span class="cs-prop">tesla</span>, <span class="cs-prop">genericCar</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">`tesla tyres:`</span>, <span class="cs-prop">tesla</span>.<span class="cs-prop">tyres</span>); <span class="cs-comm">// 4 (resolved up prototype chain)</span><br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">Object</span>.<span class="cs-fn">getPrototypeOf</span>(<span class="cs-prop">tesla</span>)); <span class="cs-comm">// { tyres: 4 }</span><br><br>
+
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 2. CONSTRUCTOR FUNCTIONS &amp; new.target GUARD (contructorFunction.js)</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">Animal</span>(<span class="cs-prop">species</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">species</span> = <span class="cs-prop">species</span>;<br>
+                    }<br>
+                    <span class="cs-comm">// Prototype method: shared across all instances (Memory Efficient)</span><br>
+                    <span class="cs-prop">Animal</span>.<span class="cs-prop">prototype</span>.<span class="cs-fn">sound</span> = <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-val">`${this.species} makes a sound`</span>;<br>
+                    };<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">dog</span> = <span class="cs-kw">new</span> <span class="cs-fn">Animal</span>(<span class="cs-val">"Dog"</span>);<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">dog</span>.<span class="cs-fn">sound</span>()); <span class="cs-comm">// "Dog makes a sound"</span><br><br>
+                    <span class="cs-comm">// Enforcing constructor invocation with new.target</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">Drink</span>(<span class="cs-prop">name</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (!<span class="cs-kw">new</span>.<span class="cs-prop">target</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">throw new</span> <span class="cs-prop">Error</span>(<span class="cs-val">"Drink must be called with new keyword"</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">name</span> = <span class="cs-prop">name</span>;<br>
+                    }<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">tea</span> = <span class="cs-kw">new</span> <span class="cs-fn">Drink</span>(<span class="cs-val">"tea"</span>); <span class="cs-comm">// Success</span><br><br>
+
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// 3. ES6 CLASSES, INHERITANCE &amp; 4 PILLARS (oop-master.js)</span><br>
+                    <span class="cs-comm">// =========================================================================</span><br>
+                    <span class="cs-comm">// (A) Inheritance</span><br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">Vehicle</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">constructor</span>(<span class="cs-prop">make</span>, <span class="cs-prop">model</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">make</span> = <span class="cs-prop">make</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">model</span> = <span class="cs-prop">model</span>;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="cs-fn">start</span>() { <span class="cs-kw">return</span> <span class="cs-val">`${this.model} is a car from ${this.make}`</span>; }<br>
+                    }<br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">Car</span> <span class="cs-kw">extends</span> <span class="cs-fn">Vehicle</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">drive</span>() { <span class="cs-kw">return</span> <span class="cs-val">`${this.make} : This is an inheritance example`</span>; }<br>
+                    }<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">myCar</span> = <span class="cs-kw">new</span> <span class="cs-fn">Car</span>(<span class="cs-val">"Toyota"</span>, <span class="cs-val">"Corolla"</span>);<br><br>
+                    <span class="cs-comm">// (B) Encapsulation with Private Fields (#)</span><br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">BankAccount</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">#balance</span> = <span class="cs-val">0</span>; <span class="cs-comm">// Private field: hidden from external access</span><br>
+                    &nbsp;&nbsp;<span class="cs-fn">deposit</span>(<span class="cs-prop">amount</span>) { <span class="cs-kw">this</span>.<span class="cs-prop">#balance</span> += <span class="cs-prop">amount</span>; <span class="cs-kw">return this</span>.<span class="cs-prop">#balance</span>; }<br>
+                    &nbsp;&nbsp;<span class="cs-fn">getBalance</span>() { <span class="cs-kw">return</span> <span class="cs-val">`$ ${this.#balance}`</span>; }<br>
+                    }<br><br>
+                    <span class="cs-comm">// (C) Abstraction</span><br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">CoffeeMachine</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">start</span>() { <span class="cs-kw">return</span> <span class="cs-val">"Starting the machine..."</span>; } <span class="cs-comm">// Internal detail</span><br>
+                    &nbsp;&nbsp;<span class="cs-fn">brewCoffee</span>() { <span class="cs-kw">return</span> <span class="cs-val">"Brewing coffee"</span>; } <span class="cs-comm">// Internal detail</span><br>
+                    &nbsp;&nbsp;<span class="cs-fn">pressStartButton</span>() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-val">`${this.start()} + ${this.brewCoffee()}`</span>; <span class="cs-comm">// Unified high-level API</span><br>
+                    &nbsp;&nbsp;}<br>
+                    }<br><br>
+                    <span class="cs-comm">// (D) Polymorphism (Method Overriding)</span><br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">Bird</span> { <span class="cs-fn">fly</span>() { <span class="cs-kw">return</span> <span class="cs-val">"Flying...."</span>; } }<br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">Penguin</span> <span class="cs-kw">extends</span> <span class="cs-fn">Bird</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">fly</span>() { <span class="cs-kw">return</span> <span class="cs-val">"Penguins can't fly"</span>; } <span class="cs-comm">// Specialized override</span><br>
+                    }<br><br>
+                    <span class="cs-comm">// (E) Static Methods &amp; Getters/Setters</span><br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">Calculator</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">static</span> <span class="cs-fn">add</span>(<span class="cs-prop">a</span>, <span class="cs-prop">b</span>) { <span class="cs-kw">return</span> <span class="cs-prop">a</span> + <span class="cs-prop">b</span>; }<br>
+                    }<br>
+                    <span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">Calculator</span>.<span class="cs-fn">add</span>(<span class="cs-val">2</span>, <span class="cs-val">3</span>)); <span class="cs-comm">// 5 (Called directly on Class)</span><br><br>
+                    <span class="cs-kw">class</span> <span class="cs-fn">Employee</span> {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">#salary</span>;<br>
+                    &nbsp;&nbsp;<span class="cs-fn">constructor</span>(<span class="cs-prop">name</span>, <span class="cs-prop">salary</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">salary</span> &lt; <span class="cs-val">0</span>) <span class="cs-kw">throw new</span> <span class="cs-prop">Error</span>(<span class="cs-val">"Salary cannot be in negative"</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">name</span> = <span class="cs-prop">name</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">#salary</span> = <span class="cs-prop">salary</span>;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="cs-kw">get</span> <span class="cs-fn">salary</span>() { <span class="cs-kw">return</span> <span class="cs-val">"You are not allowed to see salary"</span>; }<br>
+                    &nbsp;&nbsp;<span class="cs-kw">set</span> <span class="cs-fn">salary</span>(<span class="cs-prop">value</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">value</span> &lt; <span class="cs-val">0</span>) <span class="cs-prop">console</span>.<span class="cs-fn">error</span>(<span class="cs-val">"Invalid Salary"</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">else</span> <span class="cs-kw">this</span>.<span class="cs-prop">_salary</span> = <span class="cs-prop">value</span>;<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- 21. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">21</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -2209,6 +2440,22 @@
                         <tr><td><code>Closure</code></td><td>Memory / Scope</td><td>Function bundled with references to its surrounding lexical state preserved in Heap Context.</td></tr>
                         <tr><td><code>Function Factory</code></td><td>Architecture</td><td>Higher-order function that generates and returns specialized functions.</td></tr>
                         <tr><td><code>Dead Code</code></td><td>Optimization</td><td>Unreachable code placed after unconditional <code>return</code> statements.</td></tr>
+                        <tr><td><code>Prototype</code></td><td>OOP</td><td>An object template from which other objects directly inherit properties and methods.</td></tr>
+                        <tr><td><code>[[Prototype]]</code></td><td>Engine</td><td>Internal hidden slot referencing the prototype object of an instance.</td></tr>
+                        <tr><td><code>__proto__</code></td><td>OOP</td><td>Legacy accessor exposing an object's internal <code>[[Prototype]]</code> linkage.</td></tr>
+                        <tr><td><code>Object.setPrototypeOf()</code></td><td>OOP</td><td>Standard ECMAScript method setting the prototype of a specified object.</td></tr>
+                        <tr><td><code>Object.getPrototypeOf()</code></td><td>OOP</td><td>Standard ECMAScript method retrieving the prototype of a specified object.</td></tr>
+                        <tr><td><code>Constructor Function</code></td><td>OOP</td><td>Capitalized function designed to instantiate objects when invoked with <code>new</code>.</td></tr>
+                        <tr><td><code>new Keyword</code></td><td>Operators</td><td>Operator allocating a new object, binding <code>this</code>, linking prototype, and returning instance.</td></tr>
+                        <tr><td><code>new.target</code></td><td>Meta-Property</td><td>Property detecting whether a function or constructor was invoked with <code>new</code>.</td></tr>
+                        <tr><td><code>ES6 Class</code></td><td>OOP</td><td>Syntactic sugar over prototype delegation providing structured OOP syntax.</td></tr>
+                        <tr><td><code>Encapsulation</code></td><td>OOP Pillar</td><td>Bundling state and methods while restricting outside access (via ES2022 <code>#</code> private fields).</td></tr>
+                        <tr><td><code>Abstraction</code></td><td>OOP Pillar</td><td>Hiding complex internal execution details and exposing a clean, minimal interface.</td></tr>
+                        <tr><td><code>Inheritance</code></td><td>OOP Pillar</td><td>Mechanisms allowing derived classes to inherit state and behaviors from parent classes (<code>extends</code>).</td></tr>
+                        <tr><td><code>Polymorphism</code></td><td>OOP Pillar</td><td>The ability of different classes to respond to the same method call with customized behaviors.</td></tr>
+                        <tr><td><code>Static Method</code></td><td>OOP</td><td>Method attached directly to the class constructor rather than its prototype or instances.</td></tr>
+                        <tr><td><code>Getter / Setter</code></td><td>OOP</td><td>Accessor methods executing custom logic and validation upon property read or write.</td></tr>
+                        <tr><td><code>Monkey Patching</code></td><td>Architecture</td><td>Dynamically modifying or extending runtime built-in prototypes (e.g. <code>Array.prototype</code>).</td></tr>
                     </tbody>
                 </table>
             </div>
