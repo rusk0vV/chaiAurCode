@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Manipulation Foundations &amp; Event Architecture • Chai Aur Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #030712;
+            --bg-secondary: #0b0f19;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(31, 41, 55, 0.85);
+            --border-color: rgba(55, 65, 81, 0.5);
+            --border-glow: rgba(245, 158, 11, 0.25);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --chai-gold: #f59e0b;
+            --chai-amber: #d97706;
+            --accent-sky: #38bdf8;
+            --accent-emerald: #10b981;
+            --accent-violet: #a855f7;
+            --accent-rose: #f43f5e;
+            --accent-blue: #3b82f6;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header */
+        .doc-header {
+            text-align: center;
+            padding: 48px 20px 32px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 36px;
+            position: relative;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--chai-gold);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .main-title {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, var(--chai-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 820px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        /* Quick Navigation Panel */
+        .quick-nav-panel {
+            background: rgba(11, 15, 25, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 28px;
+            text-align: left;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .quick-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(55, 65, 81, 0.45);
+        }
+
+        .quick-nav-title {
+            font-family: var(--font-heading);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--chai-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-nav-count {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-sky);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 3px 10px;
+            border-radius: 9999px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0;
+            text-align: left;
+        }
+
+        .quick-nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 6px 13px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .quick-nav a .nav-num {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--chai-gold);
+            background: rgba(245, 158, 11, 0.12);
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .quick-nav a:hover {
+            color: #ffffff;
+            border-color: var(--chai-gold);
+            background: rgba(245, 158, 11, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+        }
+
+        .quick-nav a:hover .nav-num {
+            background: var(--chai-gold);
+            color: #030712;
+            border-color: var(--chai-gold);
+        }
+
+        /* Section Containers */
+        section {
+            margin-bottom: 48px;
+            scroll-margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--chai-gold), var(--chai-amber));
+            color: #030712;
+            font-weight: 800;
+            font-size: 1.1rem;
+            font-family: var(--font-heading);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        /* Cards & Glassmorphism */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 26px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 24px;
+            transition: border-color 0.25s ease, transform 0.2s ease;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .card:hover {
+            border-color: var(--border-glow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-name {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .tag-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-core { background: rgba(56, 189, 248, 0.15); color: var(--accent-sky); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .badge-v8 { background: rgba(245, 158, 11, 0.15); color: var(--chai-gold); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-runtime { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-jit { background: rgba(168, 85, 247, 0.15); color: var(--accent-violet); border: 1px solid rgba(168, 85, 247, 0.3); }
+
+        .desc-text {
+            color: #cbd5e1;
+            font-size: 0.96rem;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        /* Property/Feature Boxes */
+        .prop-box {
+            background: rgba(3, 7, 18, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            max-width: 100%;
+            overflow: hidden;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .prop-title {
+            color: var(--accent-sky);
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .prop-item {
+            color: #e2e8f0;
+            font-size: 0.92rem;
+            margin-bottom: 10px;
+            line-height: 1.65;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            display: block;
+        }
+
+        .prop-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .p-name {
+            font-family: var(--font-mono);
+            color: var(--chai-gold);
+            font-weight: 600;
+            margin-right: 6px;
+            display: inline;
+        }
+
+        /* Code Snippet Display */
+        .code-snippet {
+            background: #030712;
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            overflow-x: auto;
+            position: relative;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .cs-kw { color: #f43f5e; font-weight: 600; }
+        .cs-sel { color: #38bdf8; font-weight: 600; }
+        .cs-prop { color: #f59e0b; }
+        .cs-val { color: #34d399; }
+        .cs-comm { color: #64748b; font-style: italic; }
+        .cs-tag { color: #f43f5e; }
+        .cs-attr { color: #38bdf8; }
+        .cs-punct { color: #94a3b8; }
+        .cs-fn { color: #60a5fa; }
+
+        /* Flowchart Pipeline */
+        .pipeline-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .pipe-step {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            position: relative;
+            transition: all 0.3s ease;
+            min-width: 0;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .pipe-step:hover {
+            border-color: var(--chai-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .pipe-badge {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--chai-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .pipe-title {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .pipe-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin: 16px 0;
+            max-width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: var(--bg-card);
+            word-break: break-word;
+        }
+
+        th {
+            background-color: rgba(3, 7, 18, 0.9);
+            color: var(--chai-gold);
+            text-align: left;
+            padding: 14px 18px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+            font-family: var(--font-heading);
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        td code {
+            font-family: var(--font-mono);
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--chai-gold);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* Interactive Exercise Sandboxes */
+        .sandbox-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 14px;
+            padding: 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .sandbox-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .sandbox-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-sky);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .sandbox-ui {
+            background: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+            margin: 14px 0;
+            color: #f3f4f6;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, var(--chai-gold), var(--chai-amber));
+            color: #030712;
+            border: none;
+            padding: 8px 16px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.88rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .demo-input {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 6px;
+        }
+
+        .demo-input:focus {
+            outline: none;
+            border-color: var(--chai-gold);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+        }
+
+        .demo-list {
+            list-style: none;
+            margin: 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .demo-list li {
+            background: rgba(31, 41, 55, 0.5);
+            padding: 8px 14px;
+            border-radius: 6px;
+            border-left: 3px solid var(--border-color);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .demo-list li:hover {
+            background: rgba(55, 65, 81, 0.7);
+        }
+
+        .demo-list li.highlight, p.highlight {
+            background-color: #fef08a !important;
+            color: #030712 !important;
+            font-weight: 700;
+            border-left-color: var(--chai-gold) !important;
+        }
+
+        /* Footer */
+        footer.doc-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.1rem; }
+            .card { padding: 18px; }
+            body { padding: 12px; }
+            .quick-nav-panel { padding: 16px; }
+            .quick-nav a { white-space: normal; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="doc-header">
+            <div class="badge-pill">☕ Chai Aur Code • Modern DOM Masterclass (Part 8)</div>
+            <h1 class="main-title">DOM Manipulation Foundations &amp; Event Architecture</h1>
+            <p class="subtitle">An exhaustive, interactive visual guide covering the two primary pillars of Document Object Model programming: <strong>1. Querying &amp; Traversing Nodes</strong> and <strong>2. Event Listening, Propagation &amp; Delegation</strong>.</p>
+            
+            <!-- Quick Navigation Panel -->
+            <div class="quick-nav-panel">
+                <div class="quick-nav-header">
+                    <span class="quick-nav-title">⚡ Section Index &amp; Quick Jump</span>
+                    <span class="quick-nav-count">10 Core Topics</span>
+                </div>
+                <div class="quick-nav">
+                    <a href="#what-is-dom"><span class="nav-num">01</span> What is the DOM?</a>
+                    <a href="#pillar-1-querying"><span class="nav-num">02</span> Pillar 1: Querying &amp; Selecting</a>
+                    <a href="#dom-traversal"><span class="nav-num">03</span> DOM Tree Traversal</a>
+                    <a href="#content-styles"><span class="nav-num">04</span> Content, Styles &amp; classList</a>
+                    <a href="#creating-removing"><span class="nav-num">05</span> Creating &amp; Removing Elements</a>
+                    <a href="#pillar-2-events"><span class="nav-num">06</span> Pillar 2: Event Listeners</a>
+                    <a href="#event-delegation"><span class="nav-num">07</span> Event Bubbling &amp; Delegation</a>
+                    <a href="#lifecycle-timing"><span class="nav-num">08</span> DOM Lifecycle Events</a>
+                    <a href="#hands-on-exercises"><span class="nav-num">09</span> 10 Interactive Live Exercises</a>
+                    <a href="#cheat-sheet"><span class="nav-num">10</span> DOM Methods Cheat Sheet</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- 1. What is the DOM? -->
+        <section id="what-is-dom">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">What is the DOM? (The Object-Oriented View of Web Documents)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">W3C DOM Specification • Living C++ Object Tree • Browser Engine Representation</span>
+                    <span class="tag-badge badge-core">Core Architecture</span>
+                </div>
+                <p class="desc-text">The <strong>Document Object Model (DOM)</strong> is not JavaScript itself; it is a cross-platform, language-independent Application Programming Interface (API) provided by host environments (browsers). The browser's layout engine (Blink in Chrome/Edge, Gecko in Firefox, WebKit in Safari) parses raw HTML text into an interconnected, hierarchical tree of C++ objects, exposing them to JavaScript through the global <code>window.document</code> object.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-sky);">Core Realities of the DOM Tree</div>
+                    <div class="prop-item"><span class="p-name">1. Nodes vs Elements:</span> Everything in the DOM is a <code>Node</code> (Text nodes, Comment nodes, Document nodes, and Element nodes). Elements (<code>HTMLElement</code>) are specifically HTML tags (e.g., <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>) with tag names, attributes, and styles.</div>
+                    <div class="prop-item"><span class="p-name">2. Live In-Memory Data Structure:</span> Mutating a DOM node via JavaScript instantly updates the browser's internal tree representation and schedules a visual render cycle (Reflow &amp; Repaint).</div>
+                    <div class="prop-item"><span class="p-name">3. Two Fundamental Operations:</span> Almost all frontend development boils down to two actions: <strong>(1) Selecting/Finding elements</strong> to modify their properties, and <strong>(2) Listening to user events</strong> to trigger updates.</div>
+                </div>
+
+                <!-- Pipeline / Flow -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">The HTML-to-DOM Parsing Pipeline</div>
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 1 • Bytes to Chars</div>
+                        <div class="pipe-title">Network Stream</div>
+                        <div class="pipe-desc">The browser downloads raw bytes over HTTP and decodes them into characters based on the specified character encoding (e.g. UTF-8).</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 2 • Tokenization</div>
+                        <div class="pipe-title">HTML Tokens</div>
+                        <div class="pipe-desc">The parser turns character streams into discrete HTML tokens: <code>TagOpen: &lt;html&gt;</code>, <code>TagClose: &lt;/html&gt;</code>, attributes, and text chunks.</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 3 • Node Objects</div>
+                        <div class="pipe-title">C++ Node Instantiation</div>
+                        <div class="pipe-desc">Each token is converted into an individual DOM Node object with properties, methods, and parent-child linkage slots.</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Step 4 • DOM Tree</div>
+                        <div class="pipe-title">Living Tree Graph</div>
+                        <div class="pipe-desc">Nodes are linked hierarchically into the tree rooted at <code>document</code>, triggering CSSOM combining and Render Tree generation.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Pillar 1: Querying & Selecting Elements -->
+        <section id="pillar-1-querying">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Pillar 1: Querying &amp; Selecting DOM Elements (Direct vs Selectors)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">getElementById • querySelector • querySelectorAll • NodeList vs HTMLCollection</span>
+                    <span class="tag-badge badge-v8">Element Selection</span>
+                </div>
+                <p class="desc-text">Before you can read, manipulate, or attach listeners to any element on a page, you must obtain a reference pointer to it. Modern JavaScript provides two categories of selection: legacy direct-attribute lookups and modern CSS selector queries.</p>
+
+                <div class="prop-box" style="border-left: 4px solid var(--chai-gold);">
+                    <div class="prop-title" style="color: var(--chai-gold);">The 5 Primary Selection Methods</div>
+                    <div class="prop-item"><span class="p-name">1. document.getElementById('id'):</span> Returns the single unique element matching the exact ID string, or <code>null</code> if not found. Highly optimized by browser engines via internal ID hash maps. (Notice: do NOT include <code>#</code>).</div>
+                    <div class="prop-item"><span class="p-name">2. document.querySelector('cssSelector'):</span> Returns the <strong>very first matching element</strong> in the DOM matching any valid CSS selector string (e.g. <code>#myId</code>, <code>.myClass</code>, <code>ul &gt; li.active</code>). Returns <code>null</code> if no match exists.</div>
+                    <div class="prop-item"><span class="p-name">3. document.querySelectorAll('cssSelector'):</span> Returns a static <code>NodeList</code> containing <strong>all elements</strong> matching the CSS selector. Supports built-in <code>.forEach()</code> iteration.</div>
+                    <div class="prop-item"><span class="p-name">4. document.getElementsByClassName('class'):</span> Returns a <strong>live</strong> <code>HTMLCollection</code> of elements having the specified class name. Updates dynamically when DOM changes.</div>
+                    <div class="prop-item"><span class="p-name">5. document.getElementsByTagName('tag'):</span> Returns a <strong>live</strong> <code>HTMLCollection</code> of elements matching the HTML tag name (e.g. <code>"li"</code>, <code>"p"</code>, <code>"h1"</code>).</div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="prop-title" style="margin-top: 24px; color: var(--chai-gold);">Comparative Selection Methods Matrix</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Argument Syntax</th>
+                                <th>Return Type</th>
+                                <th>Live vs Static</th>
+                                <th>Array.from() Needed?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>getElementById()</code></td>
+                                <td><code>"changeTextButton"</code> (No <code>#</code>)</td>
+                                <td>Single <code>Element</code> or <code>null</code></td>
+                                <td>N/A (Single Instance)</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><code>querySelector()</code></td>
+                                <td><code>"#changeTextButton"</code> (Uses CSS syntax)</td>
+                                <td>First matching <code>Element</code> or <code>null</code></td>
+                                <td>N/A (Single Instance)</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><code>querySelectorAll()</code></td>
+                                <td><code>".teaItem"</code> or <code>"#citiesList &gt; li"</code></td>
+                                <td><code>NodeList</code></td>
+                                <td><code style="color: var(--accent-sky);">Static Snapshot</code> (Frozen in time)</td>
+                                <td>Has <code>.forEach()</code>; use <code>Array.from()</code> for <code>.map()/.filter()</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>getElementsByClassName()</code></td>
+                                <td><code>"teaItem"</code> (No <code>.</code>)</td>
+                                <td><code>HTMLCollection</code></td>
+                                <td><code style="color: var(--accent-rose);">Live Dynamic</code> (Auto-updates on mutations)</td>
+                                <td><strong>Yes</strong> (No <code>forEach</code> on older engines)</td>
+                            </tr>
+                            <tr>
+                                <td><code>getElementsByTagName()</code></td>
+                                <td><code>"li"</code> or <code>"h1"</code></td>
+                                <td><code>HTMLCollection</code></td>
+                                <td><code style="color: var(--accent-rose);">Live Dynamic</code></td>
+                                <td><strong>Yes</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Querying single elements (Part 8 pattern)</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">button</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"changeTextButton"</span>);<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">paragraph</span> = <span class="cs-prop">document</span>.<span class="cs-fn">querySelector</span>(<span class="cs-val">"#myParagraph"</span>);<br><br>
+                    <span class="cs-comm">// Querying multiple elements &amp; iterating</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">allCities</span> = <span class="cs-prop">document</span>.<span class="cs-fn">querySelectorAll</span>(<span class="cs-val">"#citiesList li"</span>);<br>
+                    <span class="cs-prop">allCities</span>.<span class="cs-fn">forEach</span>((<span class="cs-prop">city</span>) =&gt; {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">city</span>.<span class="cs-prop">textContent</span>);<br>
+                    });
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DOM Tree Traversal -->
+        <section id="dom-traversal">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">DOM Tree Traversal (Navigating Parent, Child &amp; Sibling Relationships)</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">firstElementChild • lastElementChild • parentElement • nextElementSibling</span>
+                    <span class="tag-badge badge-core">Hierarchy Navigation</span>
+                </div>
+                <p class="desc-text">Rather than querying elements globally by ID or class every time, you often traverse relations directly from an already selected node. In JavaScript, you must understand the critical difference between <strong>Element Traversal</strong> and <strong>Node Traversal</strong>.</p>
+
+                <div class="prop-box" style="border-left: 4px solid var(--accent-violet);">
+                    <div class="prop-title" style="color: var(--accent-violet);">The Element vs Node Traversal Pitfall</div>
+                    <div class="prop-item"><span class="p-name">Node Traversal (Avoid for HTML):</span> Properties like <code>firstChild</code>, <code>lastChild</code>, <code>nextSibling</code>, and <code>previousSibling</code> inspect <em>every node</em>, including invisible whitespace text nodes and line breaks. If your HTML has a newline between <code>&lt;ul&gt;</code> and <code>&lt;li&gt;</code>, <code>ul.firstChild</code> will return a <code>#text</code> node, NOT your list item!</div>
+                    <div class="prop-item"><span class="p-name">Element Traversal (Standard Practice):</span> Properties with <code>Element</code> in their names strictly ignore whitespace and comments, hopping directly between actual HTML tag elements!</div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Traversal Direction</th>
+                                <th>Element-Only Property (Recommended)</th>
+                                <th>Raw Node Property (Includes Text/Whitespace)</th>
+                                <th>Part 8 Code Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>First Child</strong></td>
+                                <td><code>element.firstElementChild</code></td>
+                                <td><code>element.firstChild</code></td>
+                                <td><code>citiesList.firstElementChild.classList.add("highlight")</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Child</strong></td>
+                                <td><code>element.lastElementChild</code></td>
+                                <td><code>element.lastChild</code></td>
+                                <td><code>taskList.lastElementChild.remove()</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>All Children</strong></td>
+                                <td><code>element.children</code> (HTMLCollection of tags)</td>
+                                <td><code>element.childNodes</code> (includes comment/text)</td>
+                                <td><code>citiesList.children[1]</code> (Gets 2nd city: "Tokyo")</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Parent</strong></td>
+                                <td><code>element.parentElement</code></td>
+                                <td><code>element.parentNode</code></td>
+                                <td><code>event.target.parentElement</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Next Sibling</strong></td>
+                                <td><code>element.nextElementSibling</code></td>
+                                <td><code>element.nextSibling</code></td>
+                                <td><code>item.nextElementSibling</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Previous Sibling</strong></td>
+                                <td><code>element.previousElementSibling</code></td>
+                                <td><code>element.previousSibling</code></td>
+                                <td><code>item.previousElementSibling</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Content, Styles & classList -->
+        <section id="content-styles">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Manipulating Content, Inline Styles &amp; CSS Classes</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">textContent vs innerHTML • style.property • classList (add, remove, toggle)</span>
+                    <span class="tag-badge badge-runtime">DOM Mutation</span>
+                </div>
+                <p class="desc-text">Once an element reference is acquired, modifying its text, styling, or classes allows dynamic user interface reactions without reloading the page.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title" style="color: var(--accent-emerald);">1. textContent vs innerText vs innerHTML</div>
+                    <div class="prop-item"><span class="p-name">textContent (Recommended for text):</span> Reads or sets the raw textual content of an element and all its descendants. Fast, safe from cross-site scripting (XSS) attacks, and does not parse HTML tags. (Used in Example 1: <code>paragraph.textContent = "The paragraph is changed"</code>).</div>
+                    <div class="prop-item"><span class="p-name">innerText:</span> Aware of CSS styling (omits text hidden by <code>display: none</code>). Triggers reflow calculations, making it slower than <code>textContent</code>.</div>
+                    <div class="prop-item"><span class="p-name">innerHTML (Caution):</span> Reads or parses markup tags (e.g. <code>"&lt;strong&gt;Chai&lt;/strong&gt;"</code>). Never insert untrusted user input with <code>innerHTML</code> to avoid arbitrary script execution (XSS injection).</div>
+                </div>
+
+                <div class="prop-box" style="border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">2. Inline Styles vs classList API (Separation of Concerns)</div>
+                    <div class="prop-item"><span class="p-name">Inline Styles (element.style):</span> Properties are accessed using camelCase instead of hyphenated CSS syntax: <code>coffeeType.style.backgroundColor = "brown"</code>, <code>coffeeType.style.padding = "5px"</code>. Inline styles directly override external stylesheet rules with high CSS specificity.</div>
+                    <div class="prop-item"><span class="p-name">classList.add('className'):</span> Adds one or more classes to the element without overwriting existing classes. (Used in Example 2: <code>citiesList.firstElementChild.classList.add("highlight")</code>).</div>
+                    <div class="prop-item"><span class="p-name">classList.remove('className'):</span> Removes the specified class if present.</div>
+                    <div class="prop-item"><span class="p-name">classList.toggle('className'):</span> Adds the class if absent, or removes it if present. Returns boolean indicating active state. (Used in Example 10: <code>descriptionText.classList.toggle("highlight")</code>).</div>
+                    <div class="prop-item"><span class="p-name">classList.contains('className'):</span> Returns <code>true</code> if class exists, <code>false</code> otherwise.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Creating & Removing Elements -->
+        <section id="creating-removing">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Dynamic Node Creation, Insertion &amp; Removal</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">createElement • appendChild • append • remove() • removeChild()</span>
+                    <span class="tag-badge badge-jit">Dynamic DOM Tree</span>
+                </div>
+                <p class="desc-text">Dynamic modern web applications build and remove UI components on the fly (e.g. adding shopping list items, dismissing notifications, deleting tasks).</p>
+
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 1 • Creation</div>
+                        <div class="pipe-title">document.createElement()</div>
+                        <div class="pipe-desc">Instantiates a detached DOM node in memory: <code>let li = document.createElement("li");</code></div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 2 • Population</div>
+                        <div class="pipe-title">Configure Properties</div>
+                        <div class="pipe-desc">Populate content and classes: <code>li.textContent = "Eggs"; li.className = "item";</code></div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 3 • Insertion</div>
+                        <div class="pipe-title">appendChild() / append()</div>
+                        <div class="pipe-desc">Attach node to target parent: <code>shoppingList.appendChild(li);</code>. Node is now live in DOM tree!</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 4 • Destruction</div>
+                        <div class="pipe-title">element.remove()</div>
+                        <div class="pipe-desc">Remove element from DOM tree: <code>taskList.lastElementChild.remove();</code> Garbage collected when references cleared.</div>
+                    </div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Example 4: Creating and inserting an element</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">newItem</span> = <span class="cs-prop">document</span>.<span class="cs-fn">createElement</span>(<span class="cs-val">"li"</span>);<br>
+                    <span class="cs-prop">newItem</span>.<span class="cs-prop">textContent</span> = <span class="cs-val">"Eggs"</span>;<br>
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"shoppingList"</span>).<span class="cs-fn">appendChild</span>(<span class="cs-prop">newItem</span>);<br><br>
+                    <span class="cs-comm">// Example 5: Removing the last element</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">taskList</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"taskList"</span>);<br>
+                    <span class="cs-prop">taskList</span>.<span class="cs-prop">lastElementChild</span>.<span class="cs-fn">remove</span>(); <span class="cs-comm">// Modern direct removal</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Pillar 2: Event Listeners -->
+        <section id="pillar-2-events">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Pillar 2: Event Handling &amp; The addEventListener API</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">addEventListener • Event Object • preventDefault • stopPropagation</span>
+                    <span class="tag-badge badge-core">Event Architecture</span>
+                </div>
+                <p class="desc-text">Events are asynchronous notifications dispatched by the browser when actions occur (clicks, keystrokes, form submissions, scrolling). The <code>addEventListener()</code> method is the industry standard mechanism for binding callback handlers to target elements.</p>
+
+                <div class="prop-box" style="border-left: 4px solid var(--chai-gold);">
+                    <div class="prop-title" style="color: var(--chai-gold);">The 3 Critical Advantages of addEventListener</div>
+                    <div class="prop-item"><span class="p-name">1. Multiple Handlers:</span> You can register multiple independent listeners for the exact same event type on a single element. (Old <code>element.onclick = fn</code> overwrites any previous handler).</div>
+                    <div class="prop-item"><span class="p-name">2. Event Phase Control:</span> Supports options to listen during the capturing phase or bubbling phase.</div>
+                    <div class="prop-item"><span class="p-name">3. The Event Object (e):</span> Automatically passed into the callback function containing full metadata about the user action.</div>
+                </div>
+
+                <div class="prop-box" style="border-left: 4px solid var(--accent-rose);">
+                    <div class="prop-title" style="color: var(--accent-rose);">Crucial Event Object Methods &amp; Properties</div>
+                    <div class="prop-item"><span class="p-name">event.target:</span> The deepest, innermost element in the DOM tree that was physically clicked or triggered.</div>
+                    <div class="prop-item"><span class="p-name">event.currentTarget:</span> The element to which the event listener was explicitly attached (crucial in event delegation).</div>
+                    <div class="prop-item"><span class="p-name">event.preventDefault():</span> Stops the browser's default action. Essential for forms (Example 8: <code>event.preventDefault()</code> stops the browser from reloading the page and submitting an HTTP GET/POST).</div>
+                    <div class="prop-item"><span class="p-name">event.stopPropagation():</span> Prevents the event from bubbling further up the DOM hierarchy.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Form submission &amp; preventDefault (Example 8)</span><br>
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"feedbackForm"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"submit"</span>, <span class="cs-kw">function</span> (<span class="cs-prop">event</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">event</span>.<span class="cs-fn">preventDefault</span>(); <span class="cs-comm">// STOPS PAGE RELOAD</span><br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">feedback</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"feedbackInput"</span>).<span class="cs-prop">value</span>;<br>
+                    &nbsp;&nbsp;<span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"feedbackDisplay"</span>).<span class="cs-prop">textContent</span> = <span class="cs-val">`Feedback is: ${feedback}`</span>;<br>
+                    });
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Event Delegation -->
+        <section id="event-delegation">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Event Bubbling &amp; The Event Delegation Pattern</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Event Propagation • event.target.matches() • High-Performance Memory Pattern</span>
+                    <span class="tag-badge badge-jit">Architectural Pattern</span>
+                </div>
+                <p class="desc-text">When an event occurs on an element, it does not happen in isolation. It undergoes <strong>Event Propagation</strong>: bubbling from the target element up through all its parent ancestors to <code>window</code>.</p>
+
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 1 • Capturing</div>
+                        <div class="pipe-title">Trickle Down</div>
+                        <div class="pipe-desc">Event travels from <code>window</code> &rarr; <code>document</code> &rarr; <code>&lt;body&gt;</code> &rarr; down to the target's parent.</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 2 • Target</div>
+                        <div class="pipe-title">At Target</div>
+                        <div class="pipe-desc">Event reaches the exact element clicked (<code>event.target</code>).</div>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">Phase 3 • Bubbling</div>
+                        <div class="pipe-title">Bubble Up (Default)</div>
+                        <div class="pipe-desc">Event bubbles upward from the target through parent elements all the way back up to <code>window</code>.</div>
+                    </div>
+                </div>
+
+                <div class="prop-box" style="border-left: 4px solid var(--accent-emerald); margin-top: 20px;">
+                    <div class="prop-title" style="color: var(--accent-emerald);">Why Event Delegation is a Senior-Level Must</div>
+                    <div class="prop-item"><span class="p-name">The Problem:</span> If you have 1,000 items in a list, attaching <code>addEventListener</code> to each <code>&lt;li&gt;</code> consumes huge V8 memory heap allocations and fails on newly created items.</div>
+                    <div class="prop-item"><span class="p-name">The Solution:</span> Attach <strong>ONE listener to the parent element</strong> (<code>#teaList</code>) and inspect <code>event.target.matches(".teaItem")</code> when the event bubbles up!</div>
+                    <div class="prop-item"><span class="p-name">Dynamic Item Support:</span> Newly created items automatically work immediately without re-attaching listeners.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Example 7: Event Delegation on Tea List</span><br>
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"teaList"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, <span class="cs-kw">function</span> (<span class="cs-prop">event</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">event</span>.<span class="cs-prop">target</span> &amp;&amp; <span class="cs-prop">event</span>.<span class="cs-prop">target</span>.<span class="cs-fn">matches</span>(<span class="cs-val">".teaItem"</span>)) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">alert</span>(<span class="cs-val">"You selected: "</span> + <span class="cs-prop">event</span>.<span class="cs-prop">target</span>.<span class="cs-prop">textContent</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    });
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. DOM Lifecycle Events -->
+        <section id="lifecycle-timing">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <h2 class="section-title">Page Lifecycle: DOMContentLoaded vs window.onload</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">DOMContentLoaded • load • Script Placement &amp; Timing</span>
+                    <span class="tag-badge badge-runtime">Lifecycle</span>
+                </div>
+                <p class="desc-text">Executing scripts before the DOM elements exist in memory triggers <code>TypeError: Cannot read properties of null</code>. Understanding lifecycle events ensures your JavaScript initializes reliably.</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Lifecycle Event</th>
+                                <th>Target Object</th>
+                                <th>When it Fires</th>
+                                <th>Best Used For</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>DOMContentLoaded</code></td>
+                                <td><code>document</code></td>
+                                <td>When HTML is fully parsed and DOM tree is constructed (styles/images may still be loading).</td>
+                                <td><strong>Standard App Startup</strong>: Attaching listeners, querying elements, rendering data (Fastest).</td>
+                            </tr>
+                            <tr>
+                                <td><code>load</code></td>
+                                <td><code>window</code></td>
+                                <td>When the entire page has loaded, including all stylesheets, images, iframes, and sub-resources.</td>
+                                <td>Calculating image dimensions, canvas rendering, third-party analytics trackers.</td>
+                            </tr>
+                            <tr>
+                                <td><code>beforeunload</code></td>
+                                <td><code>window</code></td>
+                                <td>Right before user leaves page or closes tab.</td>
+                                <td>Warning user of unsaved form changes.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// Example 9: Safe initialization with DOMContentLoaded</span><br>
+                    <span class="cs-prop">document</span>.<span class="cs-fn">addEventListener</span>(<span class="cs-val">"DOMContentLoaded"</span>, <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"domStatus"</span>).<span class="cs-prop">textContent</span> = <span class="cs-val">"DOM fully loaded"</span>;<br>
+                    });
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. 10 Interactive Live Exercises -->
+        <section id="hands-on-exercises">
+            <div class="section-header">
+                <div class="section-number">9</div>
+                <h2 class="section-title">Hands-on Lab: 10 Interactive DOM Exercises (From part8/dom.html &amp; script.js)</h2>
+            </div>
+
+            <p class="desc-text">Interact directly with the living sandboxes below to test and master each of the 10 code challenges implemented in your <code>part8</code> files:</p>
+
+            <!-- Exercise 1 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 1: Accessing Elements &amp; textContent Mutation</span>
+                    <span class="sandbox-badge">script.js • lines 1-8</span>
+                </div>
+                <div class="sandbox-ui">
+                    <p id="demoParagraph">This is a paragraph. Click the button to change me!</p>
+                    <button id="demoChangeTextBtn" class="demo-btn">Change Text</button>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"changeTextButton"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">paragraph</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"myParagraph"</span>);<br>
+                    &nbsp;&nbsp;<span class="cs-prop">paragraph</span>.<span class="cs-prop">textContent</span> = <span class="cs-val">"The paragraph is changed"</span>;<br>
+                    });
+                </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 2: DOM Traversal (firstElementChild) &amp; Class Manipulation</span>
+                    <span class="sandbox-badge">script.js • lines 10-17</span>
+                </div>
+                <div class="sandbox-ui">
+                    <ul id="demoCitiesList" class="demo-list">
+                        <li>New York</li>
+                        <li>Tokyo</li>
+                        <li>Paris</li>
+                        <li>London</li>
+                    </ul>
+                    <button id="demoHighlightFirstCityBtn" class="demo-btn">Highlight First City</button>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-kw">let</span> <span class="cs-prop">citiesList</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"citiesList"</span>);<br>
+                    <span class="cs-prop">citiesList</span>.<span class="cs-prop">firstElementChild</span>.<span class="cs-prop">classList</span>.<span class="cs-fn">add</span>(<span class="cs-val">"highlight"</span>);
+                </div>
+            </div>
+
+            <!-- Exercise 3 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 3: Manipulating Content &amp; Inline CSS Styles</span>
+                    <span class="sandbox-badge">script.js • lines 19-26</span>
+                </div>
+                <div class="sandbox-ui">
+                    <div>Order: <span id="demoCoffeeType" style="font-weight: 700; color: var(--chai-gold);">Latte</span></div>
+                    <button id="demoChangeOrderBtn" class="demo-btn">Change Order to Espresso</button>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-kw">let</span> <span class="cs-prop">coffeeType</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"coffeeType"</span>);<br>
+                    <span class="cs-prop">coffeeType</span>.<span class="cs-prop">textContent</span> = <span class="cs-val">"Espresso"</span>;<br>
+                    <span class="cs-prop">coffeeType</span>.<span class="cs-prop">style</span>.<span class="cs-prop">backgroundColor</span> = <span class="cs-val">"brown"</span>;<br>
+                    <span class="cs-prop">coffeeType</span>.<span class="cs-prop">style</span>.<span class="cs-prop">padding</span> = <span class="cs-val">"5px"</span>;
+                </div>
+            </div>
+
+            <!-- Exercise 4 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 4: Creating &amp; Appending Elements (createElement &amp; appendChild)</span>
+                    <span class="sandbox-badge">script.js • lines 28-34</span>
+                </div>
+                <div class="sandbox-ui">
+                    <button id="demoAddNewItemBtn" class="demo-btn">Add a New Item to the Shopping List</button>
+                    <ul id="demoShoppingList" class="demo-list">
+                        <li>Bread</li>
+                        <li>Milk</li>
+                    </ul>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-kw">let</span> <span class="cs-prop">newItem</span> = <span class="cs-prop">document</span>.<span class="cs-fn">createElement</span>(<span class="cs-val">"li"</span>);<br>
+                    <span class="cs-prop">newItem</span>.<span class="cs-prop">textContent</span> = <span class="cs-val">"Eggs"</span>;<br>
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"shoppingList"</span>).<span class="cs-fn">appendChild</span>(<span class="cs-prop">newItem</span>);
+                </div>
+            </div>
+
+            <!-- Exercise 5 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 5: Element Removal (lastElementChild.remove())</span>
+                    <span class="sandbox-badge">script.js • lines 36-42</span>
+                </div>
+                <div class="sandbox-ui">
+                    <ul id="demoTaskList" class="demo-list">
+                        <li>Task 1</li>
+                        <li>Task 2</li>
+                        <li>Task 3</li>
+                    </ul>
+                    <button id="demoRemoveLastTaskBtn" class="demo-btn" style="background: linear-gradient(135deg, var(--accent-rose), #be123c); color: #fff;">Remove Last Task</button>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-kw">let</span> <span class="cs-prop">taskList</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"taskList"</span>);<br>
+                    <span class="cs-prop">taskList</span>.<span class="cs-prop">lastElementChild</span>.<span class="cs-fn">remove</span>();
+                </div>
+            </div>
+
+            <!-- Exercise 6 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 6: Double-Click Event Listener (dblclick)</span>
+                    <span class="sandbox-badge">script.js • lines 44-50</span>
+                </div>
+                <div class="sandbox-ui">
+                    <button id="demoDblClickBtn" class="demo-btn">Double Click Me!</button>
+                    <span id="demoDblClickStatus" style="margin-left: 14px; font-size: 0.9rem; color: var(--accent-emerald);"></span>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"clickMeButton"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"dblclick"</span>, <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">alert</span>(<span class="cs-val">"chaicode"</span>);<br>
+                    });
+                </div>
+            </div>
+
+            <!-- Exercise 7 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 7: Event Delegation on Dynamic List (event.target.matches)</span>
+                    <span class="sandbox-badge">script.js • lines 52-58</span>
+                </div>
+                <div class="sandbox-ui">
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 8px;">Click any tea item (handler is attached once on the parent &lt;ul&gt;!):</p>
+                    <ul id="demoTeaList" class="demo-list">
+                        <li class="teaItem">Green Tea</li>
+                        <li class="teaItem">Black Tea</li>
+                        <li class="teaItem">Oolong Tea</li>
+                    </ul>
+                    <div id="demoTeaSelection" style="margin-top: 10px; font-weight: 600; color: var(--chai-gold);">Selection: None</div>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"teaList"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, <span class="cs-kw">function</span> (<span class="cs-prop">event</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">event</span>.<span class="cs-prop">target</span> &amp;&amp; <span class="cs-prop">event</span>.<span class="cs-prop">target</span>.<span class="cs-fn">matches</span>(<span class="cs-val">".teaItem"</span>)) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">alert</span>(<span class="cs-val">"You selected: "</span> + <span class="cs-prop">event</span>.<span class="cs-prop">target</span>.<span class="cs-prop">textContent</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    });
+                </div>
+            </div>
+
+            <!-- Exercise 8 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 8: Form Submission &amp; event.preventDefault()</span>
+                    <span class="sandbox-badge">script.js • lines 60-71</span>
+                </div>
+                <div class="sandbox-ui">
+                    <form id="demoFeedbackForm" style="display: flex; flex-direction: column; gap: 8px; max-width: 380px;">
+                        <label for="demoFeedbackInput" style="font-size: 0.9rem; font-weight: 600;">Your Feedback:</label>
+                        <input type="text" id="demoFeedbackInput" class="demo-input" placeholder="Type thoughts here..." required />
+                        <button type="submit" class="demo-btn" style="width: fit-content;">Submit Feedback</button>
+                    </form>
+                    <p id="demoFeedbackDisplay" style="margin-top: 12px; font-weight: 600; color: var(--accent-sky);"></p>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"feedbackForm"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"submit"</span>, <span class="cs-kw">function</span> (<span class="cs-prop">event</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">event</span>.<span class="cs-fn">preventDefault</span>(); <span class="cs-comm">// Stops HTTP reload</span><br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">feedback</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"feedbackInput"</span>).<span class="cs-prop">value</span>;<br>
+                    &nbsp;&nbsp;<span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"feedbackDisplay"</span>).<span class="cs-prop">textContent</span> = <span class="cs-val">`Feedback is: ${feedback}`</span>;<br>
+                    });
+                </div>
+            </div>
+
+            <!-- Exercise 9 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 9: DOM Content Loaded Lifecycle Event</span>
+                    <span class="sandbox-badge">script.js • lines 73-77</span>
+                </div>
+                <div class="sandbox-ui">
+                    <div style="font-size: 0.95rem;">Status: <span id="demoDomStatus" style="font-weight: 700; color: var(--accent-emerald);">Live &amp; DOM Fully Loaded</span></div>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-prop">document</span>.<span class="cs-fn">addEventListener</span>(<span class="cs-val">"DOMContentLoaded"</span>, <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"domStatus"</span>).<span class="cs-prop">textContent</span> = <span class="cs-val">"DOM fully loaded"</span>;<br>
+                    });
+                </div>
+            </div>
+
+            <!-- Exercise 10 -->
+            <div class="sandbox-card">
+                <div class="sandbox-header">
+                    <span class="tag-name">Exercise 10: Toggling CSS Classes (classList.toggle)</span>
+                    <span class="sandbox-badge">script.js • lines 79-85</span>
+                </div>
+                <div class="sandbox-ui">
+                    <p id="demoDescriptionText" style="padding: 10px; border-radius: 8px; background: rgba(31, 41, 55, 0.5); width: fit-content; margin-bottom: 12px; transition: all 0.3s ease;">This text will change color and highlight!</p>
+                    <button id="demoToggleHighlightBtn" class="demo-btn">Toggle Highlight</button>
+                </div>
+                <div class="code-snippet">
+                    <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"toggleHighlight"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">descriptionText</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"descriptionText"</span>);<br>
+                    &nbsp;&nbsp;<span class="cs-prop">descriptionText</span>.<span class="cs-prop">classList</span>.<span class="cs-fn">toggle</span>(<span class="cs-val">"highlight"</span>);<br>
+                    });
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. DOM Methods Cheat Sheet -->
+        <section id="cheat-sheet">
+            <div class="section-header">
+                <div class="section-number">10</div>
+                <h2 class="section-title">DOM Methods &amp; Properties Master Reference Cheat Sheet</h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>API Category</th>
+                            <th>Method / Property</th>
+                            <th>Syntax Example</th>
+                            <th>Purpose &amp; Return</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Selection</td><td><code>getElementById()</code></td><td><code>document.getElementById('id')</code></td><td>Fastest ID lookup; returns <code>Element</code> or <code>null</code></td></tr>
+                        <tr><td>Selection</td><td><code>querySelector()</code></td><td><code>document.querySelector('.tea')</code></td><td>Matches first element by any CSS selector</td></tr>
+                        <tr><td>Selection</td><td><code>querySelectorAll()</code></td><td><code>document.querySelectorAll('li')</code></td><td>Returns static <code>NodeList</code> of all matches</td></tr>
+                        <tr><td>Traversal</td><td><code>firstElementChild</code></td><td><code>ul.firstElementChild</code></td><td>Returns first child element (skips whitespace)</td></tr>
+                        <tr><td>Traversal</td><td><code>lastElementChild</code></td><td><code>ul.lastElementChild</code></td><td>Returns last child element (skips whitespace)</td></tr>
+                        <tr><td>Traversal</td><td><code>parentElement</code></td><td><code>node.parentElement</code></td><td>Returns parent element node</td></tr>
+                        <tr><td>Traversal</td><td><code>nextElementSibling</code></td><td><code>node.nextElementSibling</code></td><td>Returns immediate next sibling element</td></tr>
+                        <tr><td>Traversal</td><td><code>previousElementSibling</code></td><td><code>node.previousElementSibling</code></td><td>Returns immediate previous sibling element</td></tr>
+                        <tr><td>Content</td><td><code>textContent</code></td><td><code>el.textContent = 'Hello'</code></td><td>Reads/writes text without parsing HTML (XSS-safe)</td></tr>
+                        <tr><td>Content</td><td><code>innerHTML</code></td><td><code>el.innerHTML = '&lt;b&gt;Hi&lt;/b&gt;'</code></td><td>Parses HTML strings into DOM nodes</td></tr>
+                        <tr><td>Form Value</td><td><code>value</code></td><td><code>input.value</code></td><td>Reads or updates text/state of form controls</td></tr>
+                        <tr><td>Style</td><td><code>style.property</code></td><td><code>el.style.backgroundColor</code></td><td>Applies direct inline CSS (uses camelCase)</td></tr>
+                        <tr><td>Classes</td><td><code>classList.add()</code></td><td><code>el.classList.add('active')</code></td><td>Appends class without overwriting others</td></tr>
+                        <tr><td>Classes</td><td><code>classList.remove()</code></td><td><code>el.classList.remove('old')</code></td><td>Removes specified class</td></tr>
+                        <tr><td>Classes</td><td><code>classList.toggle()</code></td><td><code>el.classList.toggle('dark')</code></td><td>Toggles class state on/off</td></tr>
+                        <tr><td>Creation</td><td><code>createElement()</code></td><td><code>document.createElement('div')</code></td><td>Creates a detached in-memory element</td></tr>
+                        <tr><td>Insertion</td><td><code>appendChild()</code></td><td><code>parent.appendChild(child)</code></td><td>Appends child as last element of parent</td></tr>
+                        <tr><td>Insertion</td><td><code>append()</code></td><td><code>parent.append(c1, 'text')</code></td><td>Modern insertion; supports multiple nodes &amp; strings</td></tr>
+                        <tr><td>Removal</td><td><code>remove()</code></td><td><code>el.remove()</code></td><td>Direct self-removal from DOM tree</td></tr>
+                        <tr><td>Events</td><td><code>addEventListener()</code></td><td><code>el.addEventListener('click', fn)</code></td><td>Standard multi-listener binding</td></tr>
+                        <tr><td>Event Control</td><td><code>preventDefault()</code></td><td><code>event.preventDefault()</code></td><td>Cancels browser default behavior (form reloads)</td></tr>
+                        <tr><td>Event Control</td><td><code>stopPropagation()</code></td><td><code>event.stopPropagation()</code></td><td>Stops bubbling up DOM ancestor tree</td></tr>
+                        <tr><td>Delegation</td><td><code>matches()</code></td><td><code>e.target.matches('.teaItem')</code></td><td>Checks if target element matches CSS selector</td></tr>
+                        <tr><td>Lifecycle</td><td><code>DOMContentLoaded</code></td><td><code>document.addEventListener(...)</code></td><td>Fires when DOM is constructed, before images load</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="doc-footer">
+            <p>Created for Chai Aur Code • Modern DOM Foundations &amp; Event Architecture • Part 8 Masterclass</p>
+        </footer>
+
+    </div>
+
+    <!-- Interactive Exercises Script -->
+    <script>
+        // Exercise 1: Change Text
+        document.getElementById("demoChangeTextBtn").addEventListener("click", function () {
+            let paragraph = document.getElementById("demoParagraph");
+            paragraph.textContent = "The paragraph is changed!";
+            paragraph.style.color = "var(--chai-gold)";
+        });
+
+        // Exercise 2: Highlight First City
+        document.getElementById("demoHighlightFirstCityBtn").addEventListener("click", function () {
+            let citiesList = document.getElementById("demoCitiesList");
+            if (citiesList.firstElementChild) {
+                citiesList.firstElementChild.classList.toggle("highlight");
+            }
+        });
+
+        // Exercise 3: Change Order & Styles
+        document.getElementById("demoChangeOrderBtn").addEventListener("click", function () {
+            let coffeeType = document.getElementById("demoCoffeeType");
+            coffeeType.textContent = "Espresso";
+            coffeeType.style.backgroundColor = "brown";
+            coffeeType.style.color = "#ffffff";
+            coffeeType.style.padding = "4px 10px";
+            coffeeType.style.borderRadius = "4px";
+        });
+
+        // Exercise 4: Add New Item
+        let itemIndex = 1;
+        document.getElementById("demoAddNewItemBtn").addEventListener("click", function () {
+            let newItem = document.createElement("li");
+            newItem.textContent = itemIndex === 1 ? "Eggs" : `Item #${itemIndex} (Chai)`;
+            itemIndex++;
+            document.getElementById("demoShoppingList").appendChild(newItem);
+        });
+
+        // Exercise 5: Remove Last Task
+        document.getElementById("demoRemoveLastTaskBtn").addEventListener("click", function () {
+            let taskList = document.getElementById("demoTaskList");
+            if (taskList.lastElementChild) {
+                taskList.lastElementChild.remove();
+            } else {
+                alert("No tasks left to remove!");
+            }
+        });
+
+        // Exercise 6: Double Click
+        document.getElementById("demoDblClickBtn").addEventListener("dblclick", function () {
+            let status = document.getElementById("demoDblClickStatus");
+            status.textContent = "✓ Double-click detected! (chaicode)";
+            setTimeout(() => { status.textContent = ""; }, 2500);
+        });
+
+        // Exercise 7: Event Delegation
+        document.getElementById("demoTeaList").addEventListener("click", function (event) {
+            if (event.target && event.target.matches(".teaItem")) {
+                document.getElementById("demoTeaSelection").textContent = "Selection: " + event.target.textContent;
+            }
+        });
+
+        // Exercise 8: Form Submission & preventDefault
+        document.getElementById("demoFeedbackForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let feedback = document.getElementById("demoFeedbackInput").value;
+            document.getElementById("demoFeedbackDisplay").textContent = `Feedback submitted: "${feedback}"`;
+            document.getElementById("demoFeedbackInput").value = "";
+        });
+
+        // Exercise 10: Toggle Highlight
+        document.getElementById("demoToggleHighlightBtn").addEventListener("click", function () {
+            let text = document.getElementById("demoDescriptionText");
+            text.classList.toggle("highlight");
+        });
+    </script>
+</body>
+</html>
