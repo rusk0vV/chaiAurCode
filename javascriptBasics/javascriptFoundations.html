@@ -669,7 +669,7 @@
             <div class="quick-nav-panel">
                 <div class="quick-nav-header">
                     <span class="quick-nav-title">⚡ Section Index &amp; Quick Jump</span>
-                    <span class="quick-nav-count">21 Topics</span>
+                    <span class="quick-nav-count">24 Topics</span>
                 </div>
                 <div class="quick-nav">
                     <a href="#what-is-js"><span class="nav-num">01</span> What is JavaScript?</a>
@@ -692,7 +692,10 @@
                     <a href="#user-input"><span class="nav-num">18</span> User Input (Browser vs Node.js)</a>
                     <a href="#functions-closures"><span class="nav-num">19</span> Functions &amp; Closures (part5)</a>
                     <a href="#prototypes-oop"><span class="nav-num">20</span> Prototypes &amp; OOP (part6)</a>
-                    <a href="#glossary"><span class="nav-num">21</span> Technical Glossary</a>
+                    <a href="#advanced-async"><span class="nav-num">21</span> Advanced Async (part9)</a>
+                    <a href="#context-closures"><span class="nav-num">22</span> Context &amp; Closures (part9)</a>
+                    <a href="#generators-iterators"><span class="nav-num">23</span> Generators &amp; Iterators (part9)</a>
+                    <a href="#glossary"><span class="nav-num">24</span> Technical Glossary</a>
                 </div>
             </div>
         </header>
@@ -2483,10 +2486,376 @@
             </div>
         </section>
 
-        <!-- 21. Technical Glossary -->
-        <section id="glossary">
+        <!-- 21. Advanced Async (part9) -->
+        <section id="advanced-async">
             <div class="section-header">
                 <div class="section-number">21</div>
+                <h2 class="section-title">Advanced Asynchronous JavaScript: Event Loop, Promises &amp; async/await (part9)</h2>
+            </div>
+
+            <!-- Card 1: Synchronous vs Asynchronous & Event Loop (explore1.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Single-Threaded Call Stack vs Host Web/C++ APIs (explore1.js)</span>
+                    <span class="tag-badge badge-runtime">Event Loop Architecture</span>
+                </div>
+                <p class="desc-text">JavaScript is single-threaded, meaning its runtime possesses exactly one Call Stack and executes instructions one at a time sequentially. However, modern runtimes (Browser and Node.js) handle non-blocking asynchronous operations (timers, network requests, disk I/O) by offloading them to the host environment (Browser Web APIs or Node's C++ libuv thread pool) while the JavaScript main thread continues executing uninterrupted.</p>
+
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">STAGE 01</div>
+                        <div class="pipe-title">Call Stack Execution</div>
+                        <p class="pipe-desc">Synchronous tasks execute immediately in LIFO order. <code>console.log("chaicode")</code> and the synchronous <code>for</code> loop block the stack until fully finished.</p>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">STAGE 02</div>
+                        <div class="pipe-title">Host Offload (libuv / Web API)</div>
+                        <p class="pipe-desc"><code>setTimeout(sayHello, 4000)</code> is registered with the host timer subsystem. The JavaScript engine does not pause or sleep; it immediately continues to subsequent lines.</p>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">STAGE 03</div>
+                        <div class="pipe-title">Macrotask Queue Entry</div>
+                        <p class="pipe-desc">After 4000ms elapsed, the host pushes <code>sayHello</code> into the Macrotask (Callback) Queue. It waits until the main Call Stack is completely clear.</p>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">STAGE 04</div>
+                        <div class="pipe-title">Event Loop Tick</div>
+                        <p class="pipe-desc">The Event Loop continuously monitors the Call Stack. Once the Call Stack is empty, it dequeues <code>sayHello</code> and pushes its execution context onto the Call Stack.</p>
+                    </div>
+                </div>
+
+                <div class="prop-box">
+                    <div class="prop-title">Key Architectural Insights from explore1.js</div>
+                    <div class="prop-item"><span class="p-name">Order of Execution:</span> In <code>explore1.js</code>, even though <code>setTimeout</code> is registered before the loop, all 10 iterations of the synchronous <code>for</code> loop finish and print <code>0..9</code> well before <code>sayHello()</code> executes.</div>
+                    <div class="prop-item"><span class="p-name">Zero-Delay Fallacy:</span> Even a <code>setTimeout(fn, 0)</code> will never execute synchronously; it is guaranteed to wait until the current synchronous execution context has completed and yielded the Call Stack.</div>
+                    <div class="prop-item"><span class="p-name">Thread Starvation Warning:</span> Long-running synchronous CPU calculations block the single thread, preventing the Event Loop from ever picking up pending timer and I/O callbacks.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// explore1.js - Non-blocking event loop execution demonstration</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"chaicode"</span>); <span class="cs-comm">// 1. Synchronous: Executes immediately</span><br><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">sayHello</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"I would like to say Hello"</span>); <span class="cs-comm">// 3. Callback executed after 4000ms</span><br>
+                    }<br><br>
+                    <span class="cs-fn">setTimeout</span>(() =&gt; {<br>
+                    &nbsp;&nbsp;<span class="cs-fn">sayHello</span>();<br>
+                    }, <span class="cs-val">4000</span>); <span class="cs-comm">// Registered with libuv / Web API timer subsystem</span><br><br>
+                    <span class="cs-kw">for</span> (<span class="cs-kw">let</span> <span class="cs-prop">index</span> = <span class="cs-val">0</span>; <span class="cs-prop">index</span> &lt; <span class="cs-val">10</span>; <span class="cs-prop">index</span>++) {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">index</span>); <span class="cs-comm">// 2. Synchronous: Runs loop 0..9 immediately without waiting</span><br>
+                    }
+                </div>
+            </div>
+
+            <!-- Card 2: ES6 Promises & Data Chaining (promises.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Promise States, Microtask Priority &amp; Method Chaining (promises.js)</span>
+                    <span class="tag-badge badge-core">ES6 Asynchronous Control</span>
+                </div>
+                <p class="desc-text">A <code>Promise</code> represents an eventual completion (or failure) of an asynchronous operation and its resulting value. It acts as a state machine with three mutually exclusive states: <code>pending</code> (initial state), <code>fulfilled</code> (operation succeeded, producing a resolved value), and <code>rejected</code> (operation failed, producing a reason/error). Promises solve callback hell by enabling linear chaining through <code>.then()</code> and consolidated error handling via <code>.catch()</code>.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Promise Mechanics &amp; Microtask Scheduling</div>
+                    <div class="prop-item"><span class="p-name">Microtask Queue Priority:</span> Promise resolution callbacks (<code>.then</code>, <code>.catch</code>, <code>.finally</code>) are dispatched to the high-priority Microtask Queue. The Event Loop completely drains the Microtask Queue before processing any timers or I/O callbacks from the Macrotask Queue.</div>
+                    <div class="prop-item"><span class="p-name">Automatic Wrapping in .then():</span> When a <code>.then()</code> handler returns a raw primitive or object (such as <code>return data.toLowerCase()</code>), the runtime automatically wraps it in an implicitly resolved Promise, passing it directly as the input parameter to the next downstream <code>.then()</code>.</div>
+                    <div class="prop-item"><span class="p-name">Error Bubbling:</span> If an error or rejection occurs at any point in the promise pipeline, execution skips subsequent <code>.then()</code> steps and cascades directly down to the nearest <code>.catch()</code> handler.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// promises.js - Creation, chaining, transformation &amp; error handling</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">fetchData</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return new</span> <span class="cs-prop">Promise</span>((<span class="cs-prop">resolve</span>, <span class="cs-prop">reject</span>) =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">setTimeout</span>(() =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">success</span> = <span class="cs-kw">true</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">success</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">resolve</span>(<span class="cs-val">"Data fetched successfully"</span>); <span class="cs-comm">// Transitions from pending to fulfilled</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span class="cs-kw">else</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">reject</span>(<span class="cs-val">"Error fetching data"</span>); <span class="cs-comm">// Transitions from pending to rejected</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}, <span class="cs-val">3000</span>);<br>
+                    &nbsp;&nbsp;});<br>
+                    }<br><br>
+                    <span class="cs-fn">fetchData</span>()<br>
+                    &nbsp;&nbsp;.<span class="cs-fn">then</span>((<span class="cs-prop">data</span>) =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">data</span>); <span class="cs-comm">// "Data fetched successfully"</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-prop">data</span>.<span class="cs-fn">toLowerCase</span>(); <span class="cs-comm">// Return value automatically wrapped into Promise.resolve</span><br>
+                    &nbsp;&nbsp;})<br>
+                    &nbsp;&nbsp;.<span class="cs-fn">then</span>((<span class="cs-prop">value</span>) =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">value</span>); <span class="cs-comm">// "data fetched successfully"</span><br>
+                    &nbsp;&nbsp;})<br>
+                    &nbsp;&nbsp;.<span class="cs-fn">catch</span>((<span class="cs-prop">error</span>) =&gt; <span class="cs-prop">console</span>.<span class="cs-fn">error</span>(<span class="cs-prop">error</span>)); <span class="cs-comm">// Catches any rejection or thrown error</span>
+                </div>
+            </div>
+
+            <!-- Card 3: async / await Syntax & Structured Error Handling (asyncAwait.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Async / Await Syntax Sugar &amp; Synchronous-Style Error Handling (asyncAwait.js)</span>
+                    <span class="tag-badge badge-v8">ES2017 Syntax</span>
+                </div>
+                <p class="desc-text">Introduced in ECMAScript 2017, <code>async/await</code> provides syntactic sugar built directly on top of Promises and Generators. An <code>async</code> function always returns a Promise. The <code>await</code> operator pauses the execution of the containing <code>async</code> function until the awaited Promise settles. Crucially, <code>await</code> does <em>not</em> freeze or block the browser/Node.js main thread; it suspends that specific function's micro-context, returning control of the Call Stack back to the Event Loop to service user events and other tasks.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Core Principles of async / await</div>
+                    <div class="prop-item"><span class="p-name">Promise Return Guarantee:</span> Any non-promise value returned from an <code>async</code> function is automatically wrapped via <code>Promise.resolve(val)</code>. Any uncaught exception inside the function results in an automatic <code>Promise.reject(err)</code>.</div>
+                    <div class="prop-item"><span class="p-name">Idiomatic try...catch:</span> Rather than chaining <code>.catch()</code> callbacks, asynchronous failures (such as <code>reject({ name: "chaicode", url: "https://chaicode.com" })</code>) throw an exception that is cleanly intercepted by a standard <code>try...catch</code> block.</div>
+                    <div class="prop-item"><span class="p-name">Debugging Advantage:</span> Asynchronous code written with <code>async/await</code> generates linear, readable stack traces that pinpoint the exact line of failure without breaking across callback closures.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// asyncAwait.js - Handling Promise rejection using structured try...catch</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">fetchUserData</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return new</span> <span class="cs-prop">Promise</span>((<span class="cs-prop">resolve</span>, <span class="cs-prop">reject</span>) =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">setTimeout</span>(() =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">reject</span>({ <span class="cs-prop">name</span>: <span class="cs-val">"chaicode"</span>, <span class="cs-prop">url</span>: <span class="cs-val">"https://chaicode.com"</span> }); <span class="cs-comm">// Simulated API rejection</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}, <span class="cs-val">3000</span>);<br>
+                    &nbsp;&nbsp;});<br>
+                    }<br><br>
+                    <span class="cs-kw">async function</span> <span class="cs-fn">getUserData</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">try</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Fetching user data..."</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">userData</span> = <span class="cs-kw">await</span> <span class="cs-fn">fetchUserData</span>(); <span class="cs-comm">// Pauses function execution; resumes upon settle</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"User data: "</span>, <span class="cs-prop">userData</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"User data fetched successfully"</span>);<br>
+                    &nbsp;&nbsp;} <span class="cs-kw">catch</span> (<span class="cs-prop">error</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-comm">// Rejected object is caught and logged cleanly</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Error fetching data"</span>, <span class="cs-prop">error</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br><br>
+                    <span class="cs-fn">getUserData</span>();
+                </div>
+            </div>
+
+            <!-- Card 4: Sequential vs Parallel Execution (asyncAwaitpart2.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Concurrency Optimization: Sequential vs Promise.all (asyncAwaitpart2.js)</span>
+                    <span class="tag-badge badge-jit">Performance Engineering</span>
+                </div>
+                <p class="desc-text">A common architectural anti-pattern is awaiting independent asynchronous operations sequentially. In <code>asyncAwaitpart2.js</code>, fetching post data requires 2000ms and comments require 3000ms. Awaiting them sequentially creates an unnecessary waterfall of 5000ms. By executing both requests concurrently via <code>Promise.all()</code>, total latency is bounded only by the slowest promise: <code>max(2000ms, 3000ms) = 3000ms</code>, shaving 40% off total execution time.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Sequential vs Concurrent Latency Analysis</div>
+                    <div class="prop-item"><span class="p-name">Sequential Waterfall:</span> <code>const p = await fetchPost(); const c = await fetchComment();</code> -&gt; Operation 2 does not even start until Operation 1 is fully resolved. Total = 2s + 3s = 5 seconds.</div>
+                    <div class="prop-item"><span class="p-name">Concurrent Promise.all:</span> <code>const [p, c] = await Promise.all([fetchPost(), fetchComment()]);</code> -&gt; Both background operations initiate simultaneously. Total = 3 seconds.</div>
+                    <div class="prop-item"><span class="p-name">Fail-Fast Behavior:</span> If any promise inside <code>Promise.all</code> rejects, the entire aggregate promise rejects immediately without waiting for other pending promises to settle.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// asyncAwaitpart2.js - Concurrent execution using Promise.all &amp; array destructuring</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">fetchPostData</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return new</span> <span class="cs-prop">Promise</span>((<span class="cs-prop">resolve</span>) =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">setTimeout</span>(() =&gt; { <span class="cs-fn">resolve</span>(<span class="cs-val">"Post Data fetched"</span>); }, <span class="cs-val">2000</span>);<br>
+                    &nbsp;&nbsp;});<br>
+                    }<br><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">fetchCommentData</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">return new</span> <span class="cs-prop">Promise</span>((<span class="cs-prop">resolve</span>) =&gt; {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">setTimeout</span>(() =&gt; { <span class="cs-fn">resolve</span>(<span class="cs-val">"Comment data fetched."</span>); }, <span class="cs-val">3000</span>);<br>
+                    &nbsp;&nbsp;});<br>
+                    }<br><br>
+                    <span class="cs-kw">async function</span> <span class="cs-fn">getBlogData</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">try</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"Fetching blog data"</span>);<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-comm">// BAD (Sequential Waterfall = 5 seconds):</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-comm">// const postData = await fetchPostData();</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-comm">// const commentData = await fetchCommentData();</span><br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-comm">// OPTIMIZED (Parallel Execution = 3 seconds total):</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">const</span> [<span class="cs-prop">postData</span>, <span class="cs-prop">commentData</span>] = <span class="cs-kw">await</span> <span class="cs-prop">Promise</span>.<span class="cs-fn">all</span>([<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">fetchPostData</span>(),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">fetchCommentData</span>(),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;]);<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">postData</span>);    <span class="cs-comm">// "Post Data fetched"</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">commentData</span>); <span class="cs-comm">// "Comment data fetched."</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">"fetch complete"</span>);<br>
+                    &nbsp;&nbsp;} <span class="cs-kw">catch</span> (<span class="cs-prop">error</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">error</span>(<span class="cs-val">"Error fetching blog data"</span>, <span class="cs-prop">error</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br><br>
+                    <span class="cs-fn">getBlogData</span>();
+                </div>
+            </div>
+        </section>
+
+        <!-- 22. Context & Closures (part9) -->
+        <section id="context-closures">
+            <div class="section-header">
+                <div class="section-number">22</div>
+                <h2 class="section-title">Advanced Runtime Context: Closures, this &amp; Prototypal Inheritance (part9)</h2>
+            </div>
+
+            <!-- Card 1: Closures & Memory Layout (closure.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Closures, Lexical Environment &amp; Heap Escape Analysis (closure.js)</span>
+                    <span class="tag-badge badge-runtime">Memory Architecture</span>
+                </div>
+                <p class="desc-text">A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In JavaScript, functions form closures over variables in their parent scopes. Under normal circumstances, when a function finishes executing, its stack frame is popped and discarded. However, when an inner function retains references to outer variables and escapes the outer function, V8's compiler uses Escape Analysis to allocate those variables in a persistent Heap Context object (<code>[[Scopes]]</code>), preserving state across invocations.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">Memory Allocation &amp; Scope Retention Mechanics</div>
+                    <div class="prop-item"><span class="p-name">Stack Frame Life Cycle:</span> When <code>outer()</code> is called, an execution context is created on the Call Stack. It initializes <code>let counter = 4</code> and returns an anonymous function. Once <code>outer()</code> completes, its frame is removed from the Call Stack.</div>
+                    <div class="prop-item"><span class="p-name">Heap Context Preservation:</span> Because the returned inner function retains a lexical reference to <code>counter</code>, the V8 engine promotes <code>counter</code> to a Heap Context slot referenced by the inner function's internal <code>[[Scopes]]</code> property.</div>
+                    <div class="prop-item"><span class="p-name">Independent Closure Instances:</span> Each invocation of <code>outer()</code> creates an entirely distinct Heap Context allocation. Two instances created from <code>outer()</code> maintain completely private, isolated counters that never collide.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// closure.js - Function state retention across execution context termination</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">outer</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">counter</span> = <span class="cs-val">4</span>; <span class="cs-comm">// Allocated in Heap Context via V8 escape analysis</span><br>
+                    &nbsp;&nbsp;<span class="cs-kw">return function</span> () {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">counter</span>++;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">return</span> <span class="cs-prop">counter</span>; <span class="cs-comm">// Inner function closes over 'counter'</span><br>
+                    &nbsp;&nbsp;};<br>
+                    }<br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">increment</span> = <span class="cs-fn">outer</span>(); <span class="cs-comm">// outer() finishes and is popped from stack; closure persists</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">increment</span>()); <span class="cs-comm">// 5</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">increment</span>()); <span class="cs-comm">// 6</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">increment</span>()); <span class="cs-comm">// 7</span>
+                </div>
+            </div>
+
+            <!-- Card 2: The this Keyword & Binding (thisContext.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">The this Keyword, Execution Contexts &amp; Explicit Binding (thisContext.js)</span>
+                    <span class="tag-badge badge-core">Dynamic Binding</span>
+                </div>
+                <p class="desc-text">In JavaScript, the <code>this</code> keyword is not bound statically to where a function is declared; rather, its binding is dynamic and evaluated at runtime based strictly on <em>how the function is called</em> (the call-site). When a method is called directly as a property of an object (<code>person.greet()</code>), <code>this</code> refers to the base object. But when the method is extracted into a standalone reference (<code>const fn = person.greet; fn()</code>), its receiver context is completely lost, causing <code>this</code> to become <code>undefined</code> (in strict mode) or the global object.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">The 4 Rules of this Binding &amp; Context Methods</div>
+                    <div class="prop-item"><span class="p-name">1. Implicit Binding:</span> When invoked with a dot (e.g. <code>person.greet()</code>), <code>this</code> resolves to the object immediately preceding the dot (<code>person</code>).</div>
+                    <div class="prop-item"><span class="p-name">2. Default (Lost) Binding:</span> When assigning a method to an unattached variable (<code>const greetFunction = person.greet</code>) and invoking <code>greetFunction()</code>, context is stripped and <code>this.name</code> resolves to <code>undefined</code>.</div>
+                    <div class="prop-item"><span class="p-name">3. .bind(thisArg):</span> Permanently creates and returns an exotic bound function whose <code>this</code> context is locked to <code>{ name: "John" }</code> regardless of future call-sites.</div>
+                    <div class="prop-item"><span class="p-name">4. .call(thisArg, ...args) &amp; .apply(thisArg, [args]):</span> Immediately invokes the target function with an explicit <code>this</code> binding, passing arguments either individually or as an array.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// thisContext.js - Demonstrating context loss and explicit binding via .bind()</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">person</span> = {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">name</span>: <span class="cs-val">"Hitesh"</span>,<br>
+                    &nbsp;&nbsp;<span class="cs-fn">greet</span>() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">`Hi, I am ${this.name}`</span>);<br>
+                    &nbsp;&nbsp;},<br>
+                    };<br><br>
+                    <span class="cs-prop">person</span>.<span class="cs-fn">greet</span>(); <span class="cs-comm">// Implicit Binding: prints "Hi, I am Hitesh"</span><br><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">greetFunction</span> = <span class="cs-prop">person</span>.<span class="cs-prop">greet</span>; <span class="cs-comm">// Extracted function reference</span><br>
+                    <span class="cs-fn">greetFunction</span>(); <span class="cs-comm">// Context Lost! this.name is undefined ("Hi, I am undefined")</span><br><br>
+                    <span class="cs-comm">// Explicit Binding: .bind creates a permanently bound function</span><br>
+                    <span class="cs-kw">const</span> <span class="cs-prop">boundGreet</span> = <span class="cs-prop">person</span>.<span class="cs-prop">greet</span>.<span class="cs-fn">bind</span>({ <span class="cs-prop">name</span>: <span class="cs-val">"John"</span> });<br>
+                    <span class="cs-fn">boundGreet</span>(); <span class="cs-comm">// Explicit Binding: prints "Hi, I am John"</span><br><br>
+                    <span class="cs-comm">// .call vs .apply vs .bind:</span><br>
+                    <span class="cs-comm">// person.greet.call({ name: "Alice" }); // Invokes immediately with comma args</span><br>
+                    <span class="cs-comm">// person.greet.apply({ name: "Bob" });  // Invokes immediately with array args</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Prototypal Inheritance & Constructor Functions (prototypalInheritance.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Prototypal Inheritance, Prototype Delegation &amp; new Keyword (prototypalInheritance.js)</span>
+                    <span class="tag-badge badge-v8">Object Model Architecture</span>
+                </div>
+                <p class="desc-text">JavaScript uses prototypal inheritance rather than classical class-based inheritance. Every JavaScript object possesses a hidden internal link called <code>[[Prototype]]</code> (accessible via <code>__proto__</code> or <code>Object.getPrototypeOf</code>). When accessing a property or method on an instance, if the engine cannot find it directly on the object, it traverses up the prototype chain until it finds the property or reaches <code>null</code>. Attaching methods to a constructor's <code>prototype</code> maximizes memory efficiency by sharing one single function instance across all instances.</p>
+
+                <div class="prop-box">
+                    <div class="prop-title">The 4-Step Lifecycle of the new Keyword</div>
+                    <div class="prop-item"><span class="p-name">Step 1: Allocation:</span> Allocates a new, empty plain object in Heap memory (<code>{}</code>).</div>
+                    <div class="prop-item"><span class="p-name">Step 2: Prototype Linkage:</span> Sets the new object's internal <code>[[Prototype]]</code> to point to <code>Constructor.prototype</code> (i.e. <code>hitesh.__proto__ === Person.prototype</code>).</div>
+                    <div class="prop-item"><span class="p-name">Step 3: Execution:</span> Executes the constructor function body with <code>this</code> bound to the newly allocated object (assigning <code>this.name = name</code>).</div>
+                    <div class="prop-item"><span class="p-name">Step 4: Return:</span> Implicitly returns the newly created object, unless the constructor function explicitly returns its own non-primitive object.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// prototypalInheritance.js - Constructor function &amp; prototype delegation</span><br>
+                    <span class="cs-kw">function</span> <span class="cs-fn">Person</span>(<span class="cs-prop">name</span>) {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">this</span>.<span class="cs-prop">name</span> = <span class="cs-prop">name</span>; <span class="cs-comm">// Instance-specific property</span><br>
+                    }<br><br>
+                    <span class="cs-comm">// Shared prototype method: Stored ONCE in Heap memory, shared by all instances</span><br>
+                    <span class="cs-prop">Person</span>.<span class="cs-prop">prototype</span>.<span class="cs-fn">greet</span> = <span class="cs-kw">function</span> () {<br>
+                    &nbsp;&nbsp;<span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-val">`Hello, my name is ${this.name}`</span>);<br>
+                    };<br><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">hitesh</span> = <span class="cs-kw">new</span> <span class="cs-fn">Person</span>(<span class="cs-val">"hitesh"</span>);<br>
+                    <span class="cs-prop">hitesh</span>.<span class="cs-fn">greet</span>(); <span class="cs-comm">// "Hello, my name is hitesh" (Found via prototype delegation)</span><br><br>
+                    <span class="cs-comm">// Verification of prototype chain:</span><br>
+                    <span class="cs-comm">// hitesh.hasOwnProperty("name")  === true  (Own property)</span><br>
+                    <span class="cs-comm">// hitesh.hasOwnProperty("greet") === false (Inherited from Person.prototype)</span><br>
+                    <span class="cs-comm">// Object.getPrototypeOf(hitesh)   === Person.prototype</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 23. Generators & Iterators (part9) -->
+        <section id="generators-iterators">
+            <div class="section-header">
+                <div class="section-number">23</div>
+                <h2 class="section-title">Generators &amp; The Iterator Protocol (part9)</h2>
+            </div>
+
+            <!-- Card 1: Generator Functions & The Iterator Protocol (generatorIterator.js) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="tag-name">Generator Functions (function*), yield &amp; State Machines (generatorIterator.js)</span>
+                    <span class="tag-badge badge-jit">ES6 Advanced Iteration</span>
+                </div>
+                <p class="desc-text">Standard JavaScript functions follow a "run-to-completion" execution model: once invoked, a function runs until it returns or throws an error, and its execution context cannot be paused. Generator functions, denoted by the <code>function*</code> syntax, revolutionize this paradigm. When called, a generator function does not execute its body immediately; instead, it returns an exotic <code>Generator</code> object conforming to both the Iterable and Iterator protocols, capable of pausing execution via <code>yield</code> and resuming upon request.</p>
+
+                <div class="pipeline-flow">
+                    <div class="pipe-step">
+                        <div class="pipe-badge">PHASE 01</div>
+                        <div class="pipe-title">Instantiation</div>
+                        <p class="pipe-desc"><code>let gen = numberGenerator()</code> instantiates a generator state machine in the <code>suspended</code> state without running line 1.</p>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">PHASE 02</div>
+                        <div class="pipe-title">Yield &amp; Pause</div>
+                        <p class="pipe-desc">Calling <code>gen.next()</code> executes code until hitting <code>yield 1</code>. It packages the value and suspends local variables and program counter.</p>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">PHASE 03</div>
+                        <div class="pipe-title">Value &amp; Done Contract</div>
+                        <p class="pipe-desc">Returns <code>{ value: 1, done: false }</code>. The caller receives the evaluated payload while the generator remains in memory waiting for next tick.</p>
+                    </div>
+                    <div class="pipe-step">
+                        <div class="pipe-badge">PHASE 04</div>
+                        <div class="pipe-title">Exhaustion (Done)</div>
+                        <p class="pipe-desc">When all yields are exhausted, the generator transitions to <code>closed</code>, returning <code>{ value: undefined, done: true }</code> on all subsequent calls.</p>
+                    </div>
+                </div>
+
+                <div class="prop-box">
+                    <div class="prop-title">Architectural Characteristics of Generators</div>
+                    <div class="prop-item"><span class="p-name">Lazy Evaluation:</span> Generator values are generated on-demand one by one rather than upfront. This enables infinite streams, massive dataset chunking, and zero unnecessary memory overhead.</div>
+                    <div class="prop-item"><span class="p-name">Isolated Execution States:</span> Each call to <code>numberGenerator()</code> creates an independent instance. In <code>generatorIterator.js</code>, advancing <code>gen</code> through yields 1, 2, and 3 has zero impact on <code>genTwo</code>, which remains at yield 1.</div>
+                    <div class="prop-item"><span class="p-name">Bidirectional Communication:</span> In addition to yielding values outward, calling <code>gen.next(inboundValue)</code> can pass values <em>into</em> the generator, resuming execution with that input at the <code>yield</code> expression.</div>
+                </div>
+
+                <div class="code-snippet">
+                    <span class="cs-comm">// generatorIterator.js - Generator function declaration, yield &amp; independent iteration</span><br>
+                    <span class="cs-kw">function*</span> <span class="cs-fn">numberGenerator</span>() {<br>
+                    &nbsp;&nbsp;<span class="cs-kw">yield</span> <span class="cs-val">1</span>; <span class="cs-comm">// Suspends execution; yields 1 to caller</span><br>
+                    &nbsp;&nbsp;<span class="cs-kw">yield</span> <span class="cs-val">2</span>; <span class="cs-comm">// Suspends execution; yields 2 to caller</span><br>
+                    &nbsp;&nbsp;<span class="cs-kw">yield</span> <span class="cs-val">3</span>; <span class="cs-comm">// Suspends execution; yields 3 to caller</span><br>
+                    }<br><br>
+                    <span class="cs-comm">// Creating two distinct, independent generator instances</span><br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">gen</span> = <span class="cs-fn">numberGenerator</span>();<br>
+                    <span class="cs-kw">let</span> <span class="cs-prop">genTwo</span> = <span class="cs-fn">numberGenerator</span>();<br><br>
+                    <span class="cs-comm">// Consuming first generator (gen)</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">gen</span>.<span class="cs-fn">next</span>().<span class="cs-prop">value</span>); <span class="cs-comm">// 1  ({ value: 1, done: false })</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">gen</span>.<span class="cs-fn">next</span>().<span class="cs-prop">value</span>); <span class="cs-comm">// 2  ({ value: 2, done: false })</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">gen</span>.<span class="cs-fn">next</span>().<span class="cs-prop">value</span>); <span class="cs-comm">// 3  ({ value: 3, done: false })</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">gen</span>.<span class="cs-fn">next</span>().<span class="cs-prop">value</span>); <span class="cs-comm">// undefined ({ value: undefined, done: true })</span><br><br>
+                    <span class="cs-comm">// Second generator (genTwo) remains untouched and independent</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">genTwo</span>.<span class="cs-fn">next</span>().<span class="cs-prop">value</span>); <span class="cs-comm">// 1  ({ value: 1, done: false })</span><br>
+                    <span class="cs-prop">console</span>.<span class="cs-fn">log</span>(<span class="cs-prop">genTwo</span>.<span class="cs-fn">next</span>().<span class="cs-prop">value</span>); <span class="cs-comm">// 2  ({ value: 2, done: false })</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 24. Technical Glossary -->
+        <section id="glossary">
+            <div class="section-header">
+                <div class="section-number">24</div>
                 <h2 class="section-title">Technical Glossary &amp; Interview Quick Reference</h2>
             </div>
 
@@ -2561,6 +2930,19 @@
                         <tr><td><code>Static Method</code></td><td>OOP</td><td>Method attached directly to the class constructor rather than its prototype or instances.</td></tr>
                         <tr><td><code>Getter / Setter</code></td><td>OOP</td><td>Accessor methods executing custom logic and validation upon property read or write.</td></tr>
                         <tr><td><code>Monkey Patching</code></td><td>Architecture</td><td>Dynamically modifying or extending runtime built-in prototypes (e.g. <code>Array.prototype</code>).</td></tr>
+                        <tr><td><code>Promise</code></td><td>Asynchronous</td><td>Object representing eventual completion (fulfilled) or failure (rejected) of an async operation.</td></tr>
+                        <tr><td><code>Microtask Queue</code></td><td>Event Loop</td><td>Highest priority queue for Promise callbacks (<code>.then</code>, <code>.catch</code>) processed before macrotasks.</td></tr>
+                        <tr><td><code>Macrotask Queue</code></td><td>Event Loop</td><td>Queue for host timers (<code>setTimeout</code>), I/O events, and UI rendering ticks.</td></tr>
+                        <tr><td><code>async / await</code></td><td>Asynchronous</td><td>Syntactic sugar over Promises and Generators enabling synchronous-looking asynchronous code.</td></tr>
+                        <tr><td><code>Promise.all()</code></td><td>Concurrency</td><td>Combinator executing multiple promises concurrently, failing fast if any single promise rejects.</td></tr>
+                        <tr><td><code>Escape Analysis</code></td><td>Compiler (V8)</td><td>Compiler optimization determining whether a variable outlives its stack frame to allocate it in Heap.</td></tr>
+                        <tr><td><code>this Keyword</code></td><td>Context</td><td>Dynamic runtime identifier referencing the execution context or object receiver of the current call-site.</td></tr>
+                        <tr><td><code>.bind()</code></td><td>Context</td><td>Method returning a new function permanently bound to a specified <code>this</code> context object.</td></tr>
+                        <tr><td><code>.call() / .apply()</code></td><td>Context</td><td>Methods immediately invoking a function with an explicit <code>this</code> context and arguments.</td></tr>
+                        <tr><td><code>Prototype Delegation</code></td><td>OOP</td><td>Lookup mechanism traversing <code>[[Prototype]]</code> links when a property is missing on an instance.</td></tr>
+                        <tr><td><code>Generator Function (function*)</code></td><td>Iteration</td><td>Special function that can be paused via <code>yield</code> and resumed on-demand, returning an Iterator.</td></tr>
+                        <tr><td><code>yield Keyword</code></td><td>Iteration</td><td>Operator suspending generator function execution and emitting a <code>{ value, done }</code> iterator result.</td></tr>
+                        <tr><td><code>Iterator Protocol</code></td><td>Iteration</td><td>Standard interface defining the <code>.next()</code> method returning <code>{ value: any, done: boolean }</code>.</td></tr>
                     </tbody>
                 </table>
             </div>
