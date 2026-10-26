@@ -6,7 +6,7 @@ function sayHello() {
 
 setTimeout(() => {
     sayHello();
-}, 4000);
+}, 3000);
 
 for (let index = 0; index < 10; index++) {
     console.log(index);
