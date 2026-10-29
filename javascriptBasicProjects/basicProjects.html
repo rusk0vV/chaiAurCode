@@ -3,22 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Basic Projects &amp; DOM Architecture • Chai Aur Code</title>
+    <title>JavaScript Basic Projects • Chai Aur Code</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #030712;
-            --bg-secondary: #0b0f19;
             --bg-card: rgba(17, 24, 39, 0.78);
-            --bg-card-hover: rgba(31, 41, 55, 0.85);
             --border-color: rgba(55, 65, 81, 0.55);
-            --border-glow: rgba(245, 158, 11, 0.25);
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --chai-gold: #f59e0b;
-            --chai-amber: #d97706;
             --accent-sky: #38bdf8;
             --accent-emerald: #10b981;
             --accent-violet: #a855f7;
@@ -28,548 +24,326 @@
             --font-mono: 'Fira Code', monospace;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-primary);
             background-image:
                 radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+                radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%);
             color: var(--text-main);
             font-family: var(--font-main);
-            line-height: 1.65;
-            padding: 24px;
-            min-height: 100vh;
+            line-height: 1.6;
+            padding: 32px 20px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
+        .container { max-width: 960px; margin: 0 auto; }
 
         .doc-header {
             text-align: center;
-            padding: 48px 20px 32px;
+            padding-bottom: 28px;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 36px;
+            margin-bottom: 32px;
         }
 
         .badge-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            display: inline-block;
             background: rgba(245, 158, 11, 0.12);
             color: var(--chai-gold);
             border: 1px solid rgba(245, 158, 11, 0.35);
-            padding: 6px 16px;
-            border-radius: 9999px;
-            font-size: 0.85rem;
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 18px;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
         }
 
         .main-title {
             font-family: var(--font-heading);
-            font-size: 2.7rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, var(--chai-gold) 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 55%, var(--chai-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
         }
 
-        .subtitle {
-            font-size: 1.08rem;
-            color: var(--text-muted);
-            max-width: 760px;
-            margin: 0 auto 28px;
-        }
-
-        .quick-nav {
-            background: rgba(17, 24, 39, 0.65);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 18px 22px;
-            text-align: left;
-        }
-
-        .quick-nav-title {
-            font-family: var(--font-heading);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--chai-gold);
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .quick-nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 10px;
-        }
-
-        .quick-nav-grid a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: rgba(31, 41, 55, 0.45);
-            border: 1px solid rgba(55, 65, 81, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .quick-nav-grid a:hover {
-            border-color: var(--chai-gold);
-            background: rgba(245, 158, 11, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .nav-num {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--chai-gold);
-            background: rgba(245, 158, 11, 0.14);
-            padding: 2px 7px;
-            border-radius: 5px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin: 42px 0 22px;
-        }
-
-        .section-number {
-            background: linear-gradient(135deg, var(--chai-gold), var(--chai-amber));
-            color: #030712;
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 1.1rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: 1.65rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
+        .subtitle { color: var(--text-muted); font-size: 1rem; }
 
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 26px;
+            padding: 28px;
             margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-        .card-header {
+        .project-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 14px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(55, 65, 81, 0.4);
         }
 
-        .tag-name {
+        .project-num {
+            background: var(--chai-gold);
+            color: #030712;
             font-family: var(--font-heading);
-            font-size: 1.22rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .tag-badge {
-            font-size: 0.76rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 999px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .badge-dom {
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--accent-sky);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .badge-storage {
-            background: rgba(16, 185, 129, 0.12);
-            color: var(--accent-emerald);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .badge-ui {
-            background: rgba(168, 85, 247, 0.12);
-            color: var(--accent-violet);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-
-        .desc-text {
-            color: #d1d5db;
-            text-align: justify;
-            text-justify: inter-word;
-            margin-bottom: 18px;
-        }
-
-        .pipeline-flow {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .pipe-step {
-            background: rgba(11, 15, 25, 0.8);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-        }
-
-        .pipe-badge {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--chai-gold);
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .pipe-title {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 6px;
-            color: #fff;
-        }
-
-        .pipe-desc {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            text-align: justify;
-        }
-
-        .prop-box {
-            background: rgba(3, 7, 18, 0.65);
-            border-left: 3px solid var(--chai-gold);
+            font-weight: 800;
+            width: 34px;
+            height: 34px;
             border-radius: 8px;
-            padding: 16px 18px;
-            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .prop-title {
+        .project-title {
             font-family: var(--font-heading);
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--chai-gold);
-            margin-bottom: 10px;
+        }
+
+        .intro-text {
+            color: #d1d5db;
             font-size: 0.98rem;
+            margin-bottom: 24px;
         }
-
-        .prop-item {
-            margin-bottom: 8px;
-            font-size: 0.92rem;
-            color: #e5e7eb;
-            text-align: justify;
-        }
-
-        .prop-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .p-name {
-            font-weight: 600;
-            color: var(--accent-sky);
-        }
-
-        .code-snippet {
-            background: #070a12;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 18px;
-            font-family: var(--font-mono);
-            font-size: 0.86rem;
-            line-height: 1.7;
-            overflow-x: auto;
-            color: #e2e8f0;
-        }
-
-        .cs-kw { color: #f472b6; }
-        .cs-fn { color: #38bdf8; }
-        .cs-prop { color: #f8fafc; }
-        .cs-val { color: #a7f3d0; }
-        .cs-comm { color: #6b7280; font-style: italic; }
 
         code {
             font-family: var(--font-mono);
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.08);
             padding: 2px 6px;
             border-radius: 4px;
             color: var(--chai-gold);
-            font-size: 0.88em;
+            font-size: 0.86em;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
+        /* Architecture Diagram Styles */
+        .arch-diagram {
+            background: #070a12;
             border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        th {
-            background: rgba(31, 41, 55, 0.8);
+        .arch-title {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             color: var(--chai-gold);
-            font-family: var(--font-heading);
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(55, 65, 81, 0.35);
-            color: #d1d5db;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .doc-footer {
+            margin-bottom: 20px;
             text-align: center;
+        }
+
+        /* Top State Stores Row */
+        .arch-stores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .store-box {
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .store-box.dom { border-top: 3px solid var(--accent-sky); }
+        .store-box.state { border-top: 3px solid var(--chai-gold); }
+        .store-box.storage { border-top: 3px solid var(--accent-emerald); }
+
+        .store-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
             color: var(--text-muted);
-            padding: 32px 0 12px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 48px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .store-name {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .store-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Workflow Flows */
+        .flow-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .flow-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            align-items: center;
+            background: rgba(17, 24, 39, 0.6);
+            border: 1px solid rgba(55, 65, 81, 0.4);
+            border-radius: 10px;
+            padding: 12px 16px;
+            gap: 16px;
+        }
+
+        .flow-trigger {
+            font-family: var(--font-heading);
+            font-weight: 700;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-boot { background: var(--accent-violet); }
+        .dot-add { background: var(--accent-emerald); }
+        .dot-toggle { background: var(--accent-sky); }
+        .dot-delete { background: var(--accent-rose); }
+
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .step-pill {
+            background: rgba(31, 41, 55, 0.85);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            padding: 5px 10px;
+            border-radius: 6px;
+            color: #e5e7eb;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+        }
+
+        .arrow {
+            color: var(--chai-gold);
+            font-weight: 700;
+        }
+
+        @media (max-width: 700px) {
+            .arch-stores { grid-template-columns: 1fr; }
+            .flow-row { grid-template-columns: 1fr; gap: 8px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="doc-header">
-            <div class="badge-pill">Chai Aur Code • Practical DOM &amp; Web API Architecture</div>
-            <h1 class="main-title">JavaScript Basic Projects Documentation</h1>
-            <p class="subtitle">Comprehensive technical reference covering state-driven DOM manipulation, browser storage persistence (`localStorage`), event propagation control, and responsive UI architecture.</p>
-
-            <div class="quick-nav">
-                <div class="quick-nav-title">Quick Navigation • Project Breakdown</div>
-                <div class="quick-nav-grid">
-                    <a href="#todo-overview"><span class="nav-num">01</span> Project 01: Todo App Overview</a>
-                    <a href="#todo-storage-state"><span class="nav-num">02</span> LocalStorage &amp; State Hydration</a>
-                    <a href="#todo-dom-events"><span class="nav-num">03</span> DOM Rendering &amp; Event Bubbling</a>
-                    <a href="#glossary"><span class="nav-num">04</span> Technical Glossary</a>
-                </div>
-            </div>
+            <div class="badge-pill">Chai Aur Code • Project Notes</div>
+            <h1 class="main-title">JavaScript Basic Projects</h1>
+            <p class="subtitle">Quick overview and workflow architecture for each hands-on DOM project.</p>
         </header>
 
-        <!-- Section 1: Project 01 Overview (index.html & styles.css) -->
-        <section id="todo-overview">
-            <div class="section-header">
-                <div class="section-number">1</div>
-                <h2 class="section-title">Project 01: Dark-Mode To-Do List Architecture (01_todo-localstorage)</h2>
+        <!-- 01: Todo with LocalStorage -->
+        <section class="card">
+            <div class="project-header">
+                <div class="project-num">01</div>
+                <h2 class="project-title">To-Do List with LocalStorage (<code>01_todo-localstorage</code>)</h2>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">Structural Markup &amp; Dark-Theme Flexbox Layout (index.html &amp; styles.css)</span>
-                    <span class="tag-badge badge-ui">UI &amp; Layout Layer</span>
-                </div>
-                <p class="desc-text">The <strong>Dark Mode To-Do List</strong> project (<code>01_todo-localstorage</code>) is a foundational CRUD (Create, Read, Update, Delete) web application built with vanilla HTML5, CSS3, and JavaScript. It pairs a centered Flexbox card layout (<code>#1e1e1e</code> card over a <code>#121212</code> dark canvas) with an interactive input bar (<code>#todo-input</code> and <code>#add-task-btn</code>) and a dynamically populated unordered list container (<code>#todo-list</code>).</p>
+            <p class="intro-text">
+                A dark-mode task manager that lets users <strong>add</strong>, <strong>complete</strong>, and <strong>delete</strong> tasks. It keeps an in-memory <code>tasks</code> array synchronized with both the browser's <code>localStorage</code> (so tasks survive page reloads) and the live DOM list (<code>#todo-list</code>).
+            </p>
 
-                <div class="pipeline-flow">
-                    <div class="pipe-step">
-                        <div class="pipe-badge">PHASE 01 • HYDRATE</div>
-                        <div class="pipe-title">Boot &amp; Parse Storage</div>
-                        <p class="pipe-desc">On <code>DOMContentLoaded</code>, read serialized JSON tasks from <code>localStorage</code> and render existing items into <code>#todo-list</code>.</p>
+            <!-- Architecture & Workflow Diagram -->
+            <div class="arch-diagram">
+                <div class="arch-title">System Architecture &amp; Data Workflow</div>
+
+                <!-- 3 Core Layers -->
+                <div class="arch-stores">
+                    <div class="store-box dom">
+                        <div class="store-label">Layer 1 • UI</div>
+                        <div class="store-name">DOM Tree</div>
+                        <div class="store-desc"><code>#todo-input</code>, <code>#add-task-btn</code>, <code>#todo-list</code></div>
                     </div>
-                    <div class="pipe-step">
-                        <div class="pipe-badge">PHASE 02 • CREATE</div>
-                        <div class="pipe-title">Capture &amp; Append Task</div>
-                        <p class="pipe-desc">Trim input string, build a task object with <code>id: Date.now()</code>, push to <code>tasks</code> array, persist, and append <code>&lt;li&gt;</code>.</p>
+                    <div class="store-box state">
+                        <div class="store-label">Layer 2 • Memory</div>
+                        <div class="store-name">JS State Array</div>
+                        <div class="store-desc"><code>tasks = [{ id, text, completed }]</code></div>
                     </div>
-                    <div class="pipe-step">
-                        <div class="pipe-badge">PHASE 03 • MUTATE</div>
-                        <div class="pipe-title">Toggle or Delete</div>
-                        <p class="pipe-desc">Click <code>&lt;li&gt;</code> to toggle completion state (<code>.completed</code> CSS class) or click <code>&lt;button&gt;</code> to remove the item and sync storage.</p>
+                    <div class="store-box storage">
+                        <div class="store-label">Layer 3 • Persistence</div>
+                        <div class="store-name">LocalStorage</div>
+                        <div class="store-desc"><code>JSON.stringify()</code> / <code>JSON.parse()</code></div>
                     </div>
                 </div>
 
-                <div class="prop-box">
-                    <div class="prop-title">UI &amp; Styling Highlights (index.html &amp; styles.css)</div>
-                    <div class="prop-item"><span class="p-name">Viewport Centering:</span> The <code>body</code> uses <code>display: flex; justify-content: center; align-items: center; height: 100vh;</code> to keep the <code>300px</code> application card centered across screen sizes.</div>
-                    <div class="prop-item"><span class="p-name">Visual State Feedback (li.completed):</span> Completed tasks receive the <code>.completed</code> class, applying <code>text-decoration: line-through;</code> and <code>opacity: 0.7;</code> to visually distinguish finished items.</div>
-                    <div class="prop-item"><span class="p-name">Semantic Action Colors:</span> Primary task creation uses deep violet (<code>#6200ea</code> &rarr; <code>#3700b3</code> on hover), while destructive delete actions use crimson red (<code>#d32f2f</code> &rarr; <code>#b71c1c</code> on hover).</div>
+                <!-- 4 Action Workflows -->
+                <div class="flow-list">
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-boot"></span>1. Page Load</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">DOMContentLoaded</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">JSON.parse(localStorage)</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">tasks.forEach(renderTask)</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-add"></span>2. Add Task</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">Click "Add Task"</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">tasks.push(newTask)</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">saveTasks()</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">renderTask(newTask)</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-toggle"></span>3. Toggle Done</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">Click &lt;li&gt;</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">task.completed = !task.completed</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">li.classList.toggle("completed")</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">saveTasks()</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-delete"></span>4. Delete Task</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">Click &lt;button&gt;</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">e.stopPropagation()</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">tasks.filter(...)</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">li.remove() + saveTasks()</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <!-- Section 2: LocalStorage & State Hydration -->
-        <section id="todo-storage-state">
-            <div class="section-header">
-                <div class="section-number">2</div>
-                <h2 class="section-title">State Management &amp; Browser LocalStorage Persistence (script.js)</h2>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">JSON Serialization, Hydration &amp; Task Object Schema</span>
-                    <span class="tag-badge badge-storage">Web Storage API</span>
-                </div>
-                <p class="desc-text">Browser variables stored in RAM are wiped whenever a user refreshes or closes the tab. To achieve persistence without a backend database, <code>script.js</code> uses the browser's <code>window.localStorage</code> API. Because <code>localStorage</code> can only store key-value pairs as <strong>strings</strong>, JavaScript arrays and objects must be serialized using <code>JSON.stringify()</code> before saving and deserialized with <code>JSON.parse()</code> when loading.</p>
-
-                <div class="prop-box">
-                    <div class="prop-title">State &amp; Storage Mechanics in script.js</div>
-                    <div class="prop-item"><span class="p-name">Safe Fallback Initialization:</span> <code>let tasks = JSON.parse(localStorage.getItem("tasks")) || [];</code> ensures that on the very first visit—when <code>localStorage.getItem("tasks")</code> returns <code>null</code>—the short-circuit OR operator (<code>||</code>) initializes an empty array instead of throwing a <code>TypeError</code> on <code>tasks.forEach()</code>.</div>
-                    <div class="prop-item"><span class="p-name">Task Data Model:</span> Every task is stored as a structured object: <code>{ id: Date.now(), text: taskText, completed: false }</code>. Using <code>Date.now()</code> provides a millisecond-precision timestamp as a unique identifier.</div>
-                    <div class="prop-item"><span class="p-name">Input Sanitization:</span> <code>todoInput.value.trim()</code> strips leading and trailing whitespace, and <code>if (taskText === "") return;</code> guards against adding blank tasks.</div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="cs-comm">// script.js — Lifecycle Boot, State Hydration &amp; Task Creation</span><br>
-                    <span class="cs-prop">document</span>.<span class="cs-fn">addEventListener</span>(<span class="cs-val">"DOMContentLoaded"</span>, () =&gt; {<br>
-                    &nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">todoInput</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"todo-input"</span>);<br>
-                    &nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">addTaskButton</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"add-task-btn"</span>);<br>
-                    &nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">todoList</span> = <span class="cs-prop">document</span>.<span class="cs-fn">getElementById</span>(<span class="cs-val">"todo-list"</span>);<br><br>
-                    &nbsp;&nbsp;<span class="cs-comm">// Hydrate persisted tasks from localStorage or fall back to empty array</span><br>
-                    &nbsp;&nbsp;<span class="cs-kw">let</span> <span class="cs-prop">tasks</span> = <span class="cs-prop">JSON</span>.<span class="cs-fn">parse</span>(<span class="cs-prop">localStorage</span>.<span class="cs-fn">getItem</span>(<span class="cs-val">"tasks"</span>)) || [];<br>
-                    &nbsp;&nbsp;<span class="cs-prop">tasks</span>.<span class="cs-fn">forEach</span>((<span class="cs-prop">task</span>) =&gt; <span class="cs-fn">renderTask</span>(<span class="cs-prop">task</span>));<br><br>
-                    &nbsp;&nbsp;<span class="cs-prop">addTaskButton</span>.<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, () =&gt; {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">taskText</span> = <span class="cs-prop">todoInput</span>.<span class="cs-prop">value</span>.<span class="cs-fn">trim</span>();<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">taskText</span> === <span class="cs-val">""</span>) <span class="cs-kw">return</span>;<br><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">newTask</span> = { <span class="cs-prop">id</span>: <span class="cs-prop">Date</span>.<span class="cs-fn">now</span>(), <span class="cs-prop">text</span>: <span class="cs-prop">taskText</span>, <span class="cs-prop">completed</span>: <span class="cs-kw">false</span> };<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">tasks</span>.<span class="cs-fn">push</span>(<span class="cs-prop">newTask</span>);<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">saveTasks</span>();<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">renderTask</span>(<span class="cs-prop">newTask</span>);<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">todoInput</span>.<span class="cs-prop">value</span> = <span class="cs-val">""</span>; <span class="cs-comm">// clear input</span><br>
-                    &nbsp;&nbsp;});<br><br>
-                    &nbsp;&nbsp;<span class="cs-kw">function</span> <span class="cs-fn">saveTasks</span>() {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">localStorage</span>.<span class="cs-fn">setItem</span>(<span class="cs-val">"tasks"</span>, <span class="cs-prop">JSON</span>.<span class="cs-fn">stringify</span>(<span class="cs-prop">tasks</span>));<br>
-                    &nbsp;&nbsp;}<br>
-                    });
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Dynamic DOM Rendering & Event Bubbling -->
-        <section id="todo-dom-events">
-            <div class="section-header">
-                <div class="section-number">3</div>
-                <h2 class="section-title">Dynamic DOM Rendering &amp; Event Propagation Control</h2>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="tag-name">renderTask(), e.stopPropagation() &amp; Array Filtering Nuance</span>
-                    <span class="tag-badge badge-dom">DOM &amp; Event Architecture</span>
-                </div>
-                <p class="desc-text">The <code>renderTask(task)</code> function constructs an <code>&lt;li&gt;</code> element in memory, attaches custom metadata via <code>li.setAttribute("data-id", task.id)</code>, and wires up two distinct click listeners: one on the <code>&lt;li&gt;</code> container for toggling task completion, and one on the child <code>&lt;button&gt;</code> for deleting the task. Managing how clicks travel between the child button and parent list item is a classic demonstration of <strong>DOM Event Bubbling</strong>.</p>
-
-                <div class="prop-box">
-                    <div class="prop-title">Event Propagation &amp; State Filtering Details</div>
-                    <div class="prop-item"><span class="p-name">Preventing Event Bubbling (e.stopPropagation):</span> Because the <code>&lt;button&gt;</code> sits inside the <code>&lt;li&gt;</code>, clicking "delete" would normally bubble up and trigger the <code>&lt;li&gt;</code> click listener as well. Calling <code>e.stopPropagation()</code> inside the button handler halts upward propagation immediately.</div>
-                    <div class="prop-item"><span class="p-name">Target Tag Guard:</span> As a secondary defense, the <code>&lt;li&gt;</code> listener checks <code>if (e.target.tagName === "BUTTON") return;</code> so clicks originating on the button never toggle completion.</div>
-                    <div class="prop-item"><span class="p-name">Filter Predicate Watchout (=== vs !==):</span> In <code>script.js</code> line 43, <code>tasks = tasks.filter((t) =&gt; t.id === task.id)</code> keeps the clicked task in the array; to exclude the deleted task from <code>localStorage</code>, the predicate should use strict inequality: <code>t.id !== task.id</code>.</div>
-                </div>
-
-                <div class="code-snippet">
-                    <span class="cs-comm">// script.js — Dynamic Element Construction &amp; Bubbling Control</span><br>
-                    <span class="cs-kw">function</span> <span class="cs-fn">renderTask</span>(<span class="cs-prop">task</span>) {<br>
-                    &nbsp;&nbsp;<span class="cs-kw">const</span> <span class="cs-prop">li</span> = <span class="cs-prop">document</span>.<span class="cs-fn">createElement</span>(<span class="cs-val">"li"</span>);<br>
-                    &nbsp;&nbsp;<span class="cs-prop">li</span>.<span class="cs-fn">setAttribute</span>(<span class="cs-val">"data-id"</span>, <span class="cs-prop">task</span>.<span class="cs-prop">id</span>);<br>
-                    &nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">task</span>.<span class="cs-prop">completed</span>) <span class="cs-prop">li</span>.<span class="cs-prop">classList</span>.<span class="cs-fn">add</span>(<span class="cs-val">"completed"</span>);<br>
-                    &nbsp;&nbsp;<span class="cs-prop">li</span>.<span class="cs-prop">innerHTML</span> = `<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;${<span class="cs-prop">task</span>.<span class="cs-prop">text</span>}&lt;/span&gt;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;button&gt;delete&lt;/button&gt;<br>
-                    &nbsp;&nbsp;`;<br><br>
-                    &nbsp;&nbsp;<span class="cs-comm">// Toggle completion status when clicking the list item</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">li</span>.<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, (<span class="cs-prop">e</span>) =&gt; {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-kw">if</span> (<span class="cs-prop">e</span>.<span class="cs-prop">target</span>.<span class="cs-prop">tagName</span> === <span class="cs-val">"BUTTON"</span>) <span class="cs-kw">return</span>;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">task</span>.<span class="cs-prop">completed</span> = !<span class="cs-prop">task</span>.<span class="cs-prop">completed</span>;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">li</span>.<span class="cs-prop">classList</span>.<span class="cs-fn">toggle</span>(<span class="cs-val">"completed"</span>);<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">saveTasks</span>();<br>
-                    &nbsp;&nbsp;});<br><br>
-                    &nbsp;&nbsp;<span class="cs-comm">// Delete task and stop click event from bubbling up to parent &lt;li&gt;</span><br>
-                    &nbsp;&nbsp;<span class="cs-prop">li</span>.<span class="cs-fn">querySelector</span>(<span class="cs-val">"button"</span>).<span class="cs-fn">addEventListener</span>(<span class="cs-val">"click"</span>, (<span class="cs-prop">e</span>) =&gt; {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">e</span>.<span class="cs-fn">stopPropagation</span>(); <span class="cs-comm">// prevent toggle from firing</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">tasks</span> = <span class="cs-prop">tasks</span>.<span class="cs-fn">filter</span>((<span class="cs-prop">t</span>) =&gt; <span class="cs-prop">t</span>.<span class="cs-prop">id</span> !== <span class="cs-prop">task</span>.<span class="cs-prop">id</span>);<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-prop">li</span>.<span class="cs-fn">remove</span>();<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-fn">saveTasks</span>();<br>
-                    &nbsp;&nbsp;});<br><br>
-                    &nbsp;&nbsp;<span class="cs-prop">todoList</span>.<span class="cs-fn">appendChild</span>(<span class="cs-prop">li</span>);<br>
-                    }
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Technical Glossary -->
-        <section id="glossary">
-            <div class="section-header">
-                <div class="section-number">4</div>
-                <h2 class="section-title">Technical Glossary &amp; Web API Quick Reference</h2>
-            </div>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Term / API</th>
-                            <th>Category</th>
-                            <th>Technical Definition</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><code>DOMContentLoaded</code></td><td>Browser Lifecycle</td><td>Event fired when the initial HTML document has been completely parsed, without waiting for stylesheets or images.</td></tr>
-                        <tr><td><code>window.localStorage</code></td><td>Web Storage API</td><td>Persistent origin-scoped browser storage (typically ~5MB) retaining string key-value pairs across browser restarts.</td></tr>
-                        <tr><td><code>JSON.stringify()</code></td><td>Serialization</td><td>Converts a JavaScript object or array into a JSON-formatted string suitable for storage or network transmission.</td></tr>
-                        <tr><td><code>JSON.parse()</code></td><td>Deserialization</td><td>Parses a JSON string and reconstructs the corresponding JavaScript object or array in memory.</td></tr>
-                        <tr><td><code>data-* Attribute</code></td><td>HTML5 / DOM</td><td>Custom HTML attribute (e.g. <code>data-id</code>) storing application metadata directly on DOM nodes.</td></tr>
-                        <tr><td><code>e.stopPropagation()</code></td><td>DOM Events</td><td>Prevents the current event from bubbling up (or capturing down) the DOM tree to parent listeners.</td></tr>
-                        <tr><td><code>classList.toggle()</code></td><td>DOM TokenList</td><td>Adds a CSS class to an element if absent, or removes it if already present, returning a boolean.</td></tr>
-                        <tr><td><code>Element.remove()</code></td><td>DOM Mutation</td><td>Detaches and removes the element node directly from its parent in the DOM tree.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <footer class="doc-footer">
-            <p>Created for Chai Aur Code • JavaScript Basic Projects &amp; DOM Architecture • Open with Live Server to explore!</p>
-        </footer>
     </div>
 </body>
 </html>
-
