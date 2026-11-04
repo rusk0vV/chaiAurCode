@@ -1,7 +1,13 @@
 function fetchUserData() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject({ name: "chaicode", url: "https://chaicode.com" });
+      let success = true;
+      if(success) {
+        resolve({ name: "chaicode", url: "https://chaicode.com" });
+      }
+      else {
+        reject({ name: "chaicode", url: "https://chaicode.com" });
+      }
     }, 3000);
   });
 }
