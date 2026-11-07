@@ -77,7 +77,7 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 28px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .project-header {
@@ -98,6 +98,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .project-title {
@@ -158,6 +159,8 @@
         .store-box.dom { border-top: 3px solid var(--accent-sky); }
         .store-box.state { border-top: 3px solid var(--chai-gold); }
         .store-box.storage { border-top: 3px solid var(--accent-emerald); }
+        .store-box.async { border-top: 3px solid var(--accent-violet); }
+        .store-box.api { border-top: 3px solid var(--accent-emerald); }
 
         .store-label {
             font-family: var(--font-mono);
@@ -189,7 +192,7 @@
 
         .flow-row {
             display: grid;
-            grid-template-columns: 150px 1fr;
+            grid-template-columns: 160px 1fr;
             align-items: center;
             background: rgba(17, 24, 39, 0.6);
             border: 1px solid rgba(55, 65, 81, 0.4);
@@ -218,6 +221,10 @@
         .dot-add { background: var(--accent-emerald); }
         .dot-toggle { background: var(--accent-sky); }
         .dot-delete { background: var(--accent-rose); }
+        .dot-trigger { background: var(--chai-gold); }
+        .dot-network { background: var(--accent-sky); }
+        .dot-success { background: var(--accent-emerald); }
+        .dot-error { background: var(--accent-rose); }
 
         .flow-steps {
             display: flex;
@@ -339,6 +346,93 @@
                             <span class="step-pill">tasks.filter(...)</span>
                             <span class="arrow">&rarr;</span>
                             <span class="step-pill">li.remove() + saveTasks()</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02: Weather App with OpenWeatherMap API -->
+        <section class="card">
+            <div class="project-header">
+                <div class="project-num">02</div>
+                <h2 class="project-title">Weather App (<code>02_weather</code>)</h2>
+            </div>
+
+            <p class="intro-text">
+                An asynchronous weather dashboard that fetches real-time meteorological data for any queried city using the <strong>OpenWeatherMap REST API</strong>. It uses <code>async/await</code> and the <code>fetch()</code> API to retrieve weather details, parses the JSON payload, and dynamically updates the DOM while gracefully catching network or invalid-city errors.
+            </p>
+
+            <!-- Architecture & Workflow Diagram -->
+            <div class="arch-diagram">
+                <div class="arch-title">System Architecture &amp; Data Workflow</div>
+
+                <!-- 3 Core Layers -->
+                <div class="arch-stores">
+                    <div class="store-box dom">
+                        <div class="store-label">Layer 1 • UI</div>
+                        <div class="store-name">DOM Tree</div>
+                        <div class="store-desc"><code>#city-input</code>, <code>#get-weather-btn</code>, <code>#weather-info</code></div>
+                    </div>
+                    <div class="store-box async">
+                        <div class="store-label">Layer 2 • Controller</div>
+                        <div class="store-name">Async Engine</div>
+                        <div class="store-desc"><code>fetchWeatherData()</code> • <code>try / catch</code></div>
+                    </div>
+                    <div class="store-box api">
+                        <div class="store-label">Layer 3 • Remote</div>
+                        <div class="store-name">OpenWeather API</div>
+                        <div class="store-desc"><code>api.openweathermap.org</code> • JSON Payload</div>
+                    </div>
+                </div>
+
+                <!-- 4 Action Workflows -->
+                <div class="flow-list">
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-trigger"></span>1. User Query</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">Enter City</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">Click "Get Weather"</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">cityInput.value.trim()</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">if (!city) return</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-network"></span>2. API Fetch</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">await fetch(apiUrl)</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">if (!response.ok) throw</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">await response.json()</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-success"></span>3. Render Data</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">displayWeatherData(data)</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">Destructure { name, main, weather }</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">#weather-info remove("hidden")</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-trigger"><span class="dot dot-error"></span>4. Error Guard</div>
+                        <div class="flow-steps">
+                            <span class="step-pill">catch (error)</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">showError()</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">#error-message remove("hidden")</span>
+                            <span class="arrow">&rarr;</span>
+                            <span class="step-pill">#weather-info add("hidden")</span>
                         </div>
                     </div>
                 </div>
