@@ -8,7 +8,7 @@ function fetchUserData() {
       else {
         reject({ name: "chaicode", url: "https://chaicode.com" });
       }
-    }, 3000);
+    }, 4000);
   });
 }
 
